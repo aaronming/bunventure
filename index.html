@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <meta charset="utf-8"/>
+  </head>
+  <script type="text/javascript" src="libs/knockout.js"></script>
+  <script type="text/javascript" src="libs/tabletop.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+  <link rel="stylesheet" href="css/main.css">
+  <body>
+    <div id="startDiv" data-bind="visible: isStartPhase">
+        <h1>START PHASE</h1>
+
+        <div id="startDivContainer">
+            How many players? <input data-bind="value: playersValue" />
+
+            <div class="classesDiv" data-bind="foreach: classObjects">
+                <div class="classDiv">
+                    <div class="className" data-bind="text: $data.className"></div>
+                    <div><span class="cTitle">Attack:</span><span data-bind="text: $data.attack, css: $parent.cValueCSS($data.attack)"></span></div>
+                    <div><span class="cTitle">Defense:</span><span data-bind="text: $data.defense, css: $parent.cValueCSS($data.defense)"></span></div>
+                    <div><span class="cTitle">HP:</span><span data-bind="text: $data.hp, css: $parent.cValueCSS($data.hp)"></span></div>
+                    <div><span class="cTitle">AP:</span><span data-bind="text: $data.ap, css: $parent.cValueCSS($data.ap)"></span></div>
+                    <div><span class="cTitle">Hand:</span><span data-bind="text: $data.hand, css: $parent.cValueCSS($data.hand)"></span></div>
+                </div>
+            </div>
+
+            <div class="startPDiv" data-bind="visible: playersValue() >= 1">
+                Player 1: <select data-bind="options: availableClasses, value: p1Class"></select>
+            </div>
+            <div class="startPDiv" data-bind="visible: playersValue() >= 2">
+                Player 2: <select data-bind="options: availableClasses, value: p2Class"></select>
+            </div>
+            <div class="startPDiv" data-bind="visible: playersValue() >= 3">
+                Player 3: <select data-bind="options: availableClasses, value: p3Class"></select>
+            </div>
+            <div class="startPDiv" data-bind="visible: playersValue() >= 4">
+                Player 4: <select data-bind="options: availableClasses, value: p4Class"></select>
+            </div>
+        </div>
+        <input type="button" data-bind="value: 'Start Game', click: onStartGame">
+    </div>
+
+      <div id="townDiv" data-bind="visible: isTownPhase">
+          TownPhase
+          <input type="button" value="Button" data-bind="click: onButtonClick" />
+      </div>
+      
+      <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
+          DungeonPhase
+          <input type="button" value="Button" data-bind="click: onButtonClick" />
+      </div>
+
+  </body>
+</html>
+
+

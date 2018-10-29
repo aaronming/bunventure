@@ -1,0 +1,64 @@
+#startDiv #startDivContainer {
+  margin-bottom: 20px;
+}
+
+#startDiv #startDivContainer .classesDiv {
+  margin-top: 20px;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv {
+  width: 200px;
+  background-color: #f3f3f3;
+  display: inline-block;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .className {
+  font-size: 15pt;
+  font-weight: bold;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .cTitle {
+  width: 60px;
+  display: inline-block;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .cVal0 {
+  display: inline-block;
+  width: 15px;
+  background-color: #e00d0d;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .cVal1 {
+  display: inline-block;
+  width: 30px;
+  background-color: #e2520f;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .cVal2 {
+  display: inline-block;
+  width: 45px;
+  background-color: #e6a00a;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .cVal3 {
+  display: inline-block;
+  width: 60px;
+  background-color: #dfe211;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .cVal4 {
+  display: inline-block;
+  width: 75px;
+  background-color: #98e20e;
+}
+
+#startDiv #startDivContainer .classesDiv .classDiv .cVal5 {
+  display: inline-block;
+  width: 90px;
+  background-color: #2cdd15;
+}
+
+#startDiv #startDivContainer .startPDiv {
+  margin-top: 20px;
+}
+/*# sourceMappingURL=main.css.map */

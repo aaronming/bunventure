@@ -1,0 +1,39 @@
+#startDiv {
+
+    #startDivContainer {
+        margin-bottom: 20px;
+
+        .classesDiv {
+            margin-top: 20px;
+
+            .classDiv {
+                width: 200px;
+                background-color: rgb(243, 243, 243);
+                display: inline-block;
+
+                .className {
+                    font-size: 15pt;
+                    font-weight: bold;
+                }
+
+                .cTitle {
+                    width: 60px;
+                    display: inline-block;
+                }
+
+                $cValWidth: 15px;
+                .cVal0 { display:inline-block; width: $cValWidth * 1; background-color: rgb(224, 13, 13) }
+                .cVal1 { display:inline-block; width: $cValWidth * 2; background-color: rgb(226, 82, 15) }
+                .cVal2 { display:inline-block; width: $cValWidth * 3; background-color: rgb(230, 160, 10) }
+                .cVal3 { display:inline-block; width: $cValWidth * 4; background-color: rgb(223, 226, 17) }
+                .cVal4 { display:inline-block; width: $cValWidth * 5; background-color: rgb(152, 226, 14) }
+                .cVal5 { display:inline-block; width: $cValWidth * 6; background-color: rgb(44, 221, 21) }
+            }
+        }
+
+        .startPDiv {
+            margin-top: 20px;
+        }
+    }
+
+}

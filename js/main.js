@@ -2,7 +2,7 @@ window.onload = function() {
     var sheetPublicUrl = "https://docs.google.com/spreadsheets/d/1fg0glSTrSxdri91skmmGsKAysuo5522pTH66HAOfYoU/edit?usp=sharing";
     var ActivitiesData, MonstersData, ShopData, SkillsData, StatsData;
 
-    var Phases = { start: 0, town: 1, dungeon: 2 }
+    var Phases = { start: 0, setup: 1, town: 2, dungeon: 3 }
     var MaxLevel = 5;
     var SkillsCount = 18;
     var StatsDataIndex = function(index) { return index * 5; }
@@ -35,6 +35,67 @@ window.onload = function() {
             }
         }
 
+        this.learnTech = function(tech) {
+            this.removeCard(tech, this.techDeck);
+            this.addCard(tech, this.learnedTech);
+            this.addCard(tech, this.deck);
+        }
+
+        this.unlearnTech = function(tech) {
+            this.addCard(tech, this.techDeck);
+            this.removeCard(tech, this.learnedTech);
+            this.removeCard(tech, this.deck);
+        }
+
+        this.addCard = function(card, deck) {
+            deck.push(card);
+        }
+
+        this.removeCard = function(card, deck) {
+            for (var i = 0; i < deck.length; i++) {
+                if (card.name === deck[i].name) {
+                    return deck.splice(i, 1);
+                }
+            }
+        }
+
+        this.prepareDeckForBattle = function() {
+            this.playDeck = Array.from(this.deck);
+            this.shuffleDeck(this.playDeck);
+            this.hand = [];
+            this.discard = [];
+        }
+
+        this.drawCard = function(num) {
+            if (this.playDeck.length < num) {
+                this.discard = this.shuffleDeck(this.discard);
+                this.playDeck = this.playDeck.concat(this.discard);
+                this.discard = [];
+            }
+            this.hand = this.hand.concat(this.playDeck.splice(0, num));
+        }
+
+        this.discardCard = function(card) {
+            this.addCard(this.removeCard(card, this.hand), this.discard);
+        }
+
+        this.discardHand = function() {
+            this.discard = this.discard.concat(this.hand);
+            this.hand = [];
+        }
+
+        this.shuffleDeck = function(deck) {
+            if (deck == undefined) deck = this.deck;
+            var j, x, i;
+            for (i = deck.length - 1; i > 0; i--) {
+                j = Math.floor(Math.random() * (i + 1));
+                x = deck[i];
+                deck[i] = deck[j];
+                deck[j] = x;
+            }
+            return deck;
+        }
+
         this.levelUp = function() {
             this.level += 1;
             updateStats.bind(this)();
@@ -56,26 +117,28 @@ window.onload = function() {
     function MyApp() {
         var self = this;
 
+        self.isLoading = ko.observable(true);
         self.playersValue = ko.observable(1);
         self.p1Class = ko.observable(""); self.p2Class = ko.observable(""); self.p3Class = ko.observable(""); self.p4Class = ko.observable("");
         self.players = ko.observableArray();
 
-        self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue"]; //;Wizard;Bard;Druid;Monk;Paladin"
+        self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue", "Wizard", "Bard", "Druid", "Monk", "Paladin"];
         self.classObjects = ko.observableArray();
 
         self.phase = ko.observable(0);
         self.isStartPhase = ko.observable(true);
+        self.isSetupPhase = ko.observable(false);
         self.isTownPhase = ko.observable(false);
         self.isDungeonPhase = ko.observable(false);
         self.phase.subscribe(function(newPhase) {
             self.isStartPhase(newPhase == Phases.start);
+            self.isSetupPhase(newPhase == Phases.setup);
             self.isTownPhase(newPhase == Phases.town);
             self.isDungeonPhase(newPhase == Phases.dungeon);
         });
     
         Tabletop.init({ key: sheetPublicUrl, callback: onSheetLoad });
         function onSheetLoad(data, tabletop) {
-            console.log(data);
             ActivitiesData = tabletop.sheets("Activities");
             MonstersData = tabletop.sheets("Monsters");
             ShopData = tabletop.sheets("Shop");
@@ -103,9 +166,11 @@ window.onload = function() {
                 cObjects.push(cObject);
             }
             self.classObjects(cObjects);
+
+            self.isLoading(false);
         }
 
-        self.onStartGame = function() {
+        self.onConfirmClasses = function() {
             // Ensure no duplicates
             var selectedClasses = [];
             var dup = false;
@@ -139,8 +204,24 @@ window.onload = function() {
                     var player = new Player(selectedClass, statsData, skillsData);
                     self.players.push(player);
                 }
-                //self.phase(1);
+
+                self.setupPhase();
             }
+        }
+
+        self.setupPhase = function() {
+            self.phase(Phases.setup);
+        }
+
+        self.onEditDeck = function(player) {
+        }
+
+        self.onStartTown = function() {
+            self.phase(Phases.town);
+        }
+
+        self.onStartDungeon = function() {
+            self.phase(Phases.dungeon);
         }
 
         self.cValueCSS = function(val) {

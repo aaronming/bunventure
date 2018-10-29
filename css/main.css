@@ -1,15 +1,59 @@
+#loaderDiv {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+#loaderDiv .loader {
+  border: 16px solid #f3f3f3;
+  /* Light grey */
+  border-top: 16px solid #3498db;
+  /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+  margin: 0;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
 #startDiv #startDivContainer {
   margin-bottom: 20px;
 }
 
 #startDiv #startDivContainer .classesDiv {
   margin-top: 20px;
+  width: 1200px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv {
   width: 200px;
   background-color: #f3f3f3;
   display: inline-block;
+  padding: 5px;
+  margin: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .className {
@@ -24,38 +68,44 @@
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal0 {
   display: inline-block;
-  width: 15px;
-  background-color: #e00d0d;
+  width: 0px;
+  background-color: none;
+  padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal1 {
   display: inline-block;
-  width: 30px;
-  background-color: #e2520f;
+  width: 20px;
+  background-color: #e2280f;
+  padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal2 {
   display: inline-block;
-  width: 45px;
+  width: 40px;
   background-color: #e6a00a;
+  padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal3 {
   display: inline-block;
   width: 60px;
   background-color: #dfe211;
+  padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal4 {
   display: inline-block;
-  width: 75px;
+  width: 80px;
   background-color: #98e20e;
+  padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal5 {
   display: inline-block;
-  width: 90px;
+  width: 100px;
   background-color: #2cdd15;
+  padding: 5px;
 }
 
 #startDiv #startDivContainer .startPDiv {

@@ -1,3 +1,24 @@
+#loaderDiv {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+
+    .loader {
+        border: 16px solid #f3f3f3; /* Light grey */
+        border-top: 16px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        margin: 0;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+}
+
 #startDiv {
 
     #startDivContainer {
@@ -5,11 +26,14 @@
 
         .classesDiv {
             margin-top: 20px;
+            width: 1200px;
 
             .classDiv {
                 width: 200px;
                 background-color: rgb(243, 243, 243);
                 display: inline-block;
+                padding: 5px;
+                margin: 5px;
 
                 .className {
                     font-size: 15pt;
@@ -21,13 +45,13 @@
                     display: inline-block;
                 }
 
-                $cValWidth: 15px;
-                .cVal0 { display:inline-block; width: $cValWidth * 1; background-color: rgb(224, 13, 13) }
-                .cVal1 { display:inline-block; width: $cValWidth * 2; background-color: rgb(226, 82, 15) }
-                .cVal2 { display:inline-block; width: $cValWidth * 3; background-color: rgb(230, 160, 10) }
-                .cVal3 { display:inline-block; width: $cValWidth * 4; background-color: rgb(223, 226, 17) }
-                .cVal4 { display:inline-block; width: $cValWidth * 5; background-color: rgb(152, 226, 14) }
-                .cVal5 { display:inline-block; width: $cValWidth * 6; background-color: rgb(44, 221, 21) }
+                $cValWidth: 20px;
+                .cVal0 { display:inline-block; width: $cValWidth * 0; background-color: none; padding: 5px;}
+                .cVal1 { display:inline-block; width: $cValWidth * 1; background-color: rgb(226, 40, 15); padding: 5px; }
+                .cVal2 { display:inline-block; width: $cValWidth * 2; background-color: rgb(230, 160, 10); padding: 5px; }
+                .cVal3 { display:inline-block; width: $cValWidth * 3; background-color: rgb(223, 226, 17); padding: 5px; }
+                .cVal4 { display:inline-block; width: $cValWidth * 4; background-color: rgb(152, 226, 14); padding: 5px; }
+                .cVal5 { display:inline-block; width: $cValWidth * 5; background-color: rgb(44, 221, 21) ; padding: 5px;}
             }
         }
 

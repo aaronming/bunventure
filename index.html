@@ -8,6 +8,10 @@
   <script type="text/javascript" src="js/main.js"></script>
   <link rel="stylesheet" href="css/main.css">
   <body>
+    <div id="loaderDiv" data-bind="visible: isLoading">
+        <div class="loader"></div>
+    </div> 
+
     <div id="startDiv" data-bind="visible: isStartPhase">
         <h1>START PHASE</h1>
 
@@ -38,18 +42,28 @@
                 Player 4: <select data-bind="options: availableClasses, value: p4Class"></select>
             </div>
         </div>
-        <input type="button" data-bind="value: 'Start Game', click: onStartGame">
+        <input type="button" data-bind="value: 'Confirm Classes', click: onConfirmClasses">
     </div>
 
-      <div id="townDiv" data-bind="visible: isTownPhase">
-          TownPhase
-          <input type="button" value="Button" data-bind="click: onButtonClick" />
-      </div>
-      
-      <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
-          DungeonPhase
-          <input type="button" value="Button" data-bind="click: onButtonClick" />
-      </div>
+    <div id="setUpDiv" data-bind="visible: isSetupPhase">
+        <h1>SETUP PHASE</h1>
+        
+        <div data-bind="foreach: players">
+
+        </div>
+
+        <input type="button" value="Button" data-bind="click: onButtonClick" />
+    </div>
+
+    <div id="townDiv" data-bind="visible: isTownPhase">
+        <h1>TOWN PHASE</h1>
+        <input type="button" value="Button" data-bind="click: onButtonClick" />
+    </div>
+    
+    <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
+        <h1>DUNGEON PHASE</h1>
+        <input type="button" value="Button" data-bind="click: onButtonClick" />
+    </div>
 
   </body>
 </html>

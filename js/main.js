@@ -74,6 +74,7 @@ window.onload = function() {
         }
 
         self.minDeckSize = ko.pureComputed(function() {
+            console.log(self.stats);
             return parseInt(self.stats.Hand) * 3;
         }, this);
 

@@ -111,4 +111,30 @@
 #startDiv #startDivContainer .startPDiv {
   margin-top: 20px;
 }
+
+#setupDiv .setupDeck {
+  display: inline-block;
+  width: 250px;
+  min-height: 200px;
+  background-color: #e6e6e6;
+  vertical-align: top;
+  padding: 5px;
+}
+
+#setupDiv .setupDeck ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+#setupDiv .setupDeck ul li {
+  padding: 5px;
+}
+
+#setupDiv .setupDeck ul li:nth-child(odd) {
+  background-color: #9dd8ff;
+}
+
+#setupDiv .setupDeck ul li:nth-child(even) {
+  background-color: #ffe89d;
+}
 /*# sourceMappingURL=main.css.map */

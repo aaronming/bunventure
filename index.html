@@ -3,8 +3,8 @@
   <head>
       <meta charset="utf-8"/>
   </head>
-  <script type="text/javascript" src="libs/knockout.js"></script>
-  <script type="text/javascript" src="libs/tabletop.js"></script>
+  <script type="text/javascript" src="js/libs/knockout.js"></script>
+  <script type="text/javascript" src="js/libs/tabletop.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
   <link rel="stylesheet" href="css/main.css">
   <body>
@@ -45,11 +45,30 @@
         <input type="button" data-bind="value: 'Confirm Classes', click: onConfirmClasses">
     </div>
 
-    <div id="setUpDiv" data-bind="visible: isSetupPhase">
+    <div id="setupDiv" data-bind="visible: isSetupPhase">
         <h1>SETUP PHASE</h1>
         
         <div data-bind="foreach: players">
-
+            <h3>Player <span data-bind="text: $data.index"></span></h3>
+            <div>Hand size: <span data-bind="text: $data.minDeckSize"></span></div>
+            <div class="setupDeck">
+                <h4>Deck</h4>
+                <ul class="playerDeck" data-bind="foreach: $data.deck">
+                    <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, click: function(tech, ev) { $parent.removeSkill(tech, ev, $index) }"></li>
+                </ul>
+            </div>
+            <div class="setupDeck">
+                <h4>Tech Deck</h4>
+                <ul class="techDeck" data-bind="foreach: $data.techDeck">
+                    <li class="techCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.learnTech"></li>
+                </ul>
+            </div>
+            <div class="setupDeck">
+                <h4>Shop Cards</h4>
+                <ul class="shopDeck" data-bind="foreach: $parent.shop().deck">
+                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.buySkill"></li>
+                </ul>
+            </div>
         </div>
 
         <input type="button" value="Button" data-bind="click: onButtonClick" />

@@ -7,85 +7,127 @@ window.onload = function() {
     var SkillsCount = 18;
     var StatsDataIndex = function(index) { return index * 5; }
     var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 19) + 8; }
-    
-    function Player(playerClass, stats, skills) {
-        this.class = playerClass;
-        this.classStats = stats
-        this.classSkills = skills;
-        this.level = 0;
-        this.stats = [];
-        this.skillBook = Array.from(skills);
-        this.techDeck = [];
-        this.learnedTech = [];
-        this.deck = [];
-        this.playDeck = [];
-        this.hand = [];
-        this.discard = [];
-        this.gold = 10;
-        this.inventory = [];
 
-        var updateStats = function() {
-            this.stats = this.classStats[this.level - 1];
-        }
+    function SkillCard(sObj) {
+        var self = this;
+        
+        self.myClass = sObj.Class;
+        self.level = sObj.Level;
+        self.type = sObj.Type;
+        self.name = sObj.Name;
+        self.cost = sObj.Cost;
+        self.effect = sObj.Effect;
 
-        var updateTechDeck = function() {
-            while (this.skillBook.length != 0 && this.skillBook[0].Level == this.level) {
-                var skill = this.skillBook.shift();
-                this.techDeck.push(skill);
-            }
-        }
+        self.description = ko.pureComputed(function(){
+            var description = self.level + " " + self.name + 
+                "\n" + self.type;
+            if (self.cost) description += " - " + self.cost + " AP";
+            description += "\n----------------------" +
+                "\n" + self.effect;
 
-        this.learnTech = function(tech) {
-            this.removeCard(tech, this.techDeck);
-            this.addCard(tech, this.learnedTech);
-            this.addCard(tech, this.deck);
-        }
+            return description;
+        });
+    }
 
-        this.unlearnTech = function(tech) {
-            this.addCard(tech, this.techDeck);
-            this.removeCard(tech, this.learnedTech);
-            this.removeCard(tech, this.deck);
-        }
+    function Deckable() {
+        var self = this;
 
-        this.addCard = function(card, deck) {
+        // Deck Building
+        self.addCard = function(card, deck) {
             deck.push(card);
         }
 
-        this.removeCard = function(card, deck) {
-            for (var i = 0; i < deck.length; i++) {
-                if (card.name === deck[i].name) {
-                    return deck.splice(i, 1);
-                }
+        self.removeCard = function(card, deck) {
+            return deck.remove(card);
+        }
+    }
+    
+    function Player(index, playerClass, stats, skills) {
+        Deckable.call(this);
+        var self = this;
+
+        self.index = index;
+        self.class = playerClass;
+        self.classStats = stats
+        self.classSkills = skills;
+        self.level = 0;
+        self.stats = {};
+        self.skillBook = Array.from(skills);
+        self.techDeck = ko.observableArray([]);
+        self.learnedTech = ko.observableArray([]);
+        self.deck = ko.observableArray([]);
+        self.playDeck = ko.observableArray([]);
+        self.hand = ko.observableArray([]);
+        self.discard = ko.observableArray([]);
+        self.gold = 10;
+        self.inventory = ko.observableArray([]);
+
+        var updateStats = function() {
+            self.stats = self.classStats[self.level - 1];
+        }
+
+        var updateTechDeck = function() {
+            while (self.skillBook.length != 0 && self.skillBook[0].level == self.level) {
+                var skill = self.skillBook.shift();
+                self.techDeck.push(skill);
             }
         }
 
-        this.prepareDeckForBattle = function() {
-            this.playDeck = Array.from(this.deck);
-            this.shuffleDeck(this.playDeck);
-            this.hand = [];
-            this.discard = [];
+        self.minDeckSize = ko.pureComputed(function() {
+            return parseInt(self.stats.Hand) * 3;
+        }, this);
+
+        self.buySkill = function(tech, ev) {
+            self.addCard(tech, self.deck);
         }
 
-        this.drawCard = function(num) {
-            if (this.playDeck.length < num) {
-                this.discard = this.shuffleDeck(this.discard);
-                this.playDeck = this.playDeck.concat(this.discard);
-                this.discard = [];
+        self.learnTech = function(tech, ev) {
+            self.removeCard(tech, self.techDeck);
+            self.addCard(tech, self.learnedTech);
+            self.addCard(tech, self.deck);
+        }
+
+        self.removeSkill = function(tech, ev, index) {
+            if (tech.myClass != "General") {
+                self.addCard(tech, self.techDeck);
+                self.removeCard(tech, self.learnedTech);
+                self.removeCard(tech, self.deck);
+            } else {
+                self.deck.splice(index(), 1);
             }
-            this.hand = this.hand.concat(this.playDeck.splice(0, num));
         }
 
-        this.discardCard = function(card) {
-            this.addCard(this.removeCard(card, this.hand), this.discard);
+        self.prepareDeckForBattle = function() {
+            self.playDeck(self.deck());
+            self.shuffleDeck(self.playDeck);
+            self.hand([]);
+            self.discard([]);
         }
 
-        this.discardHand = function() {
-            this.discard = this.discard.concat(this.hand);
-            this.hand = [];
+        self.drawCard = function(num) {
+            var pDeck = self.playDeck();
+            var dDeck = self.discard();
+            var hDeck = self.hand();
+
+            if (pDeck.length < num) {
+                self.shuffleDeck(dDeck);
+                self.playDeck(pDeck.concat(dDeck));
+                self.discard([]);
+            }
+
+            self.hand(hDeck.concat(self.playDeck.splice(0, num)));
         }
 
-        this.shuffleDeck = function(deck) {
-            if (deck == undefined) deck = this.deck;
+        self.discardCard = function(card) {
+            self.discard.push(self.hand.remove(card));
+        }
+
+        self.discardHand = function() {
+            self.discard.push(self.hand.removeAll());
+        }
+
+        self.shuffleDeck = function(deck) {
+            if (deck == undefined) deck = self.deck;
             var j, x, i;
             for (i = deck.length - 1; i > 0; i--) {
                 j = Math.floor(Math.random() * (i + 1));
@@ -96,34 +138,63 @@ window.onload = function() {
             return deck;
         }
 
-        this.levelUp = function() {
-            this.level += 1;
-            updateStats.bind(this)();
-            updateTechDeck.bind(this)();
+        self.levelUp = function() {
+            self.level += 1;
+            updateStats();
+            updateTechDeck();
         }
 
-        this.addGold = function(amount) {
-            this.gold += amount;
-            return this.gold;
+        self.addGold = function(amount) {
+            self.gold += amount;
+            return self.gold;
         }
 
-        this.addInventory = function(item) {
+        self.addInventory = function(item) {
             inventory.push(item);
         }
 
-        this.levelUp();
+        self.levelUp();
+    }
+
+    function Shop(shopCards) {
+        Deckable.call(this);
+        var self = this;
+
+        self.shopLevel = 0;
+        self.shopCards = ko.observableArray(shopCards);
+        self.deck = ko.observableArray([]);
+
+        self.levelUp = function() {
+            if (self.shopLevel < 3) {
+                self.shopLevel += 1;
+                self.updateShopCards();
+            }
+        }
+
+        self.updateShopCards = function() {
+            var availableCards = self.shopCards.remove(function (item) {
+                return parseInt(item.level) == self.shopLevel;
+            });
+
+            self.deck(self.deck().concat(availableCards));
+        }
+
+        self.levelUp();
     }
 
     function MyApp() {
         var self = this;
 
         self.isLoading = ko.observable(true);
+        self.WDM = ko.observable(0);
         self.playersValue = ko.observable(1);
         self.p1Class = ko.observable(""); self.p2Class = ko.observable(""); self.p3Class = ko.observable(""); self.p4Class = ko.observable("");
         self.players = ko.observableArray();
 
         self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue", "Wizard", "Bard", "Druid", "Monk", "Paladin"];
         self.classObjects = ko.observableArray();
+
+        self.shop = ko.observable();
 
         self.phase = ko.observable(0);
         self.isStartPhase = ko.observable(true);
@@ -168,6 +239,10 @@ window.onload = function() {
             self.classObjects(cObjects);
 
             self.isLoading(false);
+
+            // Skip to setupPhase
+            // self.p1Class("Barbarian");
+            // self.onConfirmClasses();
         }
 
         self.onConfirmClasses = function() {
@@ -180,40 +255,61 @@ window.onload = function() {
                 selectedClasses.push(self.p2Class());
             }
             if (!dup && self.playersValue() >= 3) {
-                if (selectedClasses.indexOf(self.p2Class()) >= 0) dup = true;
+                if (selectedClasses.indexOf(self.p3Class()) >= 0) dup = true;
                 selectedClasses.push(self.p3Class());
             }
             if (!dup && self.playersValue() >= 4) {
-                if (selectedClasses.indexOf(self.p2Class()) >= 0) dup = true;
+                if (selectedClasses.indexOf(self.p4Class()) >= 0) dup = true;
                 selectedClasses.push(self.p4Class());
             }
 
             if (dup) {
                 alert("No duplicate classes, retry...");
             } else {
-                for (var i = 0; i < selectedClasses.length; i++) {
-                    var selectedClass = selectedClasses[i];
-                    var classIndex = self.availableClasses.indexOf(selectedClass) + 1; // Base = 0;
-
-                    var statsDataIndex = StatsDataIndex(classIndex);
-                    var statsData = StatsData.elements.slice(statsDataIndex, statsDataIndex + MaxLevel);
-
-                    var skillsDataIndex = SkillsDataIndex(classIndex);
-                    var skillsData = SkillsData.elements.slice(skillsDataIndex, skillsDataIndex + SkillsCount);
-
-                    var player = new Player(selectedClass, statsData, skillsData);
-                    self.players.push(player);
-                }
-
-                self.setupPhase();
+                self.setupPhase(selectedClasses);
             }
         }
 
-        self.setupPhase = function() {
+        self.setupPhase = function(selectedClasses) {
+            self.isLoading(true);
+
+            // Setup basic shop
+            var shopCards = SkillsData.elements.slice(1, 7);
+            var shopSkillCards = shopCards.map(function(skill) {
+                return new SkillCard(skill);
+            });
+            self.shop(new Shop(shopSkillCards));
+
+            // Setup players
+            var myPlayers = [];
+            for (var i = 0; i < selectedClasses.length; i++) {
+                var selectedClass = selectedClasses[i];
+                var classIndex = self.availableClasses.indexOf(selectedClass) + 1; // Base = 0;
+
+                var statsDataIndex = StatsDataIndex(classIndex);
+                var statsData = StatsData.elements.slice(statsDataIndex, statsDataIndex + MaxLevel);
+
+                var skillsDataIndex = SkillsDataIndex(classIndex);
+                var skillsData = SkillsData.elements.slice(skillsDataIndex, skillsDataIndex + SkillsCount);
+
+                var skillCards = skillsData.map(function(skill) {
+                   return new SkillCard(skill); 
+                });
+                var player = new Player((i+1), selectedClass, statsData, skillCards);
+                console.log(player);
+                myPlayers.push(player);
+            }
+            self.players(myPlayers);
+
             self.phase(Phases.setup);
+            self.isLoading(false);
         }
 
-        self.onEditDeck = function(player) {
+        self.getShopDeck = function() {
+            if (!self.shop()) return;
+            var a = self.shop()
+            var b = a.deck();
+            return a;
         }
 
         self.onStartTown = function() {

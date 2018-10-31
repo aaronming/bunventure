@@ -6,7 +6,7 @@
   <!-- <script data-main="scripts/main" src="js/require.js"></script> -->
   <script type="text/javascript" src="js/libs/knockout.js"></script>
   <script type="text/javascript" src="js/libs/tabletop.js"></script>
-  <script type="text/javascript" src="js/main.js"></script>
+  <script type="module" src="js/main.js"></script>
   <link rel="stylesheet" href="css/main.css">
   <body>
     <div id="loaderDiv" data-bind="visible: isLoading">
@@ -43,14 +43,14 @@
                 Player 4: <select data-bind="options: availableClasses, value: p4Class"></select>
             </div>
         </div>
-        <input type="button" data-bind="value: 'Confirm Classes', click: onConfirmClasses">
+        <button data-bind="text: 'Confirm Classes', click: onSetupPhase"></button>
     </div>
 
     <div id="setupDiv" data-bind="visible: isSetupPhase">
         <h1>SETUP PHASE</h1>
         
         <div data-bind="foreach: players">
-            <h3>Player <span data-bind="text: $data.index"></span></h3>
+            <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.class"></span></h3>
             <div>Hand size: <span data-bind="text: $data.minDeckSize"></span></div>
             <div class="setupDeck">
                 <h4>Deck</h4>
@@ -72,19 +72,36 @@
             </div>
         </div>
 
-        <input type="button" value="Button" data-bind="click: onButtonClick" />
+        <button data-bind="text: 'Confirm Decks', click: onTownPhase"></button>
     </div>
 
-    <div id="townDiv" data-bind="visible: isTownPhase">
-        <h1>TOWN PHASE</h1>
-        <input type="button" value="Button" data-bind="click: onButtonClick" />
-    </div>
-    
-    <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
-        <h1>DUNGEON PHASE</h1>
-        <input type="button" value="Button" data-bind="click: onButtonClick" />
-    </div>
+    <div id="playDiv" data-bind="visible: isPlayPhase">
+        <div data-bind="foreach: players">
+            <div class="player">
+                <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.class"></span></h3>
+                <button data-bind="text: 'Stats'">
+                <button data-bind="text: 'Deck'">
+            </div>
+        </div>
 
+        <div id="townDiv" data-bind="visible: isTownPhase">
+            <h1>TOWN PHASE</h1>
+
+            <div class="townShop"></div>
+            <div class="oracleShop">
+
+            </div>
+            <div class="equipmentShop"></div>
+
+            <button data-bind="text: 'Dungeon Adventure', click: onDungeonPhase"></button>
+        </div>
+        
+        <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
+            <h1>DUNGEON PHASE</h1>
+
+            <button data-bind="text: 'Return to Town', click: onTownPhase"></button>
+        </div>
+    </div>
   </body>
 </html>
 

@@ -137,4 +137,11 @@
 #setupDiv .setupDeck ul li:nth-child(even) {
   background-color: #ffe89d;
 }
+
+#playDiv .player {
+  display: inline-block;
+  width: 250px;
+  background-color: #a7dcf1;
+  padding: 5px;
+}
 /*# sourceMappingURL=main.css.map */

@@ -8,3 +8,14 @@ export function Classes(name, sData) {
     self.ap = sData[3]["0"];
     self.hand = sData[4]["0"];
 }
+
+export function Stats(stats) {
+    var self = this;
+
+    self.className = stats["Class"];
+    self.attack = stats["Attack"];
+    self.defense = stats["Defense"];
+    self.hp = stats["HP"];
+    self.ap = stats["AP"];
+    self.hand = stats["Hand"];
+}

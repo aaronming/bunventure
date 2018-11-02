@@ -1,7 +1,7 @@
 import { Player } from './models/Player.js';
 import { Shop } from './models/Shop.js';
 import { SkillCard } from './models/SkillCard.js';
-import { Classes } from './models/Classes.js';
+import { Classes, Stats } from './models/Classes.js';
 
 window.onload = function() {
     var sheetPublicUrl = "https://docs.google.com/spreadsheets/d/1fg0glSTrSxdri91skmmGsKAysuo5522pTH66HAOfYoU/edit?usp=sharing";
@@ -17,6 +17,10 @@ window.onload = function() {
         var self = this;
 
         self.isLoading = ko.observable(true);
+        self.modalData = ko.observable();
+        self.showModal = ko.observable(false);
+        self.showStatsModal = ko.observable(false);
+        self.showDeckModal = ko.observable(false);
         self.WDM = ko.observable(0);
         self.playersValue = ko.observable(1);
         self.p1Class = ko.observable(""); self.p2Class = ko.observable(""); self.p3Class = ko.observable(""); self.p4Class = ko.observable("");
@@ -49,27 +53,26 @@ window.onload = function() {
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
         }
-
         function initialize() {
-            // var cObjects = [];
-            // for (var i = 0; i < self.availableClasses.length; i++) {
-            //     var dIndex = StatsDataIndex(i + 1);
-            //     var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
+            var cObjects = [];
+            for (var i = 0; i < self.availableClasses.length; i++) {
+                var dIndex = StatsDataIndex(i + 1);
+                var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
 
-            //     var cObject = new Classes(self.availableClasses[i], sData);
+                var cObject = new Classes(self.availableClasses[i], sData);
 
-            //     cObjects.push(cObject);
-            // }
-            // self.classObjects(cObjects);
+                cObjects.push(cObject);
+            }
+            self.classObjects(cObjects);
 
             self.isLoading(false);
 
             // Debug skip early states
-            self.playersValue(2);
-            self.p1Class("Barbarian");
-            self.p2Class("Ranger");
-            self.onSetupPhase();
-            self.onTownPhase();
+            // self.playersValue(2);
+            // self.p1Class("Barbarian");
+            // self.p2Class("Ranger");
+            // self.onSetupPhase();
+            // self.onTownPhase();
         }
 
         self.onSetupPhase = function() {
@@ -129,6 +132,31 @@ window.onload = function() {
 
             self.phase(Phases.setup);
             self.isLoading(false);
+        }
+
+        function showModal(data) {
+            self.modalData(data);
+            self.showModal(true);
+        }
+
+        self.onModalClick = function(v1, event) {
+            if (event.target.className == "modal") {
+                self.showModal(false);
+                self.showStatsModal(false);
+                self.showDeckModal(false);
+            }
+        }
+
+        self.onStatsClick = function(clickIndex) {
+            var player = self.players()[clickIndex()];
+            self.showStatsModal(true);
+            showModal(player);
+        }
+
+        self.onDeckClick = function(clickIndex) {
+            var player = self.players()[clickIndex()];
+            self.showDeckModal(true);
+            showModal(player);
         }
 
         self.onTownPhase = function() {

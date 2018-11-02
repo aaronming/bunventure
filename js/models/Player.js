@@ -1,11 +1,12 @@
 import { Deckable } from './Deckable.js';
+import { Classes, Stats } from './Classes.js';
 
 export function Player(index, playerClass, stats, skills) {
     Deckable.call(this);
     var self = this;
 
     self.index = index;
-    self.class = playerClass;
+    self.myClass = playerClass;
     self.classStats = stats
     self.classSkills = skills;
     self.level = 0;
@@ -18,10 +19,11 @@ export function Player(index, playerClass, stats, skills) {
     self.hand = ko.observableArray([]);
     self.discard = ko.observableArray([]);
     self.gold = 10;
+    self.curHP = 0;
     self.inventory = ko.observableArray([]);
 
     var updateStats = function() {
-        self.stats = self.classStats[self.level - 1];
+        self.stats = new Stats(self.classStats[self.level - 1]);
     }
 
     var updateTechDeck = function() {
@@ -32,8 +34,7 @@ export function Player(index, playerClass, stats, skills) {
     }
 
     self.minDeckSize = ko.pureComputed(function() {
-        console.log(self.stats);
-        return parseInt(self.stats.Hand) * 3;
+        return parseInt(self.stats.hand) * 3;
     }, this);
 
     self.buySkill = function(tech, ev) {
@@ -105,6 +106,14 @@ export function Player(index, playerClass, stats, skills) {
         return deck;
     }
 
+    self.heal = function(amount) {
+        var maxHP = self.stats.hp;
+        amount = amount == undefined ? maxHP : amount;
+
+        if (amount + self.curHP > maxHP) self.curHP = maxHP;
+        else self.curHP += amount;
+    }
+
     self.levelUp = function() {
         self.level += 1;
         updateStats();
@@ -121,4 +130,5 @@ export function Player(index, playerClass, stats, skills) {
     }
 
     self.levelUp();
+    self.heal();
 };

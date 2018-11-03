@@ -147,13 +147,91 @@
   background-color: rgba(224, 224, 224, 0.8);
 }
 
-#playDiv .modal .modalContainer {
+#playDiv .modal .modalContainer .statsModalDiv {
   position: absolute;
   top: 25%;
   left: 50%;
   background-color: white;
   border: solid 1px black;
   padding: 25px;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  background-color: white;
+  border: solid 1px black;
+  padding: 25px;
+  width: 692px;
+  margin-left: -346px;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .general {
+  background-color: #cfcfcf;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .barbarian {
+  background-color: #c23737;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .ranger {
+  background-color: #5ba4e9;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard {
+  width: 150px;
+  height: 200px;
+  display: inline-block;
+  padding: 5px;
+  vertical-align: top;
+  margin: 5px;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCost {
+  display: inline-block;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel {
+  border-radius: 25px;
+  background-color: #2f98c2;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName {
+  width: 100px;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer {
+  background-color: #ed92ff;
+  border-radius: 25px;
+  width: 25px;
+  height: 25px;
+  float: right;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer .cardCost {
+  text-align: center;
+  line-height: 25px;
+  width: inherit;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardImage {
+  width: 150px;
+  height: 75px;
+  background-color: white;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardSubtitle, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardEffect {
+  font-size: 8pt;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardEffect {
+  background-color: white;
+  padding: 2px;
+  height: 85px;
 }
 
 #playDiv .player {

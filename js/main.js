@@ -72,16 +72,20 @@ window.onload = function() {
             self.p1Class("Barbarian");
             self.p2Class("Ranger");
             self.onSetupPhase();
-            self.players().forEach(function(ply) {
-                ply.learnTech(ply.techDeck()[0]);
-                ply.buySkill(self.shop().deck()[0]);
-                ply.buySkill(self.shop().deck()[0]);
-                ply.buySkill(self.shop().deck()[0]);
-                ply.buySkill(self.shop().deck()[0]);
-                ply.buySkill(self.shop().deck()[0]);
-                ply.buySkill(self.shop().deck()[0]);
-            });
-            self.onTownPhase();
+            // self.players().forEach(function(ply) {
+            //     ply.learnTech(ply.techDeck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            //     ply.buySkill(self.shop().deck()[0]);
+            // });
+            // self.onTownPhase();
         }
 
         self.onSetupPhase = function() {

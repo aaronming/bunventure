@@ -102,25 +102,89 @@
 
         .modalContainer {
 
-            .statsModalDiv {
+            .modalDiv {
                 position: absolute;
-                top: 25%;
+                top: 50%;
                 left: 50%;
-                background-color: white;
                 border: solid 1px black;
                 padding: 25px;
+                background-color: white;
+            }
 
+            .statsModalDiv {
+                top: 35%;
+                height: 310px;
+                width: 200px;
+                margin-top: -155px;
+                margin-left: -100px;
+
+                .statsTitle {
+
+                    .sPlayer {
+                        font-size: 8pt;
+                    }
+
+                    .sClass {
+                        display: inline-block;
+                        font-size: 12pt;
+                        font-weight: bold;
+                    }
+
+                    .sLevel {
+                        display: inline-block;
+                        font-size: 10pt;
+                    }
+                }
+                
+                .statsHPBar {
+                    position: relative;
+                    height: 20px;
+                    margin-top: 2px;
+                    margin-bottom: 2px;
+
+                    .sHPBar {
+                        height: 100%;
+                        width: 100%;
+                    }
+
+                    .sHPText {
+                        position: absolute;
+                        line-height: 20px;
+                        vertical-align: middle;
+                        top: 0;
+                        left: 5px;
+                    }
+                }
+
+                .statsImage {
+                    height: 150px;
+                    background-color: white;
+                    border: solid 1px black;
+                }
+
+                .statsStats {
+
+                    .sStat {
+                        border-bottom: 1px dotted black;
+                        margin-top: 2px;
+
+                        .sStatLabel {
+                            display: inline-block
+                        }
+
+                        .sStatValue {
+                            float: right;
+                        }
+                    }
+                }
             }
 
             .deckModalDiv {
-                position: absolute;
-                top: 25%;
-                left: 50%;
-                background-color: white;
-                border: solid 1px black;
-                padding: 25px;
-                width: 692px;
-                margin-left: -346px;
+                width: 710px;
+                height: 660px;
+                margin-top: -330px;
+                margin-left: -355px;
+                overflow-y: auto;
 
                 .general { background-color: rgb(207, 207, 207); }
                 .barbarian { background-color: rgb(194, 55, 55); }

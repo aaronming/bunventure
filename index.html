@@ -54,7 +54,7 @@
                 <div>Hand size: <span data-bind="text: $data.minDeckSize"></span></div>
                 <div class="setupDeck">
                     <h4>Deck</h4>
-                    <ul class="playerDeck" data-bind="foreach: $data.deck">
+                    <ul class="playerDeck" data-bind="foreach: $data.allSkills">
                         <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, click: function(tech, ev) { $parent.removeSkill(tech, ev, $index) }"></li>
                     </ul>
                 </div>
@@ -89,6 +89,7 @@
             <div data-bind="foreach: players">
                 <div class="player">
                     <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                    <div class="playerGold">Gold: <span data-bind="text: $data.gold"></span></div>
                     <button data-bind="text: 'Stats', click: function() { $parent.onStatsClick($index) }">
                     <button data-bind="text: 'Deck', click: function() { $parent.onDeckClick($index) }">
                 </div>
@@ -115,23 +116,41 @@
     </body>
 
     <script id="statsModal" type="text/html">
-        <div class="statsModalDiv">
-            <div>Player <span data-bind="text: index"></span></div>
-            <div>Class: <span data-bind="text: myClass"></span></div>
-            <div>Level <span data-bind="text: level"></span></div>
-            <div>HP: <progress data-bind="attr: {value: curHP, max: stats.hp}"></div>
-            <div>Max HP: <span data-bind="text: stats.hp"></span></div>
-            <div>Gold: <span data-bind="text: gold"></span></div>
-            <div>Attack: <span data-bind="text: stats.attack"></span></div>
-            <div>Defense: <span data-bind="text: stats.defense"></span></div>
-            <div>HP: <span data-bind="text: stats.hp"></span></div>
-            <div>AP: <span data-bind="text: stats.ap"></span></div>
-            <div>Hand: <span data-bind="text: stats.hand"></span></div>
+        <div class="modalDiv statsModalDiv">
+            <div class="statsTitle">
+                <div class="sPlayer">Player <span data-bind="text: index"></span></div>
+                <div class="sClass" data-bind="text: myClass"></div>
+                <div class="sLevel">Lvl. <span data-bind="text: level"></span></div>
+            </div>
+            <div class="statsHPBar">
+                <progress class="sHPBar" data-bind="attr: {value: curHP, max: stats.hp}"></progress>
+                <div class="sHPText">
+                    <span data-bind="text: curHP"></span>/<span data-bind="text: stats.hp"> HP</span>
+                </div>
+            </div>
+            <div class="statsImage"></div>
+            <div class="statsStats">
+                <div class="sStat">
+                    <span class="sStatLabel">Attack:</span>
+                    <span class="sStatValue" data-bind="text: stats.attack"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">Defense:</span>
+                    <span class="sStatValue" data-bind="text: stats.defense"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">HP:</span>
+                    <span class="sStatValue" data-bind="text: stats.hp"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">AP:</span>
+                    <span class="sStatValue" data-bind="text: stats.ap"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">Hand:</span>
+                    <span class="sStatValue" data-bind="text: stats.hand"></span></div>
+            </div>
         </div>
     </script>
 
     <script id="deckModal" type="text/html">
-        <div class="deckModalDiv" data-bind="foreach: deck">
+        <div class="modalDiv deckModalDiv" data-bind="foreach: allSkills">
             <div class="deckCard" data-bind="css: $data.myClass.toLowerCase()">
                 <div class="cardTitle">
                     <div class="cardName" data-bind="text: $data.name"></div>

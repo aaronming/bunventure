@@ -13,8 +13,9 @@ export function Player(index, playerClass, stats, skills) {
     self.stats = {};
     self.skillBook = Array.from(skills);
     self.techDeck = ko.observableArray([]);
+    self.passives = ko.observableArray([]);
     self.learnedTech = ko.observableArray([]);
-    self.deck = ko.observableArray([]);
+    self.shopSkills = ko.observableArray([]);
     self.playDeck = ko.observableArray([]);
     self.hand = ko.observableArray([]);
     self.discard = ko.observableArray([]);
@@ -33,28 +34,39 @@ export function Player(index, playerClass, stats, skills) {
         }
     }
 
+    self.allSkills = ko.pureComputed(function() {
+        return self.passives().concat(self.learnedTech().concat(self.shopSkills()));
+    });
+
     self.minDeckSize = ko.pureComputed(function() {
         return parseInt(self.stats.hand) * 3;
     }, this);
 
     self.buySkill = function(tech, ev) {
-        self.addCard(tech, self.deck);
+        self.addCard(tech, self.shopSkills);
     }
 
     self.removeSkill = function(tech, ev, index) {
-        if (tech.myClass != "General") {
-            self.addCard(tech, self.techDeck);
-            self.removeCard(tech, self.learnedTech);
-            self.removeCard(tech, self.deck);
+        if (tech.myClass == "General") {
+            var genIndex = index() - (self.passives().length + self.learnedTech().length);
+            self.shopSkills.splice(genIndex, 1);
         } else {
-            self.deck.splice(index(), 1);
+            self.addCard(tech, self.techDeck);
+            if (tech.type == "Passive") {
+                self.removeCard(tech, self.passives);
+            } else {
+                self.removeCard(tech, self.learnedTech);
+            }
         }
     }
 
     self.learnTech = function(tech, ev) {
         self.removeCard(tech, self.techDeck);
-        self.addCard(tech, self.learnedTech);
-        self.addCard(tech, self.deck);
+        if (tech.type == "Passive") {
+            self.addCard(tech, self.passives);
+        } else {
+            self.addCard(tech, self.learnedTech);
+        }
     }
 
     self.buyItem = function(item) {

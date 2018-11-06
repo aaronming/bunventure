@@ -1,3 +1,43 @@
+.general {
+  background-color: #cfcfcf;
+}
+
+.barbarian {
+  background-color: #c23737;
+}
+
+.ranger {
+  background-color: #5ba4e9;
+}
+
+.cleric {
+  background-color: #f0e9aa;
+}
+
+.rogue {
+  background-color: #69539b;
+}
+
+.wizard {
+  background-color: #1457d4;
+}
+
+.bard {
+  background-color: #ec9e44;
+}
+
+.druid {
+  background-color: #775830;
+}
+
+.monk {
+  background-color: #83c0d8;
+}
+
+.paladin {
+  background-color: #465183;
+}
+
 #loaderDiv {
   position: absolute;
   top: 50%;
@@ -37,6 +77,14 @@
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
   }
+}
+
+.phaseButton {
+  width: 400px;
+  height: 60px;
+  padding: 10px;
+  font-size: 16pt;
+  margin-top: 10px;
 }
 
 #startDiv #startDivContainer {
@@ -112,7 +160,11 @@
   margin-top: 20px;
 }
 
-#setupDiv .setupDeck {
+#setupDiv .setupContainer {
+  margin-bottom: 10px;
+}
+
+#setupDiv .setupContainer .setupDeck {
   display: inline-block;
   width: 250px;
   min-height: 200px;
@@ -121,20 +173,20 @@
   padding: 5px;
 }
 
-#setupDiv .setupDeck ul {
+#setupDiv .setupContainer .setupDeck ul {
   padding: 0;
   list-style-type: none;
 }
 
-#setupDiv .setupDeck ul li {
+#setupDiv .setupContainer .setupDeck ul li {
   padding: 5px;
 }
 
-#setupDiv .setupDeck ul li:nth-child(odd) {
+#setupDiv .setupContainer .setupDeck ul li:nth-child(odd) {
   background-color: #9dd8ff;
 }
 
-#setupDiv .setupDeck ul li:nth-child(even) {
+#setupDiv .setupContainer .setupDeck ul li:nth-child(even) {
   background-color: #ffe89d;
 }
 
@@ -147,13 +199,158 @@
   background-color: rgba(224, 224, 224, 0.8);
 }
 
-#playDiv .modal .modalContainer {
+#playDiv .modal .modalContainer .modalDiv {
   position: absolute;
-  top: 25%;
+  top: 50%;
   left: 50%;
-  background-color: white;
   border: solid 1px black;
   padding: 25px;
+  background-color: white;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv {
+  top: 35%;
+  height: 310px;
+  width: 200px;
+  margin-top: -155px;
+  margin-left: -100px;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsTitle .sPlayer {
+  font-size: 8pt;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsTitle .sClass {
+  display: inline-block;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsTitle .sLevel {
+  display: inline-block;
+  font-size: 10pt;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsHPBar {
+  position: relative;
+  height: 20px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsHPBar .sHPBar {
+  height: 100%;
+  width: 100%;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsHPBar .sHPText {
+  position: absolute;
+  line-height: 20px;
+  vertical-align: middle;
+  top: 0;
+  left: 5px;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsImage {
+  height: 150px;
+  background-color: white;
+  border: solid 1px black;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsStats .sStat {
+  border-bottom: 1px dotted black;
+  margin-top: 2px;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsStats .sStat .sStatLabel {
+  display: inline-block;
+}
+
+#playDiv .modal .modalContainer .statsModalDiv .statsStats .sStat .sStatValue {
+  float: right;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv {
+  width: 710px;
+  height: 660px;
+  margin-top: -330px;
+  margin-left: -355px;
+  overflow-y: auto;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard {
+  width: 150px;
+  display: inline-block;
+  padding: 5px;
+  vertical-align: top;
+  margin: 5px;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCost {
+  display: inline-block;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel {
+  border-radius: 25px;
+  background-color: #2f98c2;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName {
+  width: 120px;
+  font-size: 11pt;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer {
+  background-color: #ed92ff;
+  border-radius: 25px;
+  width: 25px;
+  height: 25px;
+  float: right;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer .cardCost {
+  text-align: center;
+  line-height: 25px;
+  width: inherit;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardImage {
+  width: 150px;
+  height: 75px;
+  background-color: white;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardSubtitle {
+  font-size: 8pt;
+  padding: 2px 0;
+}
+
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardEffect {
+  font-size: 10pt;
+  background-color: white;
+  padding: 2px;
+  height: 85px;
+}
+
+#playDiv .wdmDiv {
+  height: 30px;
+  line-height: 30px;
+  margin: 10px 0;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+#playDiv .wdmDiv span {
+  margin-right: 5px;
+}
+
+#playDiv .wdmDiv .wdmButton {
+  display: inline-block;
+  height: 30px;
+  vertical-align: top;
 }
 
 #playDiv .player {
@@ -161,5 +358,71 @@
   width: 250px;
   background-color: #a7dcf1;
   padding: 5px;
+}
+
+#playDiv .player .playerButtons {
+  margin-top: 5px;
+}
+
+#playDiv .player .playerButtons .pButton {
+  width: 80px;
+  padding: 5px;
+  margin-right: 2px;
+}
+
+#playDiv #townDiv .townShop {
+  width: 800px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#playDiv #townDiv .townShop .shopTitle {
+  font-size: 18pt;
+  font-weight: bold;
+}
+
+#playDiv #townDiv .townShop .shopImage {
+  width: 300px;
+  height: 200px;
+  border: solid 1px black;
+  display: inline-block;
+  background-color: white;
+  margin-right: 15px;
+}
+
+#playDiv #townDiv .townShop .shopContainer {
+  margin-top: 5px;
+  padding-top: 10px;
+  border-top: 1px dotted black;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions {
+  font-weight: 12pt;
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions .sPlayerOption {
+  margin-bottom: 25px;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions .sPlayerOption .shopPlayer {
+  display: inline-block;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions .sPlayerOption .shopButton {
+  display: inline-block;
+}
+
+#playDiv #townDiv .innShop {
+  background-color: #a2d3c7;
+}
+
+#playDiv #townDiv .marketShop {
+  background-color: #ad4747;
+}
+
+#playDiv #townDiv .oracleShop {
+  background-color: #996ba7;
 }
 /*# sourceMappingURL=main.css.map */

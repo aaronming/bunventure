@@ -13,9 +13,9 @@ export function Stats(stats) {
     var self = this;
 
     self.className = stats["Class"];
-    self.attack = stats["Attack"];
-    self.defense = stats["Defense"];
-    self.hp = stats["HP"];
-    self.ap = stats["AP"];
-    self.hand = stats["Hand"];
+    self.attack = parseInt(stats["Attack"]);
+    self.defense = parseInt(stats["Defense"]);
+    self.hp = parseInt(stats["HP"]);
+    self.ap = parseInt(stats["AP"]);
+    self.hand = parseInt(stats["Hand"]);
 }

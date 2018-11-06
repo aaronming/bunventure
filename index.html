@@ -1,143 +1,235 @@
 <!DOCTYPE html>
 <html>
-  <head>
-      <meta charset="utf-8"/>
-  </head>
-  <!-- <script data-main="scripts/main" src="js/require.js"></script> -->
-  <script type="text/javascript" src="js/libs/knockout.js"></script>
-  <script type="text/javascript" src="js/libs/tabletop.js"></script>
-  <script type="module" src="js/main.js"></script>
-  <link rel="stylesheet" href="css/main.css">
-  <body>
-    <div id="loaderDiv" data-bind="visible: isLoading">
-        <div class="loader"></div>
-    </div> 
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <!-- <script data-main="scripts/main" src="js/require.js"></script> -->
+    <script type="text/javascript" src="js/libs/knockout.js"></script>
+    <script type="text/javascript" src="js/libs/tabletop.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <link rel="stylesheet" href="css/main.css">
+    <body>
+        <div id="loaderDiv" data-bind="visible: isLoading">
+            <div class="loader"></div>
+        </div> 
 
-    <div id="startDiv" data-bind="visible: isStartPhase">
-        <h1>START PHASE</h1>
+        <div id="startDiv" data-bind="visible: isStartPhase">
+            <h1>START PHASE</h1>
 
-        <div id="startDivContainer">
-            How many players? <input data-bind="value: playersValue" />
+            <div id="startDivContainer">
+                How many players? <input data-bind="value: playersValue" />
 
-            <div class="classesDiv" data-bind="foreach: classObjects">
-                <div class="classDiv">
-                    <div class="className" data-bind="text: $data.className"></div>
-                    <div><span class="cTitle">Attack:</span><span data-bind="text: $data.attack, css: $parent.cValueCSS($data.attack)"></span></div>
-                    <div><span class="cTitle">Defense:</span><span data-bind="text: $data.defense, css: $parent.cValueCSS($data.defense)"></span></div>
-                    <div><span class="cTitle">HP:</span><span data-bind="text: $data.hp, css: $parent.cValueCSS($data.hp)"></span></div>
-                    <div><span class="cTitle">AP:</span><span data-bind="text: $data.ap, css: $parent.cValueCSS($data.ap)"></span></div>
-                    <div><span class="cTitle">Hand:</span><span data-bind="text: $data.hand, css: $parent.cValueCSS($data.hand)"></span></div>
+                <div class="classesDiv" data-bind="foreach: classObjects">
+                    <div class="classDiv">
+                        <div class="className" data-bind="text: $data.className"></div>
+                        <div><span class="cTitle">Attack:</span><span data-bind="text: $data.attack, css: $parent.cValueCSS($data.attack)"></span></div>
+                        <div><span class="cTitle">Defense:</span><span data-bind="text: $data.defense, css: $parent.cValueCSS($data.defense)"></span></div>
+                        <div><span class="cTitle">HP:</span><span data-bind="text: $data.hp, css: $parent.cValueCSS($data.hp)"></span></div>
+                        <div><span class="cTitle">AP:</span><span data-bind="text: $data.ap, css: $parent.cValueCSS($data.ap)"></span></div>
+                        <div><span class="cTitle">Hand:</span><span data-bind="text: $data.hand, css: $parent.cValueCSS($data.hand)"></span></div>
+                    </div>
+                </div>
+
+                <div class="startPDiv" data-bind="visible: playersValue() >= 1">
+                    Player 1: <select data-bind="options: availableClasses, value: p1Class"></select>
+                </div>
+                <div class="startPDiv" data-bind="visible: playersValue() >= 2">
+                    Player 2: <select data-bind="options: availableClasses, value: p2Class"></select>
+                </div>
+                <div class="startPDiv" data-bind="visible: playersValue() >= 3">
+                    Player 3: <select data-bind="options: availableClasses, value: p3Class"></select>
+                </div>
+                <div class="startPDiv" data-bind="visible: playersValue() >= 4">
+                    Player 4: <select data-bind="options: availableClasses, value: p4Class"></select>
+                </div>
+            </div>
+            <button class="phaseButton" data-bind="text: 'Confirm Classes', click: onSetupPhase"></button>
+        </div>
+
+        <div id="setupDiv" data-bind="visible: isSetupPhase">
+            <h1>SETUP PHASE</h1>
+            
+            <div data-bind="foreach: players">
+                <div class="setupContainer">
+                    <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                    <div>Hand size: <span data-bind="text: $data.minDeckSize"></span></div>
+                    <div class="setupDeck">
+                        <h4>Deck</h4>
+                        <ul class="playerDeck" data-bind="foreach: $data.allSkills">
+                            <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, click: function(tech, ev) { $parent.removeSkill(tech, ev, $index) }"></li>
+                        </ul>
+                    </div>
+                    <div class="setupDeck">
+                        <h4>Tech Deck</h4>
+                        <ul class="techDeck" data-bind="foreach: $data.techDeck">
+                            <li class="techCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.learnTech"></li>
+                        </ul>
+                    </div>
+                    <div class="setupDeck">
+                        <h4>Shop Cards</h4>
+                        <ul class="shopDeck" data-bind="foreach: $parent.shop().deck">
+                            <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.buySkill"></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
 
-            <div class="startPDiv" data-bind="visible: playersValue() >= 1">
-                Player 1: <select data-bind="options: availableClasses, value: p1Class"></select>
-            </div>
-            <div class="startPDiv" data-bind="visible: playersValue() >= 2">
-                Player 2: <select data-bind="options: availableClasses, value: p2Class"></select>
-            </div>
-            <div class="startPDiv" data-bind="visible: playersValue() >= 3">
-                Player 3: <select data-bind="options: availableClasses, value: p3Class"></select>
-            </div>
-            <div class="startPDiv" data-bind="visible: playersValue() >= 4">
-                Player 4: <select data-bind="options: availableClasses, value: p4Class"></select>
-            </div>
-        </div>
-        <button data-bind="text: 'Confirm Classes', click: onSetupPhase"></button>
-    </div>
-
-    <div id="setupDiv" data-bind="visible: isSetupPhase">
-        <h1>SETUP PHASE</h1>
-        
-        <div data-bind="foreach: players">
-            <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
-            <div>Hand size: <span data-bind="text: $data.minDeckSize"></span></div>
-            <div class="setupDeck">
-                <h4>Deck</h4>
-                <ul class="playerDeck" data-bind="foreach: $data.deck">
-                    <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, click: function(tech, ev) { $parent.removeSkill(tech, ev, $index) }"></li>
-                </ul>
-            </div>
-            <div class="setupDeck">
-                <h4>Tech Deck</h4>
-                <ul class="techDeck" data-bind="foreach: $data.techDeck">
-                    <li class="techCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.learnTech"></li>
-                </ul>
-            </div>
-            <div class="setupDeck">
-                <h4>Shop Cards</h4>
-                <ul class="shopDeck" data-bind="foreach: $parent.shop().deck">
-                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.buySkill"></li>
-                </ul>
-            </div>
+            <button class="phaseButton" data-bind="text: 'Confirm Decks', click: onTownPhase"></button>
         </div>
 
-        <button data-bind="text: 'Confirm Decks', click: onTownPhase"></button>
-    </div>
-
-    <div id="playDiv" data-bind="visible: isPlayPhase">
-        <div class="modal" data-bind="visible: showModal, click: onModalClick">
-            <div class="modalContainer">
-                <div class="statsModal" data-bind="visible: showStatsModal, template: {name: 'statsModal', if: modalData, data: modalData}">
-                </div>
-                <div class="deckModal" data-bind="visible: showDeckModal, , template: {name: 'deckModal', if: modalData, data: modalData}">
-                    
+        <div id="playDiv" data-bind="visible: isPlayPhase">
+            <div class="modal" data-bind="visible: showModal, click: onModalClick">
+                <div class="modalContainer">
+                    <div class="statsModal" data-bind="visible: showStatsModal, template: {name: 'statsModal', if: modalData, data: modalData}">
+                    </div>
+                    <div class="deckModal" data-bind="visible: showDeckModal, , template: {name: 'deckModal', if: modalData, data: modalData}">
+                        
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div data-bind="foreach: players">
-            <div class="player">
-                <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
-                <button data-bind="text: 'Stats', click: function() { $parent.onStatsClick($index) }">
-                <button data-bind="text: 'Deck', click: function() { $parent.onDeckClick($index) }">
+            <div class="wdmDiv">
+                WORLD DIFFICULTY METER: <span data-bind="text: WDM"></span>
+                <button class="wdmButton" data-bind="text: '+', click: function() { addWDM(1); }"></button>
+                <button class="wdmButton" data-bind="text: '-', click: function() { addWDM(-1); }"></button>
+            </div>
+            <div data-bind="foreach: players">
+                <div class="player">
+                    <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                    <div class="playerGold">Gold: 
+                        <span data-bind="text: $data.gold"></span>
+                        <button class="pGoldButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
+                        <button class="pGoldButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
+                    </div>
+                    <div class="playerButtons">
+                        <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.onStatsClick($index) }">
+                        <button class="pButton" data-bind="text: 'All Cards', click: function() { $parent.onDeckClick($index) }">
+                    </div>
+                </div>
+            </div>
+
+            <div id="townDiv" data-bind="visible: isTownPhase">
+                <h1>TOWN PHASE</h1>
+
+                <div class="innShop townShop">
+                    <div class="shopTitle" data-bind="text: 'Inn'"></div>
+                    <div class="shopSubtitle" data-bind="text: 'Hello traveler, would you like to rest up?'"></div>
+                    <div class="shopContainer">
+                        <div class="innImage shopImage"></div>
+                        <div class="shopOptions" data-bind="foreach: players">
+                            <div class="sPlayerOption">
+                                <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
+                                <button class="shopButton" data-bind="text: 'Heal'"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="marketShop townShop">
+                    <div class="shopTitle" data-bind="text: 'Market'"></div>
+                    <div class="shopSubtitle" data-bind="text: 'Welcome! See anything you like?'"></div>
+                    <div class="shopContainer">
+                        <div class="innImage shopImage"></div>
+                        <div class="shopOptions" data-bind="foreach: players">
+                            <div class="sPlayerOption">
+                                <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
+                                <button class="shopButton" data-bind="text: 'Buy'"></button>
+                                <button class="shopButton" data-bind="text: 'Sell'"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oracleShop townShop">
+                    <div class="shopTitle" data-bind="text: 'Oracle'"></div>
+                    <div class="shopSubtitle" data-bind="text: 'Greetings, I\'ve been expecting you.'"></div>
+                    <div class="shopContainer">
+                        <div class="innImage shopImage"></div>
+                        <div class="shopOptions" data-bind="foreach: players">
+                            <div class="sPlayerOption">
+                                <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
+                                <button class="shopButton" data-bind="text: 'Learn new skill'"></button>
+                                <button class="shopButton" data-bind="text: 'Forget skill'"></button>
+                                <button class="shopButton" data-bind="text: 'Change to random skill'"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="blacksmithShop townShop">
+                    <div class="shopTitle" data-bind="text: 'Blacksmith'"></div>
+                    <div class="shopSubtitle" data-bind="text: 'Welcome traveler! Spend the night here to replenish your health. '"></div>
+                    <div class="shopContainer">
+                        <div class="innImage shopImage"></div>
+                        <div class="shopOptions" data-bind="foreach: players">
+                            <div class="sPlayerOption">
+                                <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
+                                <button class="shopButton" data-bind="text: 'Heal'"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+
+                <button class="phaseButton" data-bind="text: 'Dungeon Adventure', click: onDungeonPhase"></button>
+            </div>
+            
+            <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
+                <h1>DUNGEON PHASE</h1>
+
+                <button class="phaseButton" data-bind="text: 'Return to Town', click: onTownPhase"></button>
             </div>
         </div>
+    </body>
 
-        <div id="townDiv" data-bind="visible: isTownPhase">
-            <h1>TOWN PHASE</h1>
-
-            <div class="townShop"></div>
-            <div class="oracleShop">
-
+    <script id="statsModal" type="text/html">
+        <div class="modalDiv statsModalDiv">
+            <div class="statsTitle">
+                <div class="sPlayer">Player <span data-bind="text: index"></span></div>
+                <div class="sClass" data-bind="text: myClass"></div>
+                <div class="sLevel">Lvl. <span data-bind="text: level"></span></div>
             </div>
-            <div class="equipmentShop"></div>
-
-            <button data-bind="text: 'Dungeon Adventure', click: onDungeonPhase"></button>
+            <div class="statsHPBar">
+                <progress class="sHPBar" data-bind="attr: {value: curHP, max: stats.hp}"></progress>
+                <div class="sHPText">
+                    <span data-bind="text: curHP"></span>/<span data-bind="text: stats.hp"> HP</span>
+                </div>
+            </div>
+            <div class="statsImage"></div>
+            <div class="statsStats">
+                <div class="sStat">
+                    <span class="sStatLabel">Attack:</span>
+                    <span class="sStatValue" data-bind="text: stats.attack"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">Defense:</span>
+                    <span class="sStatValue" data-bind="text: stats.defense"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">HP:</span>
+                    <span class="sStatValue" data-bind="text: stats.hp"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">AP:</span>
+                    <span class="sStatValue" data-bind="text: stats.ap"></span></div>
+                <div class="sStat">
+                    <span class="sStatLabel">Hand:</span>
+                    <span class="sStatValue" data-bind="text: stats.hand"></span></div>
+            </div>
         </div>
-        
-        <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
-            <h1>DUNGEON PHASE</h1>
+    </script>
 
-            <button data-bind="text: 'Return to Town', click: onTownPhase"></button>
+    <script id="deckModal" type="text/html">
+        <div class="modalDiv deckModalDiv" data-bind="foreach: allSkills">
+            <div class="deckCard" data-bind="css: $data.myClass.toLowerCase()">
+                <div class="cardTitle">
+                    <div class="cardName" data-bind="text: $data.name"></div>
+                    <div class="cardCostContainer">
+                        <div class="cardCost" data-bind="text: $data.cost"></div>
+                    </div>
+                </div>
+                <div class="cardImage"></div>
+                <div class="cardSubtitle">
+                    <span class="cardClass" data-bind="text: $data.myClass"></span>
+                    <span class="cardLevel" data-bind="text: 'Level ' + $data.level"></span>
+                </div>
+                <div class="cardEffect" data-bind="text: $data.effect"></div>
+            </div>
         </div>
-    </div>
-  </body>
-
-  <script id="statsModal" type="text/html">
-    <div class="statsModalDiv">
-        <div>Player <span data-bind="text: index"></span></div>
-        <div>Class: <span data-bind="text: myClass"></span></div>
-        <div>Level <span data-bind="text: level"></span></div>
-        <div>HP: <progress data-bind="attr: {value: curHP, max: stats.hp}"></div>
-        <div>Max HP: <span data-bind="text: stats.hp"></span></div>
-        <div>Gold: <span data-bind="text: gold"></span></div>
-        <div>Attack: <span data-bind="text: stats.attack"></span></div>
-        <div>Defense: <span data-bind="text: stats.defense"></span></div>
-        <div>HP: <span data-bind="text: stats.hp"></span></div>
-        <div>AP: <span data-bind="text: stats.ap"></span></div>
-        <div>Hand: <span data-bind="text: stats.hand"></span></div>
-    </div>
-  </script>
-
-  <script id="deckModal" type="text/html">
-    <div class="deckModalDiv" data-bind="foreach: deck">
-        <div class="deckCard">
-            <div data-bind="text: $data.name">
-        </div>
-    </div>
-  </script>
-
+    </script>
 </html>
 
 

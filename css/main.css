@@ -1,3 +1,43 @@
+.general {
+  background-color: #cfcfcf;
+}
+
+.barbarian {
+  background-color: #c23737;
+}
+
+.ranger {
+  background-color: #5ba4e9;
+}
+
+.cleric {
+  background-color: #f0e9aa;
+}
+
+.rogue {
+  background-color: #69539b;
+}
+
+.wizard {
+  background-color: #1457d4;
+}
+
+.bard {
+  background-color: #ec9e44;
+}
+
+.druid {
+  background-color: #775830;
+}
+
+.monk {
+  background-color: #83c0d8;
+}
+
+.paladin {
+  background-color: #465183;
+}
+
 #loaderDiv {
   position: absolute;
   top: 50%;
@@ -37,6 +77,14 @@
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
   }
+}
+
+.phaseButton {
+  width: 400px;
+  height: 60px;
+  padding: 10px;
+  font-size: 16pt;
+  margin-top: 10px;
 }
 
 #startDiv #startDivContainer {
@@ -112,7 +160,11 @@
   margin-top: 20px;
 }
 
-#setupDiv .setupDeck {
+#setupDiv .setupContainer {
+  margin-bottom: 10px;
+}
+
+#setupDiv .setupContainer .setupDeck {
   display: inline-block;
   width: 250px;
   min-height: 200px;
@@ -121,20 +173,20 @@
   padding: 5px;
 }
 
-#setupDiv .setupDeck ul {
+#setupDiv .setupContainer .setupDeck ul {
   padding: 0;
   list-style-type: none;
 }
 
-#setupDiv .setupDeck ul li {
+#setupDiv .setupContainer .setupDeck ul li {
   padding: 5px;
 }
 
-#setupDiv .setupDeck ul li:nth-child(odd) {
+#setupDiv .setupContainer .setupDeck ul li:nth-child(odd) {
   background-color: #9dd8ff;
 }
 
-#setupDiv .setupDeck ul li:nth-child(even) {
+#setupDiv .setupContainer .setupDeck ul li:nth-child(even) {
   background-color: #ffe89d;
 }
 
@@ -226,21 +278,8 @@
   overflow-y: auto;
 }
 
-#playDiv .modal .modalContainer .deckModalDiv .general {
-  background-color: #cfcfcf;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .barbarian {
-  background-color: #c23737;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .ranger {
-  background-color: #5ba4e9;
-}
-
 #playDiv .modal .modalContainer .deckModalDiv .deckCard {
   width: 150px;
-  height: 200px;
   display: inline-block;
   padding: 5px;
   vertical-align: top;
@@ -260,7 +299,8 @@
 }
 
 #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName {
-  width: 100px;
+  width: 120px;
+  font-size: 11pt;
 }
 
 #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer {
@@ -283,14 +323,34 @@
   background-color: white;
 }
 
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardSubtitle, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardEffect {
+#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardSubtitle {
   font-size: 8pt;
+  padding: 2px 0;
 }
 
 #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardEffect {
+  font-size: 10pt;
   background-color: white;
   padding: 2px;
   height: 85px;
+}
+
+#playDiv .wdmDiv {
+  height: 30px;
+  line-height: 30px;
+  margin: 10px 0;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+#playDiv .wdmDiv span {
+  margin-right: 5px;
+}
+
+#playDiv .wdmDiv .wdmButton {
+  display: inline-block;
+  height: 30px;
+  vertical-align: top;
 }
 
 #playDiv .player {
@@ -298,5 +358,71 @@
   width: 250px;
   background-color: #a7dcf1;
   padding: 5px;
+}
+
+#playDiv .player .playerButtons {
+  margin-top: 5px;
+}
+
+#playDiv .player .playerButtons .pButton {
+  width: 80px;
+  padding: 5px;
+  margin-right: 2px;
+}
+
+#playDiv #townDiv .townShop {
+  width: 800px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#playDiv #townDiv .townShop .shopTitle {
+  font-size: 18pt;
+  font-weight: bold;
+}
+
+#playDiv #townDiv .townShop .shopImage {
+  width: 300px;
+  height: 200px;
+  border: solid 1px black;
+  display: inline-block;
+  background-color: white;
+  margin-right: 15px;
+}
+
+#playDiv #townDiv .townShop .shopContainer {
+  margin-top: 5px;
+  padding-top: 10px;
+  border-top: 1px dotted black;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions {
+  font-weight: 12pt;
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions .sPlayerOption {
+  margin-bottom: 25px;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions .sPlayerOption .shopPlayer {
+  display: inline-block;
+}
+
+#playDiv #townDiv .townShop .shopContainer .shopOptions .sPlayerOption .shopButton {
+  display: inline-block;
+}
+
+#playDiv #townDiv .innShop {
+  background-color: #a2d3c7;
+}
+
+#playDiv #townDiv .marketShop {
+  background-color: #ad4747;
+}
+
+#playDiv #townDiv .oracleShop {
+  background-color: #996ba7;
 }
 /*# sourceMappingURL=main.css.map */

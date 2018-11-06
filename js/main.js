@@ -21,7 +21,7 @@ window.onload = function() {
         self.showModal = ko.observable(false);
         self.showStatsModal = ko.observable(false);
         self.showDeckModal = ko.observable(false);
-        self.WDM = ko.observable(0);
+        self.WDM = ko.observable(1);
         self.playersValue = ko.observable(1);
         self.p1Class = ko.observable(""); self.p2Class = ko.observable(""); self.p3Class = ko.observable(""); self.p4Class = ko.observable("");
         self.players = ko.observableArray();
@@ -53,25 +53,26 @@ window.onload = function() {
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
         }
+
         function initialize() {
-            // var cObjects = [];
-            // for (var i = 0; i < self.availableClasses.length; i++) {
-            //     var dIndex = StatsDataIndex(i + 1);
-            //     var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
+            var cObjects = [];
+            for (var i = 0; i < self.availableClasses.length; i++) {
+                var dIndex = StatsDataIndex(i + 1);
+                var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
 
-            //     var cObject = new Classes(self.availableClasses[i], sData);
+                var cObject = new Classes(self.availableClasses[i], sData);
 
-            //     cObjects.push(cObject);
-            // }
-            // self.classObjects(cObjects);
+                cObjects.push(cObject);
+            }
+            self.classObjects(cObjects);
 
             self.isLoading(false);
 
             // Debug skip early states
-            self.playersValue(2);
-            self.p1Class("Barbarian");
-            self.p2Class("Ranger");
-            self.onSetupPhase();
+            // self.playersValue(2);
+            // self.p1Class("Barbarian");
+            // self.p2Class("Ranger");
+            // self.onSetupPhase();
             // self.players().forEach(function(ply) {
             //     ply.learnTech(ply.techDeck()[0]);
             //     ply.buySkill(self.shop().deck()[0]);
@@ -172,10 +173,12 @@ window.onload = function() {
             showModal(player);
         }
 
+        self.addWDM = function(val) {
+            var wdm = self.WDM();
+            self.WDM(val + wdm);
+        }
+
         self.onTownPhase = function() {
-            self.players().forEach(function(element) {
-                console.log(element);
-              });
             self.phase(Phases.town);
         }
 

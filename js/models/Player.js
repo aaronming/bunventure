@@ -19,8 +19,8 @@ export function Player(index, playerClass, stats, skills) {
     self.playDeck = ko.observableArray([]);
     self.hand = ko.observableArray([]);
     self.discard = ko.observableArray([]);
-    self.gold = 10;
-    self.curHP = 0;
+    self.gold = ko.observable(10);
+    self.curHP = ko.observable(0);
     self.inventory = ko.observableArray([]);
 
     var updateStats = function() {
@@ -122,8 +122,9 @@ export function Player(index, playerClass, stats, skills) {
         var maxHP = self.stats.hp;
         amount = amount == undefined ? maxHP : amount;
 
-        if (amount + self.curHP > maxHP) self.curHP = maxHP;
-        else self.curHP += amount;
+        var newHP = parseInt(self.curHP()) + amount;
+        if (newHP > maxHP) newHP = maxHP;
+        self.curHP(newHP);
     }
 
     self.levelUp = function() {
@@ -133,8 +134,9 @@ export function Player(index, playerClass, stats, skills) {
     }
 
     self.addGold = function(amount) {
-        self.gold += amount;
-        return self.gold;
+        var newGold = self.gold() + amount;
+        self.gold(newGold);
+        return newGold;
     }
 
     self.addInventory = function(item) {

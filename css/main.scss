@@ -1,3 +1,14 @@
+.general { background-color: rgb(207, 207, 207); }
+.barbarian { background-color: rgb(194, 55, 55); }
+.ranger { background-color: rgb(91, 164, 233); }
+.cleric { background-color: rgb(240, 233, 170); }
+.rogue { background-color: rgb(105, 83, 155); }
+.wizard { background-color: rgb(20, 87, 212); }
+.bard { background-color: rgb(236, 158, 68); }
+.druid { background-color: rgb(119, 88, 48); }
+.monk { background-color: rgb(131, 192, 216); }
+.paladin { background-color: rgb(70, 81, 131); }
+
 #loaderDiv {
     position: absolute;
     top: 50%;
@@ -17,6 +28,14 @@
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
     }
+}
+
+.phaseButton {
+    width: 400px;
+    height: 60px;
+    padding: 10px;
+    font-size: 16pt;
+    margin-top: 10px;
 }
 
 #startDiv {
@@ -64,28 +83,32 @@
 
 #setupDiv {
     
-    .setupDeck {
-        display: inline-block;
-        width: 250px;
-        min-height: 200px;
-        background-color: rgb(230, 230, 230);
-        vertical-align: top;
-        padding: 5px;
+    .setupContainer {
+        margin-bottom: 10px;
+    
+        .setupDeck {
+            display: inline-block;
+            width: 250px;
+            min-height: 200px;
+            background-color: rgb(230, 230, 230);
+            vertical-align: top;
+            padding: 5px;
 
-        ul {
-            padding: 0;
-            list-style-type: none;
+            ul {
+                padding: 0;
+                list-style-type: none;
 
-            li {
-                padding: 5px;
-            }
+                li {
+                    padding: 5px;
+                }
 
-            li:nth-child(odd) {
-                background-color: rgb(157, 216, 255);
-            }
+                li:nth-child(odd) {
+                    background-color: rgb(157, 216, 255);
+                }
 
-            li:nth-child(even) {
-                background-color: rgb(255, 232, 157);
+                li:nth-child(even) {
+                    background-color: rgb(255, 232, 157);
+                }
             }
         }
     }
@@ -186,13 +209,9 @@
                 margin-left: -355px;
                 overflow-y: auto;
 
-                .general { background-color: rgb(207, 207, 207); }
-                .barbarian { background-color: rgb(194, 55, 55); }
-                .ranger { background-color: rgb(91, 164, 233); }
-
                 .deckCard {
                     width: 150px;
-                    height: 200px;
+                    // height: 200px;
                     display: inline-block;
                     padding: 5px;
                     vertical-align: top;
@@ -212,7 +231,8 @@
                         }
 
                         .cardName {
-                            width: 100px;
+                            width: 120px;
+                            font-size: 11pt;
                         }
                         
                         .cardCostContainer {
@@ -236,11 +256,13 @@
                         background-color: white;
                     }
 
-                    .cardSubtitle, .cardEffect {
+                    .cardSubtitle {
                         font-size: 8pt;
+                        padding: 2px 0;
                     }
 
                     .cardEffect {
+                        font-size: 10pt;
                         background-color: white;
                         padding: 2px;
                         height: 85px;
@@ -250,10 +272,97 @@
         }
     }
 
+    .wdmDiv {
+        height: 30px;
+        line-height: 30px;
+        margin: 10px 0;
+        font-size: 16pt;
+        font-weight: bold;
+
+        span {
+            margin-right: 5px;
+        }
+
+        .wdmButton {
+            display: inline-block;
+            height: 30px;
+            vertical-align: top;
+        }
+    }
+
     .player {
         display: inline-block;
         width: 250px;
         background-color: rgb(167, 220, 241);
         padding: 5px;
+
+        .playerButtons {
+            margin-top: 5px;
+            
+            .pButton {
+                width: 80px;
+                padding: 5px;
+                margin-right: 2px;
+            }
+        }
+    }
+    
+    #townDiv {
+
+        .townShop {
+            width: 800px;
+            padding: 10px;
+            margin-bottom: 10px;
+
+            .shopTitle {
+                font-size: 18pt;
+                font-weight: bold;
+            }
+
+            .shopImage {
+                width: 300px;
+                height: 200px;
+                border: solid 1px black;
+                display: inline-block;
+                background-color: white;
+                margin-right: 15px;
+            }
+
+            .shopContainer {
+                margin-top: 5px;
+                padding-top: 10px;
+                border-top: 1px dotted black;
+
+                .shopOptions {
+                    font-weight: 12pt;
+                    display: inline-block;
+                    vertical-align: top;
+
+                    .sPlayerOption {
+                        margin-bottom: 25px;
+        
+                        .shopPlayer {
+                            display: inline-block;
+                        }
+        
+                        .shopButton {
+                            display: inline-block;
+                        }
+                    }
+                }
+            }
+        }
+
+        .innShop {
+            background-color: rgb(162, 211, 199);
+        }
+
+        .marketShop {
+            background-color: rgb(173, 71, 71);
+        }
+
+        .oracleShop {
+            background-color: rgb(153, 107, 167);
+        }
     }
 }

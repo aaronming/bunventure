@@ -38,10 +38,16 @@
   background-color: #465183;
 }
 
+.pageDiv {
+  height: 900px;
+}
+
 #loaderDiv {
   position: absolute;
   top: 50%;
   left: 50%;
+  width: 100%;
+  height: 100%;
 }
 
 #loaderDiv .loader {
@@ -79,6 +85,198 @@
   }
 }
 
+.modal {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(224, 224, 224, 0.8);
+}
+
+.modal .modalContainer .modalDiv {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: solid 1px black;
+  padding: 25px;
+  background-color: white;
+}
+
+.modal .modalContainer .statsModalDiv {
+  top: 35%;
+  height: 310px;
+  margin-top: -155px;
+  margin-left: -250px;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer {
+  width: 200px;
+  padding-right: 15px;
+  margin-right: 15px;
+  border-right: solid 1px #a1a1a1;
+  display: inline-block;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsTitle .sPlayer {
+  font-size: 8pt;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsTitle .sClass {
+  display: inline-block;
+  font-size: 12pt;
+  font-weight: bold;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsTitle .sLevel {
+  display: inline-block;
+  font-size: 10pt;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsHPBar {
+  position: relative;
+  height: 20px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsHPBar .sHPBar {
+  height: 100%;
+  width: 100%;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsHPBar .sHPText {
+  position: absolute;
+  line-height: 20px;
+  vertical-align: middle;
+  top: 0;
+  left: 5px;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsImage {
+  height: 150px;
+  background-color: white;
+  border: solid 1px black;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsStats .sStat {
+  border-bottom: 1px dotted black;
+  margin-top: 2px;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsStats .sStat .sStatLabel {
+  display: inline-block;
+}
+
+.modal .modalContainer .statsModalDiv .statsLeftContainer .statsStats .sStat .sStatValue {
+  float: right;
+}
+
+.modal .modalContainer .statsModalDiv .statsRightContainer {
+  display: inline-block;
+  vertical-align: top;
+  width: 250px;
+}
+
+.modal .modalContainer .statsModalDiv .statsRightContainer .statsPassiveTitle {
+  font-weight: bold;
+}
+
+.modal .modalContainer .statsModalDiv .statsRightContainer .statsPassive {
+  margin-top: 10px;
+}
+
+.modal .modalContainer .statsModalDiv .statsRightContainer .statsPassive .passiveName {
+  font-size: 10pt;
+}
+
+.modal .modalContainer .statsModalDiv .statsRightContainer .statsPassive .passiveDescript {
+  font-size: 9pt;
+}
+
+.modal .modalContainer .deckModalDiv {
+  width: 710px;
+  height: 660px;
+  margin-top: -330px;
+  margin-left: -355px;
+  overflow-y: auto;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard {
+  width: 150px;
+  display: inline-block;
+  padding: 5px;
+  vertical-align: top;
+  margin: 5px;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel, .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName, .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCost {
+  display: inline-block;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel {
+  border-radius: 25px;
+  background-color: #2f98c2;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName {
+  width: 120px;
+  font-size: 11pt;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer {
+  background-color: #ed92ff;
+  border-radius: 25px;
+  width: 25px;
+  height: 25px;
+  float: right;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer .cardCost {
+  text-align: center;
+  line-height: 25px;
+  width: inherit;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardImage {
+  width: 150px;
+  height: 75px;
+  background-color: white;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardSubtitle {
+  font-size: 8pt;
+  padding: 2px 0;
+}
+
+.modal .modalContainer .deckModalDiv .deckCard .cardEffect {
+  font-size: 10pt;
+  background-color: white;
+  padding: 2px;
+  height: 85px;
+}
+
+.modal .modalContainer .marketModalDiv {
+  width: 800px;
+  min-height: 600px;
+  margin-left: -400px;
+  margin-top: -300px;
+  top: 40%;
+}
+
+.modal .modalContainer .marketModalDiv .marketDiv,
+.modal .modalContainer .marketModalDiv .transactionDiv {
+  display: inline-block;
+}
+
+.modal .modalContainer .marketModalDiv .transactionDiv .setupDeck {
+  margin-bottom: 10px;
+  display: block;
+}
+
 .phaseButton {
   width: 400px;
   height: 60px;
@@ -88,7 +286,7 @@
 }
 
 #startDiv #startDivContainer {
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 #startDiv #startDivContainer .classesDiv {
@@ -160,11 +358,7 @@
   margin-top: 20px;
 }
 
-#setupDiv .setupContainer {
-  margin-bottom: 10px;
-}
-
-#setupDiv .setupContainer .setupDeck {
+.setupDeck {
   display: inline-block;
   width: 250px;
   min-height: 200px;
@@ -173,169 +367,32 @@
   padding: 5px;
 }
 
-#setupDiv .setupContainer .setupDeck ul {
+.setupDeck ul {
   padding: 0;
   list-style-type: none;
 }
 
-#setupDiv .setupContainer .setupDeck ul li {
+.setupDeck ul li {
   padding: 5px;
 }
 
-#setupDiv .setupContainer .setupDeck ul li:nth-child(odd) {
+.setupDeck ul li:nth-child(odd) {
   background-color: #9dd8ff;
 }
 
-#setupDiv .setupContainer .setupDeck ul li:nth-child(even) {
+.setupDeck ul li:nth-child(even) {
   background-color: #ffe89d;
 }
 
-#playDiv .modal {
-  position: absolute;
-  top: 0px;
-  left: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(224, 224, 224, 0.8);
+#setupDiv .setupContainer {
+  margin-bottom: 10px;
 }
 
-#playDiv .modal .modalContainer .modalDiv {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  border: solid 1px black;
-  padding: 25px;
-  background-color: white;
+#playDiv .playerDiv {
+  height: 175px;
 }
 
-#playDiv .modal .modalContainer .statsModalDiv {
-  top: 35%;
-  height: 310px;
-  width: 200px;
-  margin-top: -155px;
-  margin-left: -100px;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsTitle .sPlayer {
-  font-size: 8pt;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsTitle .sClass {
-  display: inline-block;
-  font-size: 12pt;
-  font-weight: bold;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsTitle .sLevel {
-  display: inline-block;
-  font-size: 10pt;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsHPBar {
-  position: relative;
-  height: 20px;
-  margin-top: 2px;
-  margin-bottom: 2px;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsHPBar .sHPBar {
-  height: 100%;
-  width: 100%;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsHPBar .sHPText {
-  position: absolute;
-  line-height: 20px;
-  vertical-align: middle;
-  top: 0;
-  left: 5px;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsImage {
-  height: 150px;
-  background-color: white;
-  border: solid 1px black;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsStats .sStat {
-  border-bottom: 1px dotted black;
-  margin-top: 2px;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsStats .sStat .sStatLabel {
-  display: inline-block;
-}
-
-#playDiv .modal .modalContainer .statsModalDiv .statsStats .sStat .sStatValue {
-  float: right;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv {
-  width: 710px;
-  height: 660px;
-  margin-top: -330px;
-  margin-left: -355px;
-  overflow-y: auto;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard {
-  width: 150px;
-  display: inline-block;
-  padding: 5px;
-  vertical-align: top;
-  margin: 5px;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName, #playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCost {
-  display: inline-block;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel {
-  border-radius: 25px;
-  background-color: #2f98c2;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName {
-  width: 120px;
-  font-size: 11pt;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer {
-  background-color: #ed92ff;
-  border-radius: 25px;
-  width: 25px;
-  height: 25px;
-  float: right;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer .cardCost {
-  text-align: center;
-  line-height: 25px;
-  width: inherit;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardImage {
-  width: 150px;
-  height: 75px;
-  background-color: white;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardSubtitle {
-  font-size: 8pt;
-  padding: 2px 0;
-}
-
-#playDiv .modal .modalContainer .deckModalDiv .deckCard .cardEffect {
-  font-size: 10pt;
-  background-color: white;
-  padding: 2px;
-  height: 85px;
-}
-
-#playDiv .wdmDiv {
+#playDiv .playerDiv .wdmDiv {
   height: 30px;
   line-height: 30px;
   margin: 10px 0;
@@ -343,31 +400,36 @@
   font-weight: bold;
 }
 
-#playDiv .wdmDiv span {
+#playDiv .playerDiv .wdmDiv span {
   margin-right: 5px;
 }
 
-#playDiv .wdmDiv .wdmButton {
+#playDiv .playerDiv .wdmDiv .wdmButton {
   display: inline-block;
   height: 30px;
   vertical-align: top;
 }
 
-#playDiv .player {
+#playDiv .playerDiv .player {
   display: inline-block;
   width: 250px;
   background-color: #a7dcf1;
   padding: 5px;
 }
 
-#playDiv .player .playerButtons {
+#playDiv .playerDiv .player .playerButtons {
   margin-top: 5px;
 }
 
-#playDiv .player .playerButtons .pButton {
-  width: 80px;
+#playDiv .playerDiv .player .playerButtons .pButton {
+  width: 70px;
   padding: 5px;
   margin-right: 2px;
+}
+
+#playDiv #townDiv {
+  height: 725px;
+  overflow-y: scroll;
 }
 
 #playDiv #townDiv .townShop {

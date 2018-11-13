@@ -17,10 +17,9 @@ window.onload = function() {
         var self = this;
 
         self.isLoading = ko.observable(true);
-        self.modalData = ko.observable();
+        var emptyTemplate = {name: "emptyTemplate"}
+        self.modalTemplate = ko.observable(emptyTemplate);
         self.showModal = ko.observable(false);
-        self.showStatsModal = ko.observable(false);
-        self.showDeckModal = ko.observable(false);
         self.WDM = ko.observable(1);
         self.playersValue = ko.observable(1);
         self.p1Class = ko.observable(""); self.p2Class = ko.observable(""); self.p3Class = ko.observable(""); self.p4Class = ko.observable("");
@@ -29,6 +28,7 @@ window.onload = function() {
         self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue"]; //, "Wizard", "Bard", "Druid", "Monk", "Paladin"];
         self.classObjects = ko.observableArray();
 
+        self.initialShopCards = ko.observable();
         self.shop = ko.observable();
 
         self.phase = ko.observable(0);
@@ -69,24 +69,24 @@ window.onload = function() {
             self.isLoading(false);
 
             // Debug skip early states
-            // self.playersValue(2);
-            // self.p1Class("Barbarian");
-            // self.p2Class("Ranger");
-            // self.onSetupPhase();
-            // self.players().forEach(function(ply) {
-            //     ply.learnTech(ply.techDeck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            //     ply.buySkill(self.shop().deck()[0]);
-            // });
-            // self.onTownPhase();
+//             self.playersValue(2);
+//             self.p1Class("Barbarian");
+//             self.p2Class("Ranger");
+//             self.onSetupPhase();
+//             self.players().forEach(function(ply) {
+//                 ply.learnTech(ply.techDeck()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//                 ply.buySkill(self.initialShopCards()[0]);
+//             });
+//             self.onTownPhase();
         }
 
         self.onSetupPhase = function() {
@@ -117,12 +117,16 @@ window.onload = function() {
         function setupPhase(selectedClasses) {
             self.isLoading(true);
 
-            // Setup basic shop
-            var shopCards = SkillsData.slice(1, 7);
-            var shopSkillCards = shopCards.map(function(skill) {
+            // Setup basic cards
+            var generalCards = SkillsData.slice(1, 3);
+            var genSkillCards = generalCards.map(function(skill) {
                 return new SkillCard(skill);
             });
-            self.shop(new Shop(shopSkillCards));
+            self.initialShopCards(genSkillCards);
+            
+            // Setup shop
+            var shopCards = ShopData.slice(1, 7);
+            self.shop(new Shop(shopCards));
 
             // Setup players
             var myPlayers = [];
@@ -148,29 +152,44 @@ window.onload = function() {
             self.isLoading(false);
         }
 
-        function showModal(data) {
-            self.modalData(data);
+        function showModal(dataObject) {
+            self.modalTemplate(dataObject);
             self.showModal(true);
         }
 
-        self.onModalClick = function(v1, event) {
+        self.hideModal = function(v1, event) {
             if (event.target.className == "modal") {
+                self.modalTemplate(emptyTemplate);
                 self.showModal(false);
-                self.showStatsModal(false);
-                self.showDeckModal(false);
             }
         }
 
-        self.onStatsClick = function(clickIndex) {
+        self.showStatsModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
-            self.showStatsModal(true);
-            showModal(player);
+            showModal({name: "statsModal", data: player});
         }
 
-        self.onDeckClick = function(clickIndex) {
+        self.showDeckModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
-            self.showDeckModal(true);
-            showModal(player);
+            showModal({name: "deckModal", data: player});
+        }
+
+        self.showItemModal = function(clickIndex) {
+
+        }
+
+        self.showMarketModal = function(clickIndex) {
+            var player = self.players()[clickIndex()];
+            self.shop().setupMarket(player.shopSkills());
+            showModal({name: "marketModal", data: self.shop()});
+        }
+
+        self.showSkillChangeModal = function(clickIndex) {
+
+        }
+
+        self.showSkillRandomModal = function(clickIndex) {
+
         }
 
         self.addWDM = function(val) {

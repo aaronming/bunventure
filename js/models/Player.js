@@ -35,7 +35,11 @@ export function Player(index, playerClass, stats, skills) {
     }
 
     self.allSkills = ko.pureComputed(function() {
-        return self.passives().concat(self.learnedTech().concat(self.shopSkills()));
+        return self.passives().concat(self.deck());
+    });
+
+    self.deck = ko.pureComputed(function() {
+       return self.learnedTech().concat(self.shopSkills()); 
     });
 
     self.minDeckSize = ko.pureComputed(function() {
@@ -44,6 +48,10 @@ export function Player(index, playerClass, stats, skills) {
 
     self.buySkill = function(tech, ev) {
         self.addCard(tech, self.shopSkills);
+    }
+
+    self.buySkills = function(techs, ev) {
+        self.addCards(techs, self.shopSkills);
     }
 
     self.removeSkill = function(tech, ev, index) {
@@ -79,7 +87,7 @@ export function Player(index, playerClass, stats, skills) {
 
     self.prepareDeckForBattle = function() {
         self.playDeck(self.deck());
-        self.shuffleDeck(self.playDeck);
+        self.shuffleDeck(self.playDeck());
         self.hand([]);
         self.discard([]);
     }
@@ -106,23 +114,11 @@ export function Player(index, playerClass, stats, skills) {
         self.discard.push(self.hand.removeAll());
     }
 
-    self.shuffleDeck = function(deck) {
-        if (deck == undefined) deck = self.deck;
-        var j, x, i;
-        for (i = deck.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            x = deck[i];
-            deck[i] = deck[j];
-            deck[j] = x;
-        }
-        return deck;
-    }
-
     self.heal = function(amount) {
         var maxHP = self.stats.hp;
         amount = amount == undefined ? maxHP : amount;
 
-        var newHP = parseInt(self.curHP()) + amount;
+        var newHP = self.curHP() + amount;
         if (newHP > maxHP) newHP = maxHP;
         self.curHP(newHP);
     }

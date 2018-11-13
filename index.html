@@ -9,12 +9,22 @@
     <script type="module" src="js/main.js"></script>
     <link rel="stylesheet" href="css/main.css">
     <body>
-        <div id="loaderDiv" data-bind="visible: isLoading">
+        <div id="loaderDiv" class="pageDiv" data-bind="visible: isLoading">
             <div class="loader"></div>
         </div> 
 
-        <div id="startDiv" data-bind="visible: isStartPhase">
+        <div class="modal" data-bind="visible: showModal, click: hideModal">
+            <div class="modalContainer">
+                <div data-bind="template: modalTemplate"></div>
+            </div>
+        </div>
+
+        <div id="startDiv" class="pageDiv" data-bind="visible: isStartPhase">
             <h1>START PHASE</h1>
+            <div>
+                Enter in the number of players, and select your class. One unique class per player. <br>
+                The available classes listed below show class stat ratings, not the actual stat.
+            </div>
 
             <div id="startDivContainer">
                 How many players? <input data-bind="value: playersValue" />
@@ -46,29 +56,36 @@
             <button class="phaseButton" data-bind="text: 'Confirm Classes', click: onSetupPhase"></button>
         </div>
 
-        <div id="setupDiv" data-bind="visible: isSetupPhase">
+        <div id="setupDiv" class="pageDiv" data-bind="visible: isSetupPhase">
             <h1>SETUP PHASE</h1>
-            
+            <div>
+                Construct your deck. <br>
+                Please select 1 card from your tech deck. Then fill the rest with the basic cards. <br>
+                Note your deck sizes are a minimum, so you can have more cards if you wish.
+            </div>
             <div data-bind="foreach: players">
                 <div class="setupContainer">
                     <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
-                    <div>Hand size: <span data-bind="text: $data.minDeckSize"></span></div>
+                    <div>Deck size: <span data-bind="text: $data.minDeckSize"></span></div>
                     <div class="setupDeck">
                         <h4>Deck</h4>
                         <ul class="playerDeck" data-bind="foreach: $data.allSkills">
-                            <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, click: function(tech, ev) { $parent.removeSkill(tech, ev, $index) }"></li>
+                            <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                            click: function(tech, ev) { $parent.removeSkill(tech, ev, $index) }"></li>
                         </ul>
                     </div>
                     <div class="setupDeck">
                         <h4>Tech Deck</h4>
                         <ul class="techDeck" data-bind="foreach: $data.techDeck">
-                            <li class="techCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.learnTech"></li>
+                            <li class="techCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                            click: $parent.learnTech"></li>
                         </ul>
                     </div>
                     <div class="setupDeck">
-                        <h4>Shop Cards</h4>
-                        <ul class="shopDeck" data-bind="foreach: $parent.shop().deck">
-                            <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, click: $parent.buySkill"></li>
+                        <h4>Basic cards</h4>
+                        <ul class="shopDeck" data-bind="foreach: $parent.initialShopCards">
+                            <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                            click: $parent.buySkill"></li>
                         </ul>
                     </div>
                 </div>
@@ -77,49 +94,42 @@
             <button class="phaseButton" data-bind="text: 'Confirm Decks', click: onTownPhase"></button>
         </div>
 
-        <div id="playDiv" data-bind="visible: isPlayPhase">
-            <div class="modal" data-bind="visible: showModal, click: onModalClick">
-                <div class="modalContainer">
-                    <div class="statsModal" data-bind="visible: showStatsModal, template: {name: 'statsModal', if: modalData, data: modalData}">
-                    </div>
-                    <div class="deckModal" data-bind="visible: showDeckModal, , template: {name: 'deckModal', if: modalData, data: modalData}">
-                        
+        <div id="playDiv" class="pageDiv" data-bind="visible: isPlayPhase">
+            <div class="playerDiv">
+                <div class="wdmDiv">
+                    WORLD DIFFICULTY METER: <span data-bind="text: WDM"></span>
+                    <button class="wdmButton" data-bind="text: '+', click: function() { addWDM(1); }"></button>
+                    <button class="wdmButton" data-bind="text: '-', click: function() { addWDM(-1); }"></button>
+                </div>
+                <div data-bind="foreach: players">
+                    <div class="player">
+                        <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                        <div class="playerGold">Gold: 
+                            <span data-bind="text: $data.gold"></span>
+                            <button class="pGoldButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
+                            <button class="pGoldButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
+                        </div>
+                        <div class="playerButtons">
+                            <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
+                            <button class="pButton" data-bind="text: 'Deck', click: function() { $parent.showDeckModal($index) }">
+                            <button class="pButton" data-bind="text: 'Items', click: function() { $parent.showItemModal($index) }">
+                        </div>
                     </div>
                 </div>
             </div>
-
-            <div class="wdmDiv">
-                WORLD DIFFICULTY METER: <span data-bind="text: WDM"></span>
-                <button class="wdmButton" data-bind="text: '+', click: function() { addWDM(1); }"></button>
-                <button class="wdmButton" data-bind="text: '-', click: function() { addWDM(-1); }"></button>
-            </div>
-            <div data-bind="foreach: players">
-                <div class="player">
-                    <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
-                    <div class="playerGold">Gold: 
-                        <span data-bind="text: $data.gold"></span>
-                        <button class="pGoldButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
-                        <button class="pGoldButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
-                    </div>
-                    <div class="playerButtons">
-                        <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.onStatsClick($index) }">
-                        <button class="pButton" data-bind="text: 'All Cards', click: function() { $parent.onDeckClick($index) }">
-                    </div>
-                </div>
-            </div>
-
             <div id="townDiv" data-bind="visible: isTownPhase">
                 <h1>TOWN PHASE</h1>
 
                 <div class="innShop townShop">
                     <div class="shopTitle" data-bind="text: 'Inn'"></div>
                     <div class="shopSubtitle" data-bind="text: 'Hello traveler, would you like to rest up?'"></div>
+                    <span data-bind="text: 'Cost: '"></span><span data-bind="text: WDM"></span>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
                         <div class="shopOptions" data-bind="foreach: players">
                             <div class="sPlayerOption">
                                 <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
-                                <button class="shopButton" data-bind="text: 'Heal'"></button>
+                                <button class="shopButton" data-bind="text: 'Heal', click: function() {$data.heal(); }"></button>
                             </div>
                         </div>
                     </div>
@@ -132,8 +142,8 @@
                         <div class="shopOptions" data-bind="foreach: players">
                             <div class="sPlayerOption">
                                 <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
-                                <button class="shopButton" data-bind="text: 'Buy'"></button>
-                                <button class="shopButton" data-bind="text: 'Sell'"></button>
+                                <button class="shopButton" data-bind="text: 'Buy/Sell', 
+                                click: function() { $parent.showMarketModal($index); }"></button>
                             </div>
                         </div>
                     </div>
@@ -178,42 +188,55 @@
         </div>
     </body>
 
+    <script id="emptyTemplate" type="text/html"></script>
+
     <script id="statsModal" type="text/html">
         <div class="modalDiv statsModalDiv">
-            <div class="statsTitle">
-                <div class="sPlayer">Player <span data-bind="text: index"></span></div>
-                <div class="sClass" data-bind="text: myClass"></div>
-                <div class="sLevel">Lvl. <span data-bind="text: level"></span></div>
-            </div>
-            <div class="statsHPBar">
-                <progress class="sHPBar" data-bind="attr: {value: curHP, max: stats.hp}"></progress>
-                <div class="sHPText">
-                    <span data-bind="text: curHP"></span>/<span data-bind="text: stats.hp"> HP</span>
+            <div class="statsLeftContainer">
+                <div class="statsTitle">
+                    <div class="sPlayer">Player <span data-bind="text: index"></span></div>
+                    <div class="sClass" data-bind="text: myClass"></div>
+                    <div class="sLevel">Lvl. <span data-bind="text: level"></span></div>
+                </div>
+                <div class="statsHPBar">
+                    <progress class="sHPBar" data-bind="attr: {value: curHP, max: stats.hp}"></progress>
+                    <div class="sHPText">
+                        <span data-bind="text: curHP"></span>/<span data-bind="text: stats.hp"> HP</span>
+                    </div>
+                </div>
+                <div class="statsImage"></div>
+                <div class="statsStats">
+                    <div class="sStat">
+                        <span class="sStatLabel">Attack:</span>
+                        <span class="sStatValue" data-bind="text: stats.attack"></span></div>
+                    <div class="sStat">
+                        <span class="sStatLabel">Defense:</span>
+                        <span class="sStatValue" data-bind="text: stats.defense"></span></div>
+                    <div class="sStat">
+                        <span class="sStatLabel">HP:</span>
+                        <span class="sStatValue" data-bind="text: stats.hp"></span></div>
+                    <div class="sStat">
+                        <span class="sStatLabel">AP:</span>
+                        <span class="sStatValue" data-bind="text: stats.ap"></span></div>
+                    <div class="sStat">
+                        <span class="sStatLabel">Hand:</span>
+                        <span class="sStatValue" data-bind="text: stats.hand"></span></div>
                 </div>
             </div>
-            <div class="statsImage"></div>
-            <div class="statsStats">
-                <div class="sStat">
-                    <span class="sStatLabel">Attack:</span>
-                    <span class="sStatValue" data-bind="text: stats.attack"></span></div>
-                <div class="sStat">
-                    <span class="sStatLabel">Defense:</span>
-                    <span class="sStatValue" data-bind="text: stats.defense"></span></div>
-                <div class="sStat">
-                    <span class="sStatLabel">HP:</span>
-                    <span class="sStatValue" data-bind="text: stats.hp"></span></div>
-                <div class="sStat">
-                    <span class="sStatLabel">AP:</span>
-                    <span class="sStatValue" data-bind="text: stats.ap"></span></div>
-                <div class="sStat">
-                    <span class="sStatLabel">Hand:</span>
-                    <span class="sStatValue" data-bind="text: stats.hand"></span></div>
+            <div class="statsRightContainer">
+                <div class="statsPassives">
+                    <div class="statsPassiveTitle" data-bind="text: 'Passives'"></div>
+                    <div class="statsPassive" data-bind="foreach: passives">
+                        <div class="passiveName" data-bind="text: $data.name"></div>
+                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
+                    </div>
+                </div>
             </div>
         </div>
     </script>
 
     <script id="deckModal" type="text/html">
-        <div class="modalDiv deckModalDiv" data-bind="foreach: allSkills">
+        <div class="modalDiv deckModalDiv" data-bind="foreach: deck">
             <div class="deckCard" data-bind="css: $data.myClass.toLowerCase()">
                 <div class="cardTitle">
                     <div class="cardName" data-bind="text: $data.name"></div>
@@ -228,6 +251,48 @@
                 </div>
                 <div class="cardEffect" data-bind="text: $data.effect"></div>
             </div>
+        </div>
+    </script>
+
+    <script id="marketModal" type="text/html">
+        <div class="modalDiv marketModalDiv">
+            <div class="marketDiv setupDeck">
+                <h4>Shop</h4>
+                <ul class="shopDeck" data-bind="foreach: availShopCards">
+                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                    click: function(tech, ev) { $parent.buySkill(tech, ev, $index)  }"></li>
+                </ul>
+            </div>
+            <div class="transactionDiv">
+                <div class="setupDeck">
+                    <h4>Buy</h4>
+                    <div>
+                        Cost: <span data-bind="text: buyDeckCost"></span>
+                    </div>
+                    <ul class="buyDeck" data-bind="foreach: buyDeck">
+                        <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                        click: function(tech, ev) { $parent.unbuySkill(tech, ev, $index) }"></li>
+                    </ul>
+                </div>
+                <div class="setupDeck">
+                    <h4>Sell</h4>
+                    <div>
+                        Cost: <span data-bind="text: sellDeckCost"></span>
+                    </div>
+                    <ul class="sellDeck" data-bind="foreach: sellDeck">
+                        <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                        click: function(tech, ev) { $parent.unsellSkill(tech, ev, $index) }"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="marketDiv setupDeck">
+                <h4>Deck</h4>
+                <ul class="playerDeck" data-bind="foreach: playerDeck">
+                    <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                    click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
+                </ul>
+            </div>
+            <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm'"></button>
         </div>
     </script>
 </html>

@@ -1,5 +1,5 @@
 import { Deckable } from './Deckable.js';
-import { Classes, Stats } from './Classes.js';
+import { Stats } from './Classes.js';
 
 export function Player(index, playerClass, stats, skills) {
     Deckable.call(this);
@@ -9,7 +9,7 @@ export function Player(index, playerClass, stats, skills) {
     self.myClass = playerClass;
     self.classStats = stats
     self.classSkills = skills;
-    self.level = 0;
+    self.level = ko.observable(0);
     self.stats = {};
     self.skillBook = Array.from(skills);
     self.techDeck = ko.observableArray([]);
@@ -24,11 +24,11 @@ export function Player(index, playerClass, stats, skills) {
     self.inventory = ko.observableArray([]);
 
     var updateStats = function() {
-        self.stats = new Stats(self.classStats[self.level - 1]);
+        self.stats = new Stats(self.classStats[self.level() - 1]);
     }
 
     var updateTechDeck = function() {
-        while (self.skillBook.length != 0 && self.skillBook[0].level == self.level) {
+        while (self.skillBook.length != 0 && self.skillBook[0].level == self.level()) {
             var skill = self.skillBook.shift();
             self.techDeck.push(skill);
         }
@@ -39,7 +39,7 @@ export function Player(index, playerClass, stats, skills) {
     });
 
     self.deck = ko.pureComputed(function() {
-       return self.learnedTech().concat(self.shopSkills()); 
+        return self.learnedTech().concat(self.shopSkills());
     });
 
     self.minDeckSize = ko.pureComputed(function() {
@@ -123,10 +123,21 @@ export function Player(index, playerClass, stats, skills) {
         self.curHP(newHP);
     }
 
-    self.levelUp = function() {
-        self.level += 1;
+    function levelChange(amount) {
+        var newLevel = self.level() + amount;
+        if (newLevel > 5) newLevel = 5;
+        else if (newLevel < 1) newLevel = 1;
+        self.level(newLevel);
         updateStats();
         updateTechDeck();
+    }
+
+    self.levelUp = function() {
+        levelChange(1);
+    }
+    
+    self.levelDown = function() {
+        levelChange(-1);
     }
 
     self.addGold = function(amount) {

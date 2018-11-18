@@ -104,10 +104,15 @@
                 <div data-bind="foreach: players">
                     <div class="player">
                         <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                        <div class="playerLevel">Level:
+                            <span data-bind="text: $data.level"></span>
+                            <button class="pDeltaButton" data-bind="text: '+', click: $data.levelUp"></button>
+                            <button class="pDeltaButton" data-bind="text: '-', click: $data.levelDown"></button>
+                        </div>
                         <div class="playerGold">Gold: 
                             <span data-bind="text: $data.gold"></span>
-                            <button class="pGoldButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
-                            <button class="pGoldButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
+                            <button class="pDeltaButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
+                            <button class="pDeltaButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
                         </div>
                         <div class="playerButtons">
                             <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
@@ -292,7 +297,8 @@
                     click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
                 </ul>
             </div>
-            <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm'"></button>
+            <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm', 
+                click: $parent.confirmMarketTransaction"></button>
         </div>
     </script>
 </html>

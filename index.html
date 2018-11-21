@@ -191,13 +191,13 @@
                 <button class="phaseButton" data-bind="text: 'Dungeon Adventure', click: onWorldPhase"></button>
             </div>
             
-            <div id="worldDiv" data-bind="visible: isWorldPhase">
+            <div id="worldDiv" data-bind="visible: isWorldPhase, with: overworld">
                 <h1>OVERWORLD</h1>
                 <div>
                     Please select a dungeon to embark to.
                 </div>
-                <div data-bind="foreach: overworld().dungeons">
-                    <div class="worldDungeonDiv bossCard" data-bind="click: function() { $parent.onDungeonClick($index) }">
+                <div data-bind="foreach: dungeons">
+                    <div class="worldDungeonDiv bossCard" data-bind="click: function() { $parents[1].onDungeonClick($index); }">
                         <div class="bossStatsContainer">
                             <div class="bossName" data-bind="text: $data.boss.name"></div>
                             <div class="bossPic"></div>
@@ -215,7 +215,7 @@
                         </div>
                     </div>
                 </div>
-                <button class="phaseButton" data-bind="text: 'Return to Town', click: onTownPhase"></button>
+                <button class="phaseButton" data-bind="text: 'Return to Town', click: $parent.onTownPhase"></button>
             </div>
 
             <div id="dungeonDiv" data-bind="visible: isDungeonPhase, with: dungeon">

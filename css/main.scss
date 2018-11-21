@@ -1,3 +1,5 @@
+@import 'mixins';
+
 .general { background-color: rgb(207, 207, 207); }
 .barbarian { background-color: rgb(194, 55, 55); }
 .ranger { background-color: rgb(91, 164, 233); }
@@ -220,15 +222,19 @@
             }
         }
 
-        .marketModalDiv {
+        .transModalDiv {
             width: 815px;
             min-height: 600px;
             margin-left: -400px;
             margin-top: -300px;
             top: 40%;
 
-            .marketDiv,
-            .transactionDiv {
+            .transDescription {
+                margin-bottom: 15px;
+            }
+
+            .transDiv,
+            .tradeDiv {
                 display: inline-block;
                 vertical-align: top;
 
@@ -372,7 +378,7 @@
     }
     
     #townDiv {
-        margin-top: 190px;
+        margin-top: 200px;
 
         .townShop {
             width: 800px;
@@ -428,6 +434,120 @@
 
         .oracleShop {
             background-color: rgb(153, 107, 167);
+        }
+    }
+
+    #worldDiv {
+        margin-top: 200px;
+
+        .worldDungeonDiv {
+            margin: 5px 5px 5px 0;
+            display: inline-block;
+        }
+
+        .bossCard {
+            border: solid 1px black;
+
+            .bossStatsContainer {
+                padding: 10px;
+                border-right: solid 1px black;
+                display: inline-block;
+
+                .bossName {
+                    font-size: 14pt;
+                }
+
+                .bossPic {
+                    margin: 5px 0;
+                    width: 175px;
+                    height: 125px;
+                    border: solid 1px black;
+                }
+            }
+
+            .bossSkillsContainer {
+                display: inline-block;
+                word-wrap: normal;
+                width: 200px;
+                vertical-align: top;
+                font-size: 11pt;
+
+                .bossSkills {
+                    padding: 0;
+                    margin: 0;
+                    list-style-type: none;
+            
+                    .bossSkillLine {
+                        padding: 5px;
+                    }
+            
+                    .bossSkillLine:nth-child(odd) {
+                        background-color: rgb(241, 241, 241);
+                    }
+            
+                    .bossSkillLine:nth-child(even) {
+                        background-color: rgb(207, 207, 207);
+                    }
+                }
+            }
+        }
+    }
+
+    #dungeonDiv {
+        margin-top: 200px;
+
+        .dungeonDeckContainer {
+            @include noSelect();
+
+            height: 300px;
+
+            .dungeonDeck {
+                margin-right: 10px; 
+                display: inline-block;
+
+                .dungeonDeckBlock {
+                    width: 100px;
+                    height: 125px;
+                    border: solid 1px black;
+                    background-color: rgb(195, 191, 204);
+                    position: relative;
+                    margin-bottom: 5px;
+
+                    .dungeonDeckRemaining {
+                        font-size: 36pt;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                    }
+                }
+            }
+
+            .dungeonPlayed {
+                display: inline-block;
+                vertical-align: top;
+
+                .dungeonPlayedCard {
+                    display: inline-block;
+                    width: 100px;
+                    height: 125px;
+                    border: solid 1px black;
+                    background-color: white;
+                    margin-left: -100px;
+                    padding: 5px;
+                }
+
+                .dungeonPlayedCard:last-child {
+                    margin-left: -50px;
+                    width: 200px;
+                    height: 250px;
+                    box-shadow: -5px 5px rgb(179, 197, 204);
+                }
+
+                .dungeonPlayedCard:first-child {
+                    margin-left: 0;
+                }
+            }
         }
     }
 }

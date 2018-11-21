@@ -259,7 +259,7 @@
   height: 85px;
 }
 
-.modal .modalContainer .marketModalDiv {
+.modal .modalContainer .transModalDiv {
   width: 815px;
   min-height: 600px;
   margin-left: -400px;
@@ -267,14 +267,18 @@
   top: 40%;
 }
 
-.modal .modalContainer .marketModalDiv .marketDiv,
-.modal .modalContainer .marketModalDiv .transactionDiv {
+.modal .modalContainer .transModalDiv .transDescription {
+  margin-bottom: 15px;
+}
+
+.modal .modalContainer .transModalDiv .transDiv,
+.modal .modalContainer .transModalDiv .tradeDiv {
   display: inline-block;
   vertical-align: top;
 }
 
-.modal .modalContainer .marketModalDiv .marketDiv .setupDeck,
-.modal .modalContainer .marketModalDiv .transactionDiv .setupDeck {
+.modal .modalContainer .transModalDiv .transDiv .setupDeck,
+.modal .modalContainer .transModalDiv .tradeDiv .setupDeck {
   margin-bottom: 10px;
   display: block;
 }
@@ -434,7 +438,7 @@
 }
 
 #playDiv #townDiv {
-  margin-top: 190px;
+  margin-top: 200px;
 }
 
 #playDiv #townDiv .townShop {
@@ -491,5 +495,131 @@
 
 #playDiv #townDiv .oracleShop {
   background-color: #996ba7;
+}
+
+#playDiv #worldDiv {
+  margin-top: 200px;
+}
+
+#playDiv #worldDiv .worldDungeonDiv {
+  margin: 5px 5px 5px 0;
+  display: inline-block;
+}
+
+#playDiv #worldDiv .bossCard {
+  border: solid 1px black;
+}
+
+#playDiv #worldDiv .bossCard .bossStatsContainer {
+  padding: 10px;
+  border-right: solid 1px black;
+  display: inline-block;
+}
+
+#playDiv #worldDiv .bossCard .bossStatsContainer .bossName {
+  font-size: 14pt;
+}
+
+#playDiv #worldDiv .bossCard .bossStatsContainer .bossPic {
+  margin: 5px 0;
+  width: 175px;
+  height: 125px;
+  border: solid 1px black;
+}
+
+#playDiv #worldDiv .bossCard .bossSkillsContainer {
+  display: inline-block;
+  word-wrap: normal;
+  width: 200px;
+  vertical-align: top;
+  font-size: 11pt;
+}
+
+#playDiv #worldDiv .bossCard .bossSkillsContainer .bossSkills {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+#playDiv #worldDiv .bossCard .bossSkillsContainer .bossSkills .bossSkillLine {
+  padding: 5px;
+}
+
+#playDiv #worldDiv .bossCard .bossSkillsContainer .bossSkills .bossSkillLine:nth-child(odd) {
+  background-color: #f1f1f1;
+}
+
+#playDiv #worldDiv .bossCard .bossSkillsContainer .bossSkills .bossSkillLine:nth-child(even) {
+  background-color: #cfcfcf;
+}
+
+#playDiv #dungeonDiv {
+  margin-top: 200px;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+  height: 300px;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck {
+  margin-right: 10px;
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck .dungeonDeckBlock {
+  width: 100px;
+  height: 125px;
+  border: solid 1px black;
+  background-color: #c3bfcc;
+  position: relative;
+  margin-bottom: 5px;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck .dungeonDeckBlock .dungeonDeckRemaining {
+  font-size: 36pt;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard {
+  display: inline-block;
+  width: 100px;
+  height: 125px;
+  border: solid 1px black;
+  background-color: white;
+  margin-left: -100px;
+  padding: 5px;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:last-child {
+  margin-left: -50px;
+  width: 200px;
+  height: 250px;
+  -webkit-box-shadow: -5px 5px #b3c5cc;
+          box-shadow: -5px 5px #b3c5cc;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:first-child {
+  margin-left: 0;
 }
 /*# sourceMappingURL=main.css.map */

@@ -1,5 +1,5 @@
 import { Deckable } from './Deckable.js';
-import { Stats } from './Classes.js';
+import { Stats } from '../Classes.js';
 
 export function Player(index, playerClass, stats, skills) {
     Deckable.call(this);
@@ -36,6 +36,10 @@ export function Player(index, playerClass, stats, skills) {
 
     self.allSkills = ko.pureComputed(function() {
         return self.passives().concat(self.deck());
+    });
+
+    self.learnedSkills = ko.pureComputed(function() {
+        return self.passives().concat(self.learnedTech());
     });
 
     self.deck = ko.pureComputed(function() {

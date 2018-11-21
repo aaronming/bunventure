@@ -62,6 +62,8 @@ window.onload = function() {
          */
 
         var useHardData = 1;
+        var debug = 0;
+
         function loadStaticData() {
             var sheetData = new SheetData();
             ActivitiesData = sheetData.ActivitiesData;
@@ -86,40 +88,43 @@ window.onload = function() {
          */
 
         function initialize() {
-            // var cObjects = [];
-            // for (var i = 0; i < self.availableClasses.length; i++) {
-            //     var dIndex = StatsDataIndex(i + 1);
-            //     var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
+            if (debug) {
+                // Debug skip early states
+                self.playersValue(2);
+                self.p1Class("Barbarian");
+                self.p2Class("Ranger");
+                self.onSetupPhase();
+                self.players().forEach(function(ply) {
+                    ply.learnTech(ply.techDeck()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                    ply.buySkill(self.initialShopCards()[0]);
+                });
+                self.onTownPhase();
+                self.onWorldPhase();
+                self.onDungeonClick(function(){return 0;});
 
-            //     var cObject = new Classes(self.availableClasses[i], sData);
-
-            //     cObjects.push(cObject);
-            // }
-            // self.classObjects(cObjects);
+            } else {
+                var cObjects = [];
+                for (var i = 0; i < self.availableClasses.length; i++) {
+                    var dIndex = StatsDataIndex(i + 1);
+                    var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
+    
+                    var cObject = new Classes(self.availableClasses[i], sData);
+    
+                    cObjects.push(cObject);
+                }
+                self.classObjects(cObjects);
+            }
 
             self.isLoading(false);
-
-            // Debug skip early states
-            self.playersValue(2);
-            self.p1Class("Barbarian");
-            self.p2Class("Ranger");
-            self.onSetupPhase();
-            self.players().forEach(function(ply) {
-                ply.learnTech(ply.techDeck()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-                ply.buySkill(self.initialShopCards()[0]);
-            });
-            self.onTownPhase();
-            self.onWorldPhase();
-            self.onDungeonClick(function(){return 0;});
         }
 
         self.onSetupPhase = function() {

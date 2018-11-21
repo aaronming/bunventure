@@ -104,10 +104,15 @@
                 <div data-bind="foreach: players">
                     <div class="player">
                         <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                        <div class="playerLevel">Level:
+                            <span data-bind="text: $data.level"></span>
+                            <button class="pDeltaButton" data-bind="text: '+', click: $data.levelUp"></button>
+                            <button class="pDeltaButton" data-bind="text: '-', click: $data.levelDown"></button>
+                        </div>
                         <div class="playerGold">Gold: 
                             <span data-bind="text: $data.gold"></span>
-                            <button class="pGoldButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
-                            <button class="pGoldButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
+                            <button class="pDeltaButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
+                            <button class="pDeltaButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
                         </div>
                         <div class="playerButtons">
                             <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
@@ -123,7 +128,7 @@
                 <div class="innShop townShop">
                     <div class="shopTitle" data-bind="text: 'Inn'"></div>
                     <div class="shopSubtitle" data-bind="text: 'Hello traveler, would you like to rest up?'"></div>
-                    <span data-bind="text: 'Cost: '"></span><span data-bind="text: WDM"></span>
+                    <span><br/>Cost: </span><span data-bind="text: WDM"></span>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
                         <div class="shopOptions" data-bind="foreach: players">
@@ -143,22 +148,28 @@
                             <div class="sPlayerOption">
                                 <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
                                 <button class="shopButton" data-bind="text: 'Buy/Sell', 
-                                click: function() { $parent.showMarketModal($index); }"></button>
+                                    click: function() { $parent.showMarketModal($index); }"></button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="oracleShop townShop">
                     <div class="shopTitle" data-bind="text: 'Oracle'"></div>
-                    <div class="shopSubtitle" data-bind="text: 'Greetings, I\'ve been expecting you.'"></div>
+                    <div class="shopSubtitle">
+                        Greetings, I've been expecting you. <br/><br/>
+                        Learn a new Skill - 3 Gold<br/>
+                        Forget a skill - 3 Gold<br/>
+                        Random skill - 2 Gold
+                    </div>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
                         <div class="shopOptions" data-bind="foreach: players">
                             <div class="sPlayerOption">
                                 <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
-                                <button class="shopButton" data-bind="text: 'Learn new skill'"></button>
-                                <button class="shopButton" data-bind="text: 'Forget skill'"></button>
-                                <button class="shopButton" data-bind="text: 'Change to random skill'"></button>
+                                <button class="shopButton" data-bind="text: 'Learn/Forget', 
+                                    click: function() { $parent.showSkillChangeModal($index); }"></button>
+                                <button class="shopButton" data-bind="text: 'Random skill', 
+                                    click: function() { $parent.showSkillRandomModal($index); }"></button>
                             </div>
                         </div>
                     </div>
@@ -177,13 +188,59 @@
                     </div>
                 </div> -->
 
-                <button class="phaseButton" data-bind="text: 'Dungeon Adventure', click: onDungeonPhase"></button>
+                <button class="phaseButton" data-bind="text: 'Dungeon Adventure', click: onWorldPhase"></button>
             </div>
             
-            <div id="dungeonDiv" data-bind="visible: isDungeonPhase">
-                <h1>DUNGEON PHASE</h1>
-
+            <div id="worldDiv" data-bind="visible: isWorldPhase">
+                <h1>OVERWORLD</h1>
+                <div>
+                    Please select a dungeon to embark to.
+                </div>
+                <div data-bind="foreach: overworld().dungeons">
+                    <div class="worldDungeonDiv bossCard" data-bind="click: function() { $parent.onDungeonClick($index) }">
+                        <div class="bossStatsContainer">
+                            <div class="bossName" data-bind="text: $data.boss.name"></div>
+                            <div class="bossPic"></div>
+                            <div class="bossHP">HP: <span data-bind="text: $data.boss.hp"></span></div>
+                            <div class="bossHP">Attack: <span data-bind="text: $data.boss.attack"></span></div>
+                            <div class="bossHP">Defense: <span data-bind="text: $data.boss.defense"></span></div>
+                            <!-- <div data-bind="foreach: $data.deck">
+                                <div data-bind="text: $data.name"></div>
+                            </div> -->
+                        </div><!--
+                        --><div class="bossSkillsContainer">
+                            <ul class="bossSkills" data-bind="foreach: $data.boss.skills">
+                                <li class="bossSkillLine" data-bind="text: $data"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <button class="phaseButton" data-bind="text: 'Return to Town', click: onTownPhase"></button>
+            </div>
+
+            <div id="dungeonDiv" data-bind="visible: isDungeonPhase, with: dungeon">
+                <h1>DUNGEON PHASE - <span data-bind="text: $data.boss.name"></span></h1>
+                <div class="dungeonDeckContainer">
+                    <div class="dungeonDeck">
+                        <div class="dungeonDeckBlock" data-bind="click: $data.drawDungeon">
+                            <span class="dungeonDeckRemaining" data-bind="text: $data.deck().length"></span>
+                        </div>
+                        <button data-bind="text: 'undo', click: $data.undrawDungeon"></button>
+                    </div>
+                    <div class="dungeonPlayed" data-bind="foreach: $data.discard">
+                        <div class="dungeonPlayedCard">
+                            <span data-bind="text: $data.name"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="playersSection">
+                    <div class="activePlayerContainer"></div>
+                    <div class="playerContainer">
+                        <div data-bind="foreach: $data.players">
+                            <div data-bind="text: $data.myClass"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </body>
@@ -255,15 +312,18 @@
     </script>
 
     <script id="marketModal" type="text/html">
-        <div class="modalDiv marketModalDiv">
-            <div class="marketDiv setupDeck">
+        <div class="modalDiv transModalDiv">
+            <div class="transDescription">
+                Total: <span data-bind="text: transactionTotal"></span>
+            </div>
+            <div class="transDiv setupDeck">
                 <h4>Shop</h4>
                 <ul class="shopDeck" data-bind="foreach: availShopCards">
                     <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
                     click: function(tech, ev) { $parent.buySkill(tech, ev, $index)  }"></li>
                 </ul>
             </div>
-            <div class="transactionDiv">
+            <div class="tradeDiv">
                 <div class="setupDeck">
                     <h4>Buy</h4>
                     <div>
@@ -292,7 +352,84 @@
                     click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
                 </ul>
             </div>
-            <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm'"></button>
+            <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm', 
+                click: $parent.confirmMarketTransaction"></button>
+        </div>
+    </script>
+
+    <script id="oracleModal" type="text/html">
+        <div class="modalDiv transModalDiv">
+            <div class="transDescription">
+                Total: <span data-bind="text: transactionTotal"></span>
+            </div>
+            <div class="transDiv setupDeck">
+                <h4>Tech Skills</h4>
+                <ul class="shopDeck" data-bind="foreach: availTechCards">
+                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                    click: function(tech, ev) { $parent.buySkill(tech, ev, $index)  }"></li>
+                </ul>
+            </div>
+            <div class="tradeDiv">
+                <div class="setupDeck">
+                    <h4>Learn</h4>
+                    <div>
+                        Cost: <span data-bind="text: buyDeckCost"></span>
+                    </div>
+                    <ul class="buyDeck" data-bind="foreach: buyDeck">
+                        <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                        click: function(tech, ev) { $parent.unbuySkill(tech, ev, $index) }"></li>
+                    </ul>
+                </div>
+                <div class="setupDeck">
+                    <h4>Forget</h4>
+                    <div>
+                        Cost: <span data-bind="text: sellDeckCost"></span>
+                    </div>
+                    <ul class="sellDeck" data-bind="foreach: sellDeck">
+                        <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                        click: function(tech, ev) { $parent.unsellSkill(tech, ev, $index) }"></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="transDiv setupDeck">
+                <h4>Deck</h4>
+                <ul class="playerDeck" data-bind="foreach: playerTechCards">
+                    <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                        click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
+                </ul>
+            </div>
+            <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm', 
+                click: $parent.confirmOracleTransaction"></button>
+        </div>
+    </script>
+
+    <script id="oracleRandomModal" type="text/html">
+        <div class="modalDiv transModalDiv">
+            <div class="transDescription">
+                Forget a skill to learn a new random skill!
+            </div>
+            <div class="transDiv setupDeck">
+                <h4>Tech Deck</h4>
+                <ul class="shopDeck" data-bind="foreach: availTechCards">
+                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name"></li>
+                </ul>
+            </div>
+            <div class="transDiv setupDeck">
+                <h4>Forget</h4>
+                <ul class="shopDeck" data-bind="foreach: sellDeck">
+                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                    click: function(tech, ev) { $parent.unsellSkill(tech, ev, $index) }"></li>
+                </ul>
+            </div>
+            <div class="transDiv setupDeck">
+                <h4>Learned Skills</h4>
+                <ul class="shopDeck" data-bind="foreach: playerTechCards">
+                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                    click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
+                </ul>
+            </div>
+            <button class="phaseButton confirmTransaction" data-bind="text: 'Learn random skill', 
+                click: $parent.confirmOracleRandomTransaction"></button>
         </div>
     </script>
 </html>

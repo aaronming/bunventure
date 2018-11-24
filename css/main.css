@@ -82,7 +82,7 @@
 }
 
 .modal {
-  z-index: 1;
+  z-index: 2;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -395,50 +395,76 @@
 
 #playDiv .playerDiv {
   position: fixed;
-  top: 0;
-  height: 175px;
-  background-color: white;
-  width: 100%;
-  padding-bottom: 15px;
+  top: 10px;
+  background-color: #a7dcf1;
+  z-index: 1;
+  border: solid 1px black;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  -webkit-transition: right 1s;
+  transition: right 1s;
+  -webkit-transition-timing-function: ease-out;
+          transition-timing-function: ease-out;
 }
 
-#playDiv .playerDiv .wdmDiv {
+#playDiv .playerDiv .playerLeft {
+  -webkit-writing-mode: vertical-rl;
+      -ms-writing-mode: tb-rl;
+          writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 20pt;
+  width: 40px;
+  height: auto;
+}
+
+#playDiv .playerDiv .playerLeft .playerMenu {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+#playDiv .playerDiv .playerRight {
+  display: inline-block;
+}
+
+#playDiv .playerDiv .playerRight .wdmDiv {
   height: 30px;
   line-height: 30px;
-  margin: 10px 0;
+  padding: 10px 0;
   font-size: 16pt;
   font-weight: bold;
+  border-bottom: solid 1px black;
 }
 
-#playDiv .playerDiv .wdmDiv span {
+#playDiv .playerDiv .playerRight .wdmDiv span {
   margin-right: 5px;
 }
 
-#playDiv .playerDiv .wdmDiv .wdmButton {
+#playDiv .playerDiv .playerRight .wdmDiv .wdmButton {
   display: inline-block;
   height: 30px;
   vertical-align: top;
 }
 
-#playDiv .playerDiv .player {
-  display: inline-block;
+#playDiv .playerDiv .playerRight .player {
   width: 250px;
-  background-color: #a7dcf1;
   padding: 5px;
+  margin-left: auto;
+  margin-right: 0;
 }
 
-#playDiv .playerDiv .player .playerButtons {
+#playDiv .playerDiv .playerRight .player .playerButtons {
   margin-top: 5px;
 }
 
-#playDiv .playerDiv .player .playerButtons .pButton {
+#playDiv .playerDiv .playerRight .player .playerButtons .pButton {
   width: 70px;
   padding: 5px;
   margin-right: 2px;
-}
-
-#playDiv #townDiv {
-  margin-top: 200px;
 }
 
 #playDiv #townDiv .townShop {
@@ -497,10 +523,6 @@
   background-color: #996ba7;
 }
 
-#playDiv #worldDiv {
-  margin-top: 200px;
-}
-
 #playDiv #worldDiv .worldDungeonDiv {
   margin: 5px 5px 5px 0;
   display: inline-block;
@@ -551,10 +573,6 @@
 
 #playDiv #worldDiv .bossCard .bossSkillsContainer .bossSkills .bossSkillLine:nth-child(even) {
   background-color: #cfcfcf;
-}
-
-#playDiv #dungeonDiv {
-  margin-top: 200px;
 }
 
 #playDiv #dungeonDiv .dungeonDeckContainer {
@@ -621,5 +639,16 @@
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:first-child {
   margin-left: 0;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayerTitle {
+  font-size: 15pt;
+  font-weight: bold;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .statsContainer {
+  border: solid 1px black;
+  width: 100px;
+  padding: 2px;
 }
 /*# sourceMappingURL=main.css.map */

@@ -61,7 +61,7 @@ export function Oracle() {
         self.playerTechCards = null
         self.buyDeck = ko.observableArray([]);
         self.sellDeck = ko.observableArray([]);
-        self.buyDeckCost = ko.observable(0);
-        self.sellDeckCost = ko.observable(0);
+        self.buyDeckCost(0);
+        self.sellDeckCost(0);
     }
 }

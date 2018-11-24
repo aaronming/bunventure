@@ -27,13 +27,6 @@ export function Player(index, playerClass, stats, skills) {
         self.stats = new Stats(self.classStats[self.level() - 1]);
     }
 
-    var updateTechDeck = function() {
-        while (self.skillBook.length != 0 && self.skillBook[0].level == self.level()) {
-            var skill = self.skillBook.shift();
-            self.techDeck.push(skill);
-        }
-    }
-
     self.allSkills = ko.pureComputed(function() {
         return self.passives().concat(self.deck());
     });
@@ -131,9 +124,22 @@ export function Player(index, playerClass, stats, skills) {
         var newLevel = self.level() + amount;
         if (newLevel > 5) newLevel = 5;
         else if (newLevel < 1) newLevel = 1;
+
+        if (amount > 0) {
+            while (self.skillBook.length != 0 && self.skillBook[0].level == newLevel) {
+                var skill = self.skillBook.shift();
+                self.techDeck.push(skill);
+            }
+        } else {
+            while (self.techDeck().length != 0 && self.techDeck()[self.techDeck().length - 1].level == self.level()) {
+                var skill = self.techDeck.pop();
+                self.skillBook.unshift(skill);
+            }
+
+        }
+
         self.level(newLevel);
         updateStats();
-        updateTechDeck();
     }
 
     self.levelUp = function() {

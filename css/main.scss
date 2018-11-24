@@ -35,7 +35,7 @@
 }
 
 .modal {
-    z-index: 1;
+    z-index: 2;
     position: fixed;
     top: 0px;
     left: 0px;
@@ -335,50 +335,74 @@
 
     .playerDiv {
         position: fixed;
-        top: 0;
-        height: 175px;
-        background-color: white;
-        width: 100%;
-        padding-bottom: 15px;
+        top: 10px;
+        background-color: rgb(167, 220, 241);
+        z-index: 1;
+        border: solid 1px black;
+        border-right: none;
+        border-radius: 10px 0 0 10px;
+        transition: right 1s;
+        transition-timing-function: ease-out;
 
-        .wdmDiv {
-            height: 30px;
-            line-height: 30px;
-            margin: 10px 0;
-            font-size: 16pt;
-            font-weight: bold;
-    
-            span {
-                margin-right: 5px;
-            }
-    
-            .wdmButton {
-                display: inline-block;
-                height: 30px;
-                vertical-align: top;
+        .playerLeft {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            display: inline-block;
+            vertical-align: top;
+            font-size: 20pt;
+            width: 40px;
+            height: auto;
+
+            .playerMenu{
+                position: absolute;
+                top: 50%;
+                left: 5px;
+                transform: translateY(-50%);
             }
         }
-    
-        .player {
+
+        .playerRight {
             display: inline-block;
-            width: 250px;
-            background-color: rgb(167, 220, 241);
-            padding: 5px;
-    
-            .playerButtons {
-                margin-top: 5px;
-                
-                .pButton {
-                    width: 70px;
-                    padding: 5px;
-                    margin-right: 2px;
+
+            .wdmDiv {
+                height: 30px;
+                line-height: 30px;
+                padding: 10px 0;
+                font-size: 16pt;
+                font-weight: bold;
+                border-bottom: solid 1px black;
+        
+                span {
+                    margin-right: 5px;
+                }
+        
+                .wdmButton {
+                    display: inline-block;
+                    height: 30px;
+                    vertical-align: top;
+                }
+            }
+        
+            .player {
+                width: 250px;
+                padding: 5px;
+                margin-left: auto;
+                margin-right: 0;
+        
+                .playerButtons {
+                    margin-top: 5px;
+                    
+                    .pButton {
+                        width: 70px;
+                        padding: 5px;
+                        margin-right: 2px;
+                    }
                 }
             }
         }
     }
     
     #townDiv {
-        margin-top: 200px;
 
         .townShop {
             width: 800px;
@@ -438,7 +462,6 @@
     }
 
     #worldDiv {
-        margin-top: 200px;
 
         .worldDungeonDiv {
             margin: 5px 5px 5px 0;
@@ -494,7 +517,6 @@
     }
 
     #dungeonDiv {
-        margin-top: 200px;
 
         .dungeonDeckContainer {
             @include noSelect();
@@ -546,6 +568,23 @@
 
                 .dungeonPlayedCard:first-child {
                     margin-left: 0;
+                }
+            }
+        }
+
+        .playersSection {
+
+            .activePlayerContainer {
+
+                .activePlayerTitle {
+                    font-size: 15pt;
+                    font-weight: bold;
+                }
+
+                .statsContainer {
+                    border: solid 1px black;
+                    width: 100px;
+                    padding: 2px;
                 }
             }
         }

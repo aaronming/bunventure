@@ -17,6 +17,9 @@ window.onload = function() {
     var StatsDataIndex = function(index) { return index * 5; }
     var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 19) + 8; }
 
+    var useHardData = 1;
+    var debug = 1;
+
     function MyApp() {
         var self = this;
 
@@ -60,9 +63,6 @@ window.onload = function() {
         /**
          * DATA INITIALIZATION
          */
-
-        var useHardData = 1;
-        var debug = 0;
 
         function loadStaticData() {
             var sheetData = new SheetData();
@@ -324,6 +324,26 @@ window.onload = function() {
         /**
          * OTHER FUNCTIONS
          */
+
+        self.playerDivMenuShow = ko.observable(true);
+        self.playerDivMenu = ko.pureComputed(function() {
+            var style = {};
+            if (self.playerDivMenuShow()) {
+                style.right = "0px";
+            } else {
+                style.right = "-260px";
+            }
+            return style;
+        });
+
+        self.playerDivMenuClick = function(ref, ev) {
+            console.log(ev.target.className);
+            if (ev.target.className == "playerLeft" ||
+                ev.target.className == "playerDiv" || 
+                ev.target.className == "playerMenu") {
+                self.playerDivMenuShow(!self.playerDivMenuShow());
+            }
+        }
 
         self.addWDM = function(val) {
             var wdm = self.WDM();

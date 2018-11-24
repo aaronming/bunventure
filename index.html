@@ -95,29 +95,34 @@
         </div>
 
         <div id="playDiv" class="pageDiv" data-bind="visible: isPlayPhase">
-            <div class="playerDiv">
-                <div class="wdmDiv">
-                    WORLD DIFFICULTY METER: <span data-bind="text: WDM"></span>
-                    <button class="wdmButton" data-bind="text: '+', click: function() { addWDM(1); }"></button>
-                    <button class="wdmButton" data-bind="text: '-', click: function() { addWDM(-1); }"></button>
+            <div class="playerDiv" data-bind="style: playerDivMenu, click: playerDivMenuClick">
+                <div class="playerLeft">
+                    <div class="playerMenu">CONTROLS</div>
                 </div>
-                <div data-bind="foreach: players">
-                    <div class="player">
-                        <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
-                        <div class="playerLevel">Level:
-                            <span data-bind="text: $data.level"></span>
-                            <button class="pDeltaButton" data-bind="text: '+', click: $data.levelUp"></button>
-                            <button class="pDeltaButton" data-bind="text: '-', click: $data.levelDown"></button>
-                        </div>
-                        <div class="playerGold">Gold: 
-                            <span data-bind="text: $data.gold"></span>
-                            <button class="pDeltaButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
-                            <button class="pDeltaButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
-                        </div>
-                        <div class="playerButtons">
-                            <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
-                            <button class="pButton" data-bind="text: 'Deck', click: function() { $parent.showDeckModal($index) }">
-                            <button class="pButton" data-bind="text: 'Items', click: function() { $parent.showItemModal($index) }">
+                <div class="playerRight">
+                    <div class="wdmDiv">
+                        WORLD METER: <span data-bind="text: WDM"></span>
+                        <button class="wdmButton" data-bind="text: '+', click: function() { addWDM(1); }"></button>
+                        <button class="wdmButton" data-bind="text: '-', click: function() { addWDM(-1); }"></button>
+                    </div>
+                    <div class="plyerContainer" data-bind="foreach: players">
+                        <div class="player">
+                            <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                            <div class="playerLevel">Level:
+                                <span data-bind="text: $data.level"></span>
+                                <button class="pDeltaButton" data-bind="text: '+', click: $data.levelUp"></button>
+                                <button class="pDeltaButton" data-bind="text: '-', click: $data.levelDown"></button>
+                            </div>
+                            <div class="playerGold">Gold: 
+                                <span data-bind="text: $data.gold"></span>
+                                <button class="pDeltaButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
+                                <button class="pDeltaButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
+                            </div>
+                            <div class="playerButtons">
+                                <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
+                                <button class="pButton" data-bind="text: 'Deck', click: function() { $parent.showDeckModal($index) }">
+                                <button class="pButton" data-bind="text: 'Items', click: function() { $parent.showItemModal($index) }">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -234,13 +239,32 @@
                     </div>
                 </div>
                 <div class="playersSection">
-                    <div class="activePlayerContainer"></div>
+                    <div class="activePlayerContainer">
+                        <div class="activePlayerTitle">Current Player: <span data-bind="text: $data.playerTurn"></span></div>
+                        
+                        <div class="activePlayer" data-bind="with: $data.activePlayer">
+                            <div class="statsContainer">
+                                <div class="statsImage"></div>
+                                <div class="statsStats">
+                                    <div>HP: <span data-bind="text: curHP"></span>/<span data-bind="text: stats.hp"></span></div>
+                                    <div>ATK: <span class="sStatValue" data-bind="text: stats.attack"></span></div>
+                                    <div>DEF: <span class="sStatValue" data-bind="text: stats.defense"></span></div>
+                                    <div>AP: <span class="sStatValue" data-bind="text: stats.ap"></span></div>
+                                    <div>HAND: <span class="sStatValue" data-bind="text: stats.hand"></span></div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
                     <div class="playerContainer">
                         <div data-bind="foreach: $data.players">
                             <div data-bind="text: $data.myClass"></div>
                         </div>
                     </div>
                 </div>
+                
+                <button class="phaseButton" data-bind="text: 'Return to Town', click: $parent.onTownPhase"></button>
             </div>
         </div>
     </body>

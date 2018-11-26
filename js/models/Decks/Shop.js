@@ -1,11 +1,12 @@
 import { Deckable } from './Deckable.js';
 import { SkillCard } from '../Cards/SkillCard.js';
 
-export function Shop(shopData) {
+export function Shop(shopData, cardCount) {
     Deckable.call(this);
     var self = this;
 
     var shopCardCount = 12;
+    self.cardCount = cardCount;
     self.shopCards = ko.observableArray([]);
     self.deck = ko.observableArray([]);
     self.discard = ko.observableArray([]);
@@ -29,7 +30,8 @@ export function Shop(shopData) {
             var shopCard = shopCards[i];
             var count = shopCard.Count;
             for (var j = 0; j < count; j++) {
-                deck.push(new SkillCard(shopCard));
+                deck.push(new SkillCard(shopCard, self.cardCount));
+                self.cardCount += 1;
             }
         }
         deck = self.shuffleDeck(deck);
@@ -40,7 +42,7 @@ export function Shop(shopData) {
     self.replenishShop = function() {
         self.addCards(self.shopCards(), self.discard);
         if (self.deck().length < shopCardCount) {
-            var discarded = self.shuffleDeck(self.discard());
+            var discarded = self.shuffleDeck(self.discard);
             self.addCards(discarded, self.deck);
             self.discard([]);
         }
@@ -56,35 +58,31 @@ export function Shop(shopData) {
         self.playerDeck = ko.observableArray((Array.from(self.playerRef.shopSkills())));
     }
 
-    self.buySkill = function(tech, ev, index) {
-        self.addCard(tech, self.buyDeck);
-        self.buyDeckCost(self.buyDeckCost() - parseInt(tech.price));
-        self.availShopCards.splice(index(), 1);
+    self.buySkill = function(tech, ev) {
+        var card = self.moveCard(tech, self.availShopCards, self.buyDeck);
+        if (card) self.buyDeckCost(self.buyDeckCost() - parseInt(card.price));
     }
 
-    self.unbuySkill = function(tech, ev, index) {
-        self.addCard(tech, self.availShopCards);
-        self.buyDeckCost(self.buyDeckCost() + parseInt(tech.price));
-        self.buyDeck.splice(index(), 1);
+    self.unbuySkill = function(tech, ev) {
+        var card = self.moveCard(tech, self.buyDeck, self.availShopCards);
+        if (card) self.buyDeckCost(self.buyDeckCost() + parseInt(card.price));
     }
 
-    self.sellSkill = function(tech, ev, index) {
-        self.addCard(tech, self.sellDeck);
-        self.sellDeckCost(self.sellDeckCost() + Math.floor(parseInt(tech.price)/2));
-        self.playerDeck.splice(index(), 1);
+    self.sellSkill = function(tech, ev) {
+        var card = self.moveCard(tech, self.playerDeck, self.sellDeck);
+        if (card) self.sellDeckCost(self.sellDeckCost() + Math.floor(parseInt(card.price)/2));
     }
 
-    self.unsellSkill = function(tech, ev, index) {
-        self.addCard(tech, self.playerDeck);
-        self.sellDeckCost(self.sellDeckCost() - Math.floor(parseInt(tech.price)/2));
-        self.sellDeck.splice(index(), 1);
+    self.unsellSkill = function(tech, ev) {
+        var card = self.moveCard(tech, self.sellDeck, self.playerDeck);
+        if (card) self.sellDeckCost(self.sellDeckCost() - Math.floor(parseInt(card.price)/2));
     }
 
     self.confirmTransaction = function() {
         self.shopCards(Array.from(self.availShopCards()));
         self.addCards(self.buyDeck(), self.playerDeck);
         self.discard(self.discard().concat(self.sellDeck()));
-        return self.playerDeck();
+        self.playerRef.shopSkills(self.playerDeck());
     }
 
     function reset() {

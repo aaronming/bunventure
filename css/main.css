@@ -38,6 +38,10 @@
   background-color: #465183;
 }
 
+body {
+  background-color: #464646;
+}
+
 #loaderDiv {
   position: absolute;
   top: 50%;
@@ -429,6 +433,8 @@
 
 #playDiv .playerDiv .playerRight {
   display: inline-block;
+  padding-left: 5px;
+  background-color: #9ad9f1;
 }
 
 #playDiv .playerDiv .playerRight .wdmDiv {
@@ -641,6 +647,24 @@
   margin-left: 0;
 }
 
+#playDiv #dungeonDiv .playersSection {
+  height: 500px;
+  background-color: #c7e1ff;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer {
+  float: left;
+  vertical-align: top;
+  padding: 5px;
+  height: 490px;
+  background-color: orange;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer {
+  display: inline-block;
+  padding: 10px;
+}
+
 #playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayerTitle {
   font-size: 15pt;
   font-weight: bold;
@@ -650,5 +674,55 @@
   border: solid 1px black;
   width: 100px;
   padding: 2px;
+  margin-bottom: 10px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection {
+  height: 150px;
+  margin-bottom: 5px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks {
+  display: inline-block;
+  vertical-align: top;
+  margin-right: 10px;
+  border-right: solid 1px black;
+  width: 175px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDiscardBlock, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDeckBlock {
+  width: 75px;
+  height: 100px;
+  border: 1px black solid;
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDiscardButtons, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDeckButtons {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDiscardButtons button, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDeckButtons button {
+  display: block;
+  margin-bottom: 5px;
+  width: 70px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays {
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays .playerPlay {
+  padding: 10px 0;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays .playerCardContainer {
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays .playerCardContainer .playerCard {
+  width: 75px;
+  height: 100px;
+  border: solid 1px black;
 }
 /*# sourceMappingURL=main.css.map */

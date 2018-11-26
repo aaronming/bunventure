@@ -85,7 +85,7 @@
                         <h4>Basic cards</h4>
                         <ul class="shopDeck" data-bind="foreach: $parent.initialShopCards">
                             <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                            click: $parent.buySkill"></li>
+                                click: function(tech, ev) { $parents[1].setupAddSkill(tech, ev, $index, $parent.index) }"></li>
                         </ul>
                     </div>
                 </div>
@@ -239,7 +239,17 @@
                     </div>
                 </div>
                 <div class="playersSection">
-                    <div class="activePlayerContainer">
+                    <div class="playersContainer">
+                        <div data-bind="foreach: $data.players">
+                            <div class="playerContainer">
+                                <div class="playerTitle"><span data-bind="text: $data.index"></span> <span data-bind="text: $data.myClass"></span></div>
+                                <ul class="playerPlayedCards" data-bind="foreach: $data.playedCards">
+                                    <li data-bind="text: $data.name"></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!--
+                    --><div class="activePlayerContainer">
                         <div class="activePlayerTitle">Current Player: <span data-bind="text: $data.playerTurn"></span></div>
                         
                         <div class="activePlayer" data-bind="with: $data.activePlayer">
@@ -253,13 +263,57 @@
                                     <div>HAND: <span class="sStatValue" data-bind="text: stats.hand"></span></div>
                                 </div>
                             </div>
-                        </div>
 
-
-                    </div>
-                    <div class="playerContainer">
-                        <div data-bind="foreach: $data.players">
-                            <div data-bind="text: $data.myClass"></div>
+                            <div class="playerPlayContainer">
+                                <div class="playerDecks">
+                                    <div class="playerDiscard playerSection">
+                                        <div>DISCARD</div>
+                                        <div class="playerDiscardBlock">
+                                            <span data-bind="text: $data.activeDiscard().length"></span>
+                                        </div>
+                                        <div class="playerDiscardButtons">
+                                            <!-- <button>Draw</button>
+                                            <button>To Deck</button> -->
+                                            <button>Search</button>
+                                        </div>
+                                    </div>
+                                    <div class="playerDeck playerSection">
+                                        <div>DECK</div>
+                                        <div class="playerDeckBlock">
+                                            <span data-bind="text: $data.activeDeck().length"></span>
+                                        </div>
+                                        <div class="playerDeckButtons">
+                                            <button data-bind="click: $data.drawCard">Draw</button>
+                                            <!-- <button>Discard</button>
+                                            <button>Search</button> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="playerPlays">
+                                    <div class="playerPlay playerSection">
+                                        <div>PLAY</div>
+                                        <div data-bind="foreach: $data.activePlay">
+                                            <div class="playerCardContainer">
+                                                <button data-bind="click: $parent.playCard">Play</button>
+                                                <div class="playerCard">
+                                                    <div class="cardName" data-bind="text: $data.name"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="playerHand playerSection">
+                                        <div>HAND</div>
+                                        <div data-bind="foreach: $data.activeHand">
+                                            <div class="playerCardContainer">
+                                                <button data-bind="click: $parent.playCard">Play</button>
+                                                <div class="playerCard">
+                                                    <div class="cardName" data-bind="text: $data.name"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -344,7 +398,7 @@
                 <h4>Shop</h4>
                 <ul class="shopDeck" data-bind="foreach: availShopCards">
                     <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                    click: function(tech, ev) { $parent.buySkill(tech, ev, $index)  }"></li>
+                    click: $parent.buySkill"></li>
                 </ul>
             </div>
             <div class="tradeDiv">
@@ -355,7 +409,7 @@
                     </div>
                     <ul class="buyDeck" data-bind="foreach: buyDeck">
                         <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                        click: function(tech, ev) { $parent.unbuySkill(tech, ev, $index) }"></li>
+                        click: $parent.unbuySkill"></li>
                     </ul>
                 </div>
                 <div class="setupDeck">
@@ -365,7 +419,7 @@
                     </div>
                     <ul class="sellDeck" data-bind="foreach: sellDeck">
                         <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                        click: function(tech, ev) { $parent.unsellSkill(tech, ev, $index) }"></li>
+                        click: $parent.unsellSkill"></li>
                     </ul>
                 </div>
             </div>
@@ -373,7 +427,7 @@
                 <h4>Deck</h4>
                 <ul class="playerDeck" data-bind="foreach: playerDeck">
                     <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                    click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
+                    click: $parent.sellSkill"></li>
                 </ul>
             </div>
             <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm', 
@@ -390,7 +444,7 @@
                 <h4>Tech Skills</h4>
                 <ul class="shopDeck" data-bind="foreach: availTechCards">
                     <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                    click: function(tech, ev) { $parent.buySkill(tech, ev, $index)  }"></li>
+                    click: $parent.buySkill"></li>
                 </ul>
             </div>
             <div class="tradeDiv">
@@ -401,7 +455,7 @@
                     </div>
                     <ul class="buyDeck" data-bind="foreach: buyDeck">
                         <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                        click: function(tech, ev) { $parent.unbuySkill(tech, ev, $index) }"></li>
+                        click: $parent.unbuySkill"></li>
                     </ul>
                 </div>
                 <div class="setupDeck">
@@ -411,7 +465,7 @@
                     </div>
                     <ul class="sellDeck" data-bind="foreach: sellDeck">
                         <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                        click: function(tech, ev) { $parent.unsellSkill(tech, ev, $index) }"></li>
+                        click: $parent.unsellSkill"></li>
                     </ul>
                 </div>
             </div>
@@ -419,7 +473,7 @@
                 <h4>Deck</h4>
                 <ul class="playerDeck" data-bind="foreach: playerTechCards">
                     <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                        click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
+                        click: $parent.sellSkill"></li>
                 </ul>
             </div>
             <button class="phaseButton confirmTransaction" data-bind="text: 'Confirm', 
@@ -442,14 +496,14 @@
                 <h4>Forget</h4>
                 <ul class="shopDeck" data-bind="foreach: sellDeck">
                     <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                    click: function(tech, ev) { $parent.unsellSkill(tech, ev, $index) }"></li>
+                    click: $parent.unsellSkill"></li>
                 </ul>
             </div>
             <div class="transDiv setupDeck">
                 <h4>Learned Skills</h4>
                 <ul class="shopDeck" data-bind="foreach: playerTechCards">
                     <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
-                    click: function(tech, ev) { $parent.sellSkill(tech, ev, $index) }"></li>
+                    click: $parent.sellSkill"></li>
                 </ul>
             </div>
             <button class="phaseButton confirmTransaction" data-bind="text: 'Learn random skill', 

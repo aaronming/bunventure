@@ -36,6 +36,8 @@ window.onload = function() {
         self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue"]; //, "Wizard", "Bard", "Druid", "Monk", "Paladin"];
         self.classObjects = ko.observableArray();
 
+        self.cardCount = 0;
+        self.generalCards;
         self.initialShopCards = ko.observable();
         self.shop = ko.observable();
         self.oracle = ko.observable();
@@ -96,16 +98,14 @@ window.onload = function() {
                 self.onSetupPhase();
                 self.players().forEach(function(ply) {
                     ply.learnTech(ply.techDeck()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
-                    ply.buySkill(self.initialShopCards()[0]);
+                    var card = self.initialShopCards()[0];
+                    var ret0 = function() {return 0;};
+                    self.setupAddSkill(card, null, ret0, ply.index);
+                    self.setupAddSkill(card, null, ret0, ply.index);
+                    self.setupAddSkill(card, null, ret0, ply.index);
+                    self.setupAddSkill(card, null, ret0, ply.index);
+                    self.setupAddSkill(card, null, ret0, ply.index);
+                    self.setupAddSkill(card, null, ret0, ply.index);
                 });
                 self.onTownPhase();
                 self.onWorldPhase();
@@ -151,20 +151,11 @@ window.onload = function() {
                 self.isLoading(true);
     
                 // Setup basic cards
-                var generalCards = SkillsData.slice(1, 3);
-                var genSkillCards = generalCards.map(function(skill) {
-                    return new SkillCard(skill);
+                self.generalCards = SkillsData.slice(1, 3);
+                var genSkillCards = self.generalCards.map(function(skill, index) {
+                    return new SkillCard(skill, -1);
                 });
                 self.initialShopCards(genSkillCards);
-                
-                // Setup shops
-                self.shop(new Shop(ShopData));
-                self.oracle(new Oracle());
-
-                // Setup dungeon
-                var monsterData = MonstersData.map(function(mon) { return new MonsterCard(mon);});
-                // var activitiesData
-                self.overworld(new Overworld(monsterData, ActivitiesData));
     
                 // Setup players
                 var myPlayers = [];
@@ -192,14 +183,25 @@ window.onload = function() {
         }
 
         self.onTownPhase = function() {
+            self.shop(new Shop(ShopData, self.cardCount));
+            self.oracle(new Oracle());
+
             self.phase(Phases.town);
         }
 
         self.onWorldPhase = function() {
+            // Setup dungeon
+            var monsterData = MonstersData.map(function(mon) { return new MonsterCard(mon);});
+            // var activitiesData
+            self.overworld(new Overworld(monsterData, ActivitiesData));
+
             self.phase(Phases.world);
         }
 
         self.onDungeonPhase = function() {
+            self.players().map(function(player) {
+                player.prepareDeckForBattle();
+            });
             self.phase(Phases.dungeon);
         }
 
@@ -260,37 +262,29 @@ window.onload = function() {
         }
 
         /**
-         * TOWN FUNCTIONS
+         * PHASE FUNCTIONS
          */
-         self.confirmMarketTransaction = function() {
-            var shop = self.shop();
-            var updatedPlayerCards = shop.confirmTransaction();
-            var player = shop.playerRef;
-            player.shopSkills(updatedPlayerCards);
+        self.setupAddSkill = function(tech, ev, index, playerIndex) {
+            var player = self.players()[playerIndex - 1];
+            var cardObject = self.generalCards[index()];
+            var card = new SkillCard(cardObject, self.cardCount);
+            self.cardCount += 1;
+
+            player.buySkill(card);
+        }
+
+        self.confirmMarketTransaction = function() {
+            self.shop().confirmTransaction();
             hideModal();
-         }
+        }
 
-         self.confirmOracleTransaction = function() {
-            var oracle = self.oracle();
-            var player = oracle.playerRef;
-
-            // forget skills
-            var sellDeck = oracle.sellDeck();
-            for (var i = 0; i < sellDeck.length; i++) {
-                var skill = sellDeck[i];
-                player.removeSkill(skill);
-            }
-            // learn skills
-            var buyDeck = oracle.buyDeck();
-            for (var i = 0; i < buyDeck.length; i++) {
-                var skill = buyDeck[i];
-                player.learnTech(skill);
-            }
-
+        self.confirmOracleTransaction = function() {
+            self.oracle().confirmTransaction();
             hideModal();
-         }
+        }
 
-         self.confirmOracleRandomTransaction = function() {
+        self.confirmOracleRandomTransaction = function() {
+            // TODO: Refactor into Oracle
             var oracle = self.oracle();
             var player = oracle.playerRef;
 
@@ -303,11 +297,11 @@ window.onload = function() {
                     var skill = sellDeck[i];
                     player.removeSkill(skill);
                 }
-                player.learnTech(newSkill)
+                player.learnTech(newSkill);
 
                 hideModal();
             }
-         }
+        }
 
         /**
          * WORLD/DUNGEON FUNCTIONS
@@ -337,7 +331,6 @@ window.onload = function() {
         });
 
         self.playerDivMenuClick = function(ref, ev) {
-            console.log(ev.target.className);
             if (ev.target.className == "playerLeft" ||
                 ev.target.className == "playerDiv" || 
                 ev.target.className == "playerMenu") {

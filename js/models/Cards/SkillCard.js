@@ -1,6 +1,7 @@
-export function SkillCard(sObj) {
+export function SkillCard(sObj, id) {
     var self = this;
     
+    self.id = id;
     self.myClass = sObj.Class || "General";
     self.level = parseInt(sObj.Level);
     self.cost = parseInt(sObj.Cost || sObj.AP);

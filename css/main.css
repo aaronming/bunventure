@@ -38,6 +38,10 @@
   background-color: #465183;
 }
 
+body {
+  background-color: #464646;
+}
+
 #loaderDiv {
   position: absolute;
   top: 50%;
@@ -82,7 +86,7 @@
 }
 
 .modal {
-  z-index: 1;
+  z-index: 2;
   position: fixed;
   top: 0px;
   left: 0px;
@@ -104,7 +108,7 @@
 
 .modal .modalContainer .statsModalDiv {
   top: 35%;
-  height: 310px;
+  height: 315px;
   margin-top: -155px;
   margin-left: -250px;
   overflow-y: auto;
@@ -395,50 +399,78 @@
 
 #playDiv .playerDiv {
   position: fixed;
-  top: 0;
-  height: 175px;
-  background-color: white;
-  width: 100%;
-  padding-bottom: 15px;
+  top: 10px;
+  background-color: #a7dcf1;
+  z-index: 1;
+  border: solid 1px black;
+  border-right: none;
+  border-radius: 10px 0 0 10px;
+  -webkit-transition: right 1s;
+  transition: right 1s;
+  -webkit-transition-timing-function: ease-out;
+          transition-timing-function: ease-out;
 }
 
-#playDiv .playerDiv .wdmDiv {
+#playDiv .playerDiv .playerLeft {
+  -webkit-writing-mode: vertical-rl;
+      -ms-writing-mode: tb-rl;
+          writing-mode: vertical-rl;
+  text-orientation: mixed;
+  display: inline-block;
+  vertical-align: top;
+  font-size: 20pt;
+  width: 40px;
+  height: auto;
+}
+
+#playDiv .playerDiv .playerLeft .playerMenu {
+  position: absolute;
+  top: 50%;
+  left: 5px;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+#playDiv .playerDiv .playerRight {
+  display: inline-block;
+  padding-left: 5px;
+  background-color: #9ad9f1;
+}
+
+#playDiv .playerDiv .playerRight .wdmDiv {
   height: 30px;
   line-height: 30px;
-  margin: 10px 0;
+  padding: 10px 0;
   font-size: 16pt;
   font-weight: bold;
+  border-bottom: solid 1px black;
 }
 
-#playDiv .playerDiv .wdmDiv span {
+#playDiv .playerDiv .playerRight .wdmDiv span {
   margin-right: 5px;
 }
 
-#playDiv .playerDiv .wdmDiv .wdmButton {
+#playDiv .playerDiv .playerRight .wdmDiv .wdmButton {
   display: inline-block;
   height: 30px;
   vertical-align: top;
 }
 
-#playDiv .playerDiv .player {
-  display: inline-block;
+#playDiv .playerDiv .playerRight .player {
   width: 250px;
-  background-color: #a7dcf1;
   padding: 5px;
+  margin-left: auto;
+  margin-right: 0;
 }
 
-#playDiv .playerDiv .player .playerButtons {
+#playDiv .playerDiv .playerRight .player .playerButtons {
   margin-top: 5px;
 }
 
-#playDiv .playerDiv .player .playerButtons .pButton {
+#playDiv .playerDiv .playerRight .player .playerButtons .pButton {
   width: 70px;
   padding: 5px;
   margin-right: 2px;
-}
-
-#playDiv #townDiv {
-  margin-top: 200px;
 }
 
 #playDiv #townDiv .townShop {
@@ -497,10 +529,6 @@
   background-color: #996ba7;
 }
 
-#playDiv #worldDiv {
-  margin-top: 200px;
-}
-
 #playDiv #worldDiv .worldDungeonDiv {
   margin: 5px 5px 5px 0;
   display: inline-block;
@@ -553,10 +581,6 @@
   background-color: #cfcfcf;
 }
 
-#playDiv #dungeonDiv {
-  margin-top: 200px;
-}
-
 #playDiv #dungeonDiv .dungeonDeckContainer {
   -webkit-touch-callout: none;
   /* iOS Safari */
@@ -570,7 +594,7 @@
   user-select: none;
   /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-  height: 300px;
+  height: 280px;
 }
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck {
@@ -621,5 +645,163 @@
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:first-child {
   margin-left: 0;
+}
+
+#playDiv #dungeonDiv .playersSection {
+  background-color: white;
+  height: 325px;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  width: 65px;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer {
+  margin: 5px;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer .playerTitle {
+  border-radius: 50px;
+  background-color: #ABDAFC;
+  border: solid 2px #ABDAFC;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer .playerTitle span {
+  text-align: center;
+  line-height: 50px;
+  display: block;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer .selectedPlayerContainer {
+  border: solid 2px black;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer {
+  display: inline-block;
+  height: 100%;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  padding: 0 5px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer .activePlayerTitle {
+  margin-top: 10px;
+  font-size: 15pt;
+  font-weight: bold;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer .statsContainer {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer .statsContainer .statsImage {
+  background-color: white;
+  width: 125px;
+  height: 100px;
+  margin-bottom: 10px;
+  border: solid 1px black;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer {
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playTopContainer {
+  padding: 5px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playTopContainer .playTopButton {
+  padding: 5px;
+  width: 135px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection {
+  height: 138px;
+  position: relative;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playSectionOverlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent {
+  padding-left: 10px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playSectionTitle {
+  padding: 5px 0;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playerDiscardBlock, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playerDeckBlock {
+  width: 75px;
+  height: 100px;
+  border: 1px black solid;
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #discardOverlay {
+  background-color: rgba(129, 244, 225, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #deckOverlay {
+  background-color: rgba(86, 203, 249, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #playOverlay {
+  background-color: rgba(255, 114, 159, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #handOverlay {
+  background-color: rgba(211, 196, 209, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playLeftContainer {
+  display: inline-block;
+  vertical-align: top;
+  border-right: solid 1px black;
+  width: 175px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playLeftContainer .playerDeckButtons {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playLeftContainer .playerDeckButtons button {
+  display: block;
+  margin-bottom: 5px;
+  width: 70px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer {
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerPlay {
+  min-width: 300px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerCardContainer {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerCardContainer .playerCard {
+  width: 75px;
+  height: 100px;
+  border: solid 1px black;
 }
 /*# sourceMappingURL=main.css.map */

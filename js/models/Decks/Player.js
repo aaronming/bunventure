@@ -11,27 +11,26 @@ export function Player(index, playerClass, stats, skills) {
     self.classSkills = skills;
     self.level = ko.observable(0);
     self.stats = {};
-    self.skillBook = Array.from(skills);
-    self.techDeck = ko.observableArray([]);
-    self.passives = ko.observableArray([]);
-    self.learnedTech = ko.observableArray([]);
-    self.shopSkills = ko.observableArray([]);
-    self.playDeck = ko.observableArray([]);
-    self.hand = ko.observableArray([]);
-    self.discard = ko.observableArray([]);
     self.gold = ko.observable(10);
     self.curHP = ko.observable(0);
     self.inventory = ko.observableArray([]);
 
+    // Deck
+    self.skillBook = Array.from(skills); // Entire skills
+    self.techDeck = ko.observableArray([]); // Available techniques to learn
+    self.passives = ko.observableArray([]); // Learned Passives
+    self.learnedTech = ko.observableArray([]); // Learn techniques
+    self.shopSkills = ko.observableArray([]); // Bought skills from the shop (ie general)
+
+    // Active
+    self.activeDeck = ko.observableArray([]); // Player deck
+    self.activeHand = ko.observableArray([]); // Player hand
+    self.activePlay = ko.observableArray([]); // Player played cards
+    self.activeDiscard = ko.observableArray([]); // Player discard
+    self.activeExile = ko.observableArray([]); // Player exile
+
     var updateStats = function() {
         self.stats = new Stats(self.classStats[self.level() - 1]);
-    }
-
-    var updateTechDeck = function() {
-        while (self.skillBook.length != 0 && self.skillBook[0].level == self.level()) {
-            var skill = self.skillBook.shift();
-            self.techDeck.push(skill);
-        }
     }
 
     self.allSkills = ko.pureComputed(function() {
@@ -89,35 +88,6 @@ export function Player(index, playerClass, stats, skills) {
         
     }
 
-    self.prepareDeckForBattle = function() {
-        self.playDeck(self.deck());
-        self.shuffleDeck(self.playDeck());
-        self.hand([]);
-        self.discard([]);
-    }
-
-    self.drawCard = function(num) {
-        var pDeck = self.playDeck();
-        var dDeck = self.discard();
-        var hDeck = self.hand();
-
-        if (pDeck.length < num) {
-            self.shuffleDeck(dDeck);
-            self.playDeck(pDeck.concat(dDeck));
-            self.discard([]);
-        }
-
-        self.hand(hDeck.concat(self.playDeck.splice(0, num)));
-    }
-
-    self.discardCard = function(card) {
-        self.discard.push(self.hand.remove(card));
-    }
-
-    self.discardHand = function() {
-        self.discard.push(self.hand.removeAll());
-    }
-
     self.heal = function(amount) {
         var maxHP = self.stats.hp;
         amount = amount == undefined ? maxHP : amount;
@@ -131,9 +101,22 @@ export function Player(index, playerClass, stats, skills) {
         var newLevel = self.level() + amount;
         if (newLevel > 5) newLevel = 5;
         else if (newLevel < 1) newLevel = 1;
+
+        if (amount > 0) {
+            while (self.skillBook.length != 0 && self.skillBook[0].level == newLevel) {
+                var skill = self.skillBook.shift();
+                self.techDeck.push(skill);
+            }
+        } else {
+            while (self.techDeck().length != 0 && self.techDeck()[self.techDeck().length - 1].level == self.level()) {
+                var skill = self.techDeck.pop();
+                self.skillBook.unshift(skill);
+            }
+
+        }
+
         self.level(newLevel);
         updateStats();
-        updateTechDeck();
     }
 
     self.levelUp = function() {
@@ -156,4 +139,89 @@ export function Player(index, playerClass, stats, skills) {
 
     self.levelUp();
     self.heal();
+
+    /**
+     * ACTIVE PLAY SECTION
+     */
+
+    self.prepareDeckForBattle = function() {
+        self.activeDeck(Array.from(self.deck()));
+        self.shuffleDeck(self.activeDeck);
+        self.activePlay([]);
+        self.activeHand([]);
+        self.activeDiscard([]);
+        self.activeExile([]);
+    }
+
+    // generic send function
+    var parseDeckType = function(deckString) {
+        var deck = null;
+        if (deckString == "hand") deck = self.activeHand;
+        else if (deckString == "play") deck = self.activePlay;
+        else if (deckString == "deck") deck = self.activeDeck;
+        else if (deckString == "discard") deck = self.activeDiscard;
+
+        return deck;
+    }
+
+    self.sendCard = function(card, from, to) {
+        var fromDeck = parseDeckType(from);
+        var toDeck = parseDeckType(to);
+
+        if (card && fromDeck && toDeck) {
+            self.moveCard(card, fromDeck, toDeck);
+        }
+    }
+    
+    // deck to hand
+    self.drawCard = function() {
+        // replenish deck
+        if (self.activeDeck().length < 1) {
+            if (self.activeDiscard().length > 0) {
+                self.replenishDeck();
+                self.shuffleDeck(self.activeDeck);
+            }
+        }
+        self.moveCard(null, self.activeDeck, self.activeHand);
+    }
+    // deck to play
+    // deck to discard
+    self.millCard = function() {
+        if (self.activeDeck().length > 0) {
+
+        }
+    }
+
+    // hand to deck
+    // hand to play
+    self.playCard = function(card) {
+        self.moveCard(card, self.activeHand, self.activePlay)
+    }
+    // hand to discard
+    self.discardCard = function(card) {
+        self.moveCard(card, self.activeHand, self.activeDiscard);
+    }
+    self.discardHand = function() {
+        self.moveCards(self.activeHand, self.activeDiscard);
+    }
+
+    // play to hand
+    // play to deck
+    // play to discard
+    self.clearPlayCard = function(card) {
+        self.moveCard(card, self.activePlay, self.activeDiscard);
+    }
+    self.clearPlayCards = function() {
+        self.moveCards(self.activePlay, self.activeDiscard);
+    }
+
+    // discard to hand
+    // discard to deck
+    self.replenishCard = function(card) {
+        self.moveCard(card, self.activeDiscard, self.activeDeck);
+    }
+    self.replenishDeck = function() {
+        self.moveAllCards(self.activeDiscard, self.activeDeck);
+    }
+    // discard to play
 };

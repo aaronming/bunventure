@@ -17,8 +17,8 @@ window.onload = function() {
     var StatsDataIndex = function(index) { return index * 5; }
     var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 19) + 8; }
 
-    var useHardData = 1;
-    var debug = 1;
+    var useHardData = 0;
+    var debug = 0;
 
     function MyApp() {
         var self = this;

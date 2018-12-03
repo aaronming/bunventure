@@ -38,11 +38,11 @@ function Dungeon(boss, deck) {
     self.deck = ko.observableArray(deck);
     self.discard = ko.observableArray([]);
 
-    self.playerTurn = 1;
+    self.playerTurn = ko.observable(1);
     self.players = ko.observableArray([]);
 
     self.activePlayer = ko.pureComputed(function() {
-        return self.players()[self.playerTurn - 1];
+        return self.players()[self.playerTurn() - 1];
     });
 
     self.drawDungeon = function() {
@@ -55,6 +55,17 @@ function Dungeon(boss, deck) {
         if (self.discard().length > 0 ) {
             self.deck.push(self.discard.pop());
         }
+    }
+
+    self.selectedPlayerCss = function(index) {
+        return index() == (self.playerTurn() - 1);
+    }
+
+    self.nextPlayer = function() {
+        var nextPlayer = self.playerTurn() + 1;
+        if (nextPlayer > self.players().length) nextPlayer = 1;
+
+        self.playerTurn(nextPlayer);
     }
 }
 

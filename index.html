@@ -113,6 +113,8 @@
                                 <button class="pDeltaButton" data-bind="text: '+', click: $data.levelUp"></button>
                                 <button class="pDeltaButton" data-bind="text: '-', click: $data.levelDown"></button>
                             </div>
+                            <div>Cur HP: <span data-bind="text: curHP"></span></span></div>
+                            <div>Max HP: <span data-bind="text: $data.stats.hp"></span></div>
                             <div class="playerGold">Gold: 
                                 <span data-bind="text: $data.gold"></span>
                                 <button class="pDeltaButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
@@ -242,17 +244,21 @@
                     <div class="playersContainer">
                         <div data-bind="foreach: $data.players">
                             <div class="playerContainer">
-                                <div class="playerTitle"><span data-bind="text: $data.index"></span> <span data-bind="text: $data.myClass"></span></div>
-                                <ul class="playerPlayedCards" data-bind="foreach: $data.playedCards">
+                                <div class="playerTitle" data-bind="css: { selectedPlayerContainer: $parent.selectedPlayerCss($index)}">
+                                    <span data-bind="text: $data.index"></span>
+                                </div>
+                                <!-- <ul class="playerPlayedCards" data-bind="foreach: $data.playedCards">
                                     <li data-bind="text: $data.name"></li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
+                        <div class="playerContainer">
+                            <div class="playerTitle" data-bind="click: $data.nextPlayer"><span data-bind="text: 'NEXT'"></span></div>
+                        </div>
                     </div><!--
-                    --><div class="activePlayerContainer">
-                        <div class="activePlayerTitle">Current Player: <span data-bind="text: $data.playerTurn"></span></div>
-                        
-                        <div class="activePlayer" data-bind="with: $data.activePlayer">
+                    --><div class="activePlayerContainer" data-bind="with: $data.activePlayer">
+                        <div class="activePlayer">
+                            <div class="activePlayerTitle">Player: <span data-bind="text: $data.index"></span></div>
                             <div class="statsContainer">
                                 <div class="statsImage"></div>
                                 <div class="statsStats">
@@ -263,50 +269,59 @@
                                     <div>HAND: <span class="sStatValue" data-bind="text: stats.hand"></span></div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="playerPlayContainer">
-                                <div class="playerDecks">
-                                    <div class="playerDiscard playerSection">
-                                        <div>DISCARD</div>
-                                        <div class="playerDiscardBlock">
+                        <div class="playerPlayContainer">
+                            <div class="playTopContainer">
+                                <button class="playTopButton">Clean up</button>
+                                <button class="playTopButton">Draw hand</button>
+                            </div>
+                            <div class="playLeftContainer">
+                                <div class="playerDiscard playerSection">
+                                    <div id="discardOverlay" class="playSectionOverlay" data-bind="click: $parents[1].sendCardEnd, visible: $parents[1].sendingCard"></div>
+                                    <div id="discardSection" class="playerSectionContent">
+                                        <div class="playSectionTitle">DISCARD</div>
+                                        <div class="playerDiscardBlock" data-bind="click: $parents[1].showSearchCardModal">
                                             <span data-bind="text: $data.activeDiscard().length"></span>
                                         </div>
-                                        <div class="playerDiscardButtons">
-                                            <!-- <button>Draw</button>
-                                            <button>To Deck</button> -->
-                                            <button>Search</button>
-                                        </div>
                                     </div>
-                                    <div class="playerDeck playerSection">
-                                        <div>DECK</div>
-                                        <div class="playerDeckBlock">
+                                </div>
+                                <div class="playerDeck playerSection">
+                                    <div id="deckOverlay" class="playSectionOverlay" data-bind="click: $parents[1].sendCardEnd, visible: $parents[1].sendingCard"></div>
+                                    <div id="deckSection" class="playerSectionContent">
+                                        <div class="playSectionTitle">DECK</div>
+                                        <div class="playerDeckBlock" data-bind="click: $parents[1].showSearchCardModal">
                                             <span data-bind="text: $data.activeDeck().length"></span>
                                         </div>
                                         <div class="playerDeckButtons">
                                             <button data-bind="click: $data.drawCard">Draw</button>
-                                            <!-- <button>Discard</button>
-                                            <button>Search</button> -->
+                                            <button>Shuffle</button>
+                                            <button>Search</button>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="playerPlays">
-                                    <div class="playerPlay playerSection">
-                                        <div>PLAY</div>
+                            </div><!--
+                            --><div class="playRightContainer">
+                                <div class="playerPlay playerSection">
+                                    <div id="playOverlay" class="playSectionOverlay" data-bind="click: $parents[1].sendCardEnd, visible: $parents[1].sendingCard"></div>
+                                    <div id="playSection" class="playerSectionContent">
+                                        <div class="playSectionTitle">PLAY</div>
                                         <div data-bind="foreach: $data.activePlay">
                                             <div class="playerCardContainer">
-                                                <button data-bind="click: $parent.playCard">Play</button>
-                                                <div class="playerCard">
+                                                <div class="playerCard" data-bind="click: function(ethis, ev) { $parents[2].sendCardStart(ethis, ev, 'play') }">
                                                     <div class="cardName" data-bind="text: $data.name"></div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="playerHand playerSection">
-                                        <div>HAND</div>
+                                </div>
+                                <div class="playerHand playerSection">
+                                    <div id="handOverlay" class="playSectionOverlay" data-bind="click: $parents[1].sendCardEnd, visible: $parents[1].sendingCard"></div>
+                                    <div id="handSection" class="playerSectionContent">
+                                        <div class="playSectionTitle">HAND</div>
                                         <div data-bind="foreach: $data.activeHand">
                                             <div class="playerCardContainer">
-                                                <button data-bind="click: $parent.playCard">Play</button>
-                                                <div class="playerCard">
+                                                <div class="playerCard" data-bind="click: function(ethis, ev) { $parents[2].sendCardStart(ethis, ev, 'hand') }">
                                                     <div class="cardName" data-bind="text: $data.name"></div>
                                                 </div>
                                             </div>

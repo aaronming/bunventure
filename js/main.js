@@ -92,9 +92,11 @@ window.onload = function() {
         function initialize() {
             if (debug) {
                 // Debug skip early states
-                self.playersValue(2);
+                self.playersValue(4);
                 self.p1Class("Barbarian");
                 self.p2Class("Ranger");
+                self.p3Class("Cleric");
+                self.p4Class("Wizard");
                 self.onSetupPhase();
                 self.players().forEach(function(ply) {
                     ply.learnTech(ply.techDeck()[0]);
@@ -312,7 +314,43 @@ window.onload = function() {
             dungeon.players(self.players());
             self.dungeon(dungeon);
             self.onDungeonPhase();
-        } 
+        }
+
+        self.currentActivePlayer = function() {
+            return self.dungeon().activePlayer();
+        }
+
+        self.currentActiveDeck = ko.observable();
+        self.selectedActiveCard = ko.observable();
+        self.selectedCardFrom = null;
+
+        self.sendingCard = ko.pureComputed(function() {
+            return self.selectedActiveCard();
+        });
+
+        self.sendCardStart = function(card, ev, sectionString) {
+            self.selectedCardFrom = sectionString;
+            self.selectedActiveCard(card);
+        }
+
+        self.sendCardEnd = function(overlay, ev) {
+            var overlayId = ev.target.id;
+            var targetString = null;
+            if (overlayId == "discardOverlay") targetString = "discard";
+            else if (overlayId == "deckOverlay") targetString = "deck";
+            else if (overlayId == "playOverlay") targetString = "play";
+            else if (overlayId == "handOverlay") targetString = "hand";
+
+            if (self.selectedCardFrom != targetString) {
+                self.currentActivePlayer().sendCard(self.selectedActiveCard(), self.selectedCardFrom, targetString);
+            }
+            self.selectedCardFrom = null;
+            self.selectedActiveCard(null);
+        }
+
+        self.searchDeck = function() {
+
+        }
 
 
         /**

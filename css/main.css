@@ -108,7 +108,7 @@ body {
 
 .modal .modalContainer .statsModalDiv {
   top: 35%;
-  height: 310px;
+  height: 315px;
   margin-top: -155px;
   margin-left: -250px;
   overflow-y: auto;
@@ -594,7 +594,7 @@ body {
   user-select: none;
   /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-  height: 300px;
+  height: 280px;
 }
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck {
@@ -648,79 +648,158 @@ body {
 }
 
 #playDiv #dungeonDiv .playersSection {
-  height: 500px;
-  background-color: #c7e1ff;
+  background-color: white;
+  height: 325px;
 }
 
 #playDiv #dungeonDiv .playersSection .playersContainer {
-  float: left;
+  display: inline-block;
   vertical-align: top;
-  padding: 5px;
-  height: 490px;
-  background-color: orange;
+  height: 100%;
+  width: 65px;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer {
+  margin: 5px;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer .playerTitle {
+  border-radius: 50px;
+  background-color: #ABDAFC;
+  border: solid 2px #ABDAFC;
+  width: 50px;
+  height: 50px;
+  margin-bottom: 10px;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer .playerTitle span {
+  text-align: center;
+  line-height: 50px;
+  display: block;
+}
+
+#playDiv #dungeonDiv .playersSection .playersContainer .playerContainer .selectedPlayerContainer {
+  border: solid 2px black;
 }
 
 #playDiv #dungeonDiv .playersSection .activePlayerContainer {
   display: inline-block;
-  padding: 10px;
+  height: 100%;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayerTitle {
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer {
+  display: inline-block;
+  vertical-align: top;
+  height: 100%;
+  padding: 0 5px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer .activePlayerTitle {
+  margin-top: 10px;
   font-size: 15pt;
   font-weight: bold;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .statsContainer {
-  border: solid 1px black;
-  width: 100px;
-  padding: 2px;
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer .statsContainer {
+  display: inline-block;
+  vertical-align: top;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .activePlayer .statsContainer .statsImage {
+  background-color: white;
+  width: 125px;
+  height: 100px;
   margin-bottom: 10px;
+  border: solid 1px black;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer {
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playTopContainer {
+  padding: 5px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playTopContainer .playTopButton {
+  padding: 10px;
+  width: 135px;
 }
 
 #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection {
-  height: 150px;
-  margin-bottom: 5px;
+  height: 138px;
+  position: relative;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks {
-  display: inline-block;
-  vertical-align: top;
-  margin-right: 10px;
-  border-right: solid 1px black;
-  width: 175px;
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playSectionOverlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDiscardBlock, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDeckBlock {
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent {
+  padding-left: 10px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playSectionTitle {
+  padding: 5px 0;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playerDiscardBlock, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playerDeckBlock {
   width: 75px;
   height: 100px;
   border: 1px black solid;
   display: inline-block;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDiscardButtons, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDeckButtons {
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #discardOverlay {
+  background-color: rgba(129, 244, 225, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #deckOverlay {
+  background-color: rgba(86, 203, 249, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #playOverlay {
+  background-color: rgba(255, 114, 159, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer #handOverlay {
+  background-color: rgba(211, 196, 209, 0.5);
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playLeftContainer {
+  display: inline-block;
+  vertical-align: top;
+  border-right: solid 1px black;
+  width: 175px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playLeftContainer .playerDeckButtons {
   display: inline-block;
   vertical-align: top;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDiscardButtons button, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerDecks .playerDeckButtons button {
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playLeftContainer .playerDeckButtons button {
   display: block;
   margin-bottom: 5px;
   width: 70px;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays {
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer {
   display: inline-block;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays .playerPlay {
-  padding: 10px 0;
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerPlay {
+  min-width: 300px;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays .playerCardContainer {
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerCardContainer {
   display: inline-block;
+  vertical-align: top;
 }
 
-#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerPlays .playerCardContainer .playerCard {
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerCardContainer .playerCard {
   width: 75px;
   height: 100px;
   border: solid 1px black;

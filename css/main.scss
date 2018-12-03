@@ -62,7 +62,7 @@ body {
 
         .statsModalDiv {
             top: 35%;
-            height: 310px;
+            height: 315px;
             margin-top: -155px;
             margin-left: -250px;
             overflow-y: auto;
@@ -527,7 +527,7 @@ body {
         .dungeonDeckContainer {
             @include noSelect();
 
-            height: 300px;
+            height: 280px;
 
             .dungeonDeck {
                 margin-right: 10px; 
@@ -579,55 +579,128 @@ body {
         }
 
         .playersSection {
-            height: 500px;
-            background-color: rgb(199, 225, 255);
+            background-color: white;
+            height: 325px;
 
             .playersContainer {
-                float: left;
+                display: inline-block;
                 vertical-align: top;
-                padding: 5px;
-                height: 490px;
-                background-color: orange;
+                height: 100%;
+                width: 65px;
+
+                .playerContainer {
+                    margin: 5px;
+
+                    .playerTitle {
+                        border-radius: 50px;
+                        background-color: #ABDAFC;
+                        border: solid 2px #ABDAFC;
+                        width: 50px;
+                        height: 50px;
+                        margin-bottom: 10px;
+
+                        span {
+                            text-align: center;
+                            line-height: 50px;
+                            display: block;
+                        }
+                    }
+
+                    .selectedPlayerContainer {
+                        border: solid 2px black;
+                    }
+                }
             }
 
             .activePlayerContainer {
                 display: inline-block;
-                padding: 10px;
+                height: 100%;
 
-                .activePlayerTitle {
-                    font-size: 15pt;
-                    font-weight: bold;
-                }
+                .activePlayer {
+                    display: inline-block;
+                    vertical-align: top;
+                    height: 100%;
+                    padding: 0 5px;
 
-                .statsContainer {
-                    border: solid 1px black;
-                    width: 100px;
-                    padding: 2px;
-                    margin-bottom: 10px;
+                    .activePlayerTitle {
+                        margin-top: 10px;
+                        font-size: 15pt;
+                        font-weight: bold;
+                    }
+
+                    .statsContainer {
+                        display: inline-block;
+                        vertical-align: top;
+
+                        .statsImage {
+                            background-color: white;
+                            width: 125px;
+                            height: 100px;
+                            margin-bottom: 10px;
+                            border: solid 1px black;
+                        }
+                    }
                 }
 
                 .playerPlayContainer {
+                    display: inline-block;
 
-                    .playerSection {
-                        height: 150px;
-                        margin-bottom: 5px;
+                    .playTopContainer {
+                        padding: 5px;
+
+
+                        .playTopButton {
+                            padding: 10px;
+                            width: 135px;
+                        }
                     }
 
-                    .playerDecks {
+                    .playerSection {
+                        height: 138px;
+                        position: relative;
+
+                        .playSectionOverlay {
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                        }
+
+                        .playerSectionContent {
+                            padding-left: 10px;
+
+                            .playSectionTitle {
+                                padding: 5px 0;
+                            }
+
+                            .playerDiscardBlock, .playerDeckBlock {
+                                width: 75px;
+                                height: 100px;
+                                border: 1px black solid;
+                                display: inline-block;
+                            }
+                        }
+                    }
+
+                    #discardOverlay {
+                        background-color: rgba(129, 244, 225, 0.5);
+                    }
+                    #deckOverlay {
+                        background-color: rgba(86, 203, 249, 0.5);
+                    }
+                    #playOverlay {
+                        background-color: rgba(255, 114, 159, 0.5);
+                    }
+                    #handOverlay {
+                        background-color: rgba(211, 196, 209, 0.5);
+                    }
+
+                    .playLeftContainer {
                         display: inline-block;
                         vertical-align: top;
-                        margin-right: 10px;
                         border-right: solid 1px black;
                         width: 175px;
 
-                        .playerDiscardBlock, .playerDeckBlock {
-                            width: 75px;
-                            height: 100px;
-                            border: 1px black solid;
-                            display: inline-block;
-                        }
-
-                        .playerDiscardButtons, .playerDeckButtons {
+                        .playerDeckButtons {
                             display: inline-block;
                             vertical-align: top;
 
@@ -639,15 +712,16 @@ body {
                         }
                     }
 
-                    .playerPlays {
+                    .playRightContainer {
                         display: inline-block;
 
                         .playerPlay {
-                            padding: 10px 0;
+                            min-width: 300px;
                         }
 
                         .playerCardContainer {
                             display: inline-block;
+                            vertical-align: top;
 
                             .playerCard {
                                 width: 75px;

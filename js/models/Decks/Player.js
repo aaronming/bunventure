@@ -152,6 +152,26 @@ export function Player(index, playerClass, stats, skills) {
         self.activeDiscard([]);
         self.activeExile([]);
     }
+
+    // generic send function
+    var parseDeckType = function(deckString) {
+        var deck = null;
+        if (deckString == "hand") deck = self.activeHand;
+        else if (deckString == "play") deck = self.activePlay;
+        else if (deckString == "deck") deck = self.activeDeck;
+        else if (deckString == "discard") deck = self.activeDiscard;
+
+        return deck;
+    }
+
+    self.sendCard = function(card, from, to) {
+        var fromDeck = parseDeckType(from);
+        var toDeck = parseDeckType(to);
+
+        if (card && fromDeck && toDeck) {
+            self.moveCard(card, fromDeck, toDeck);
+        }
+    }
     
     // deck to hand
     self.drawCard = function() {
@@ -201,7 +221,7 @@ export function Player(index, playerClass, stats, skills) {
         self.moveCard(card, self.activeDiscard, self.activeDeck);
     }
     self.replenishDeck = function() {
-        self.moveCards(self.activeDiscard, self.activeDeck);
+        self.moveAllCards(self.activeDiscard, self.activeDeck);
     }
     // discard to play
 };

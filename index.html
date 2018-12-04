@@ -107,14 +107,14 @@
                     </div>
                     <div class="plyerContainer" data-bind="foreach: players">
                         <div class="player">
-                            <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
+                            <div class="playerTitle">Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></div>
                             <div class="playerLevel">Level:
                                 <span data-bind="text: $data.level"></span>
                                 <button class="pDeltaButton" data-bind="text: '+', click: $data.levelUp"></button>
                                 <button class="pDeltaButton" data-bind="text: '-', click: $data.levelDown"></button>
                             </div>
-                            <div>Cur HP: <span data-bind="text: curHP"></span></span></div>
-                            <div>Max HP: <span data-bind="text: $data.stats.hp"></span></div>
+                            <!-- <div>Cur HP: <span data-bind="text: curHP"></span></span></div>
+                            <div>Max HP: <span data-bind="text: $data.stats.hp"></span></div> -->
                             <div class="playerGold">Gold: 
                                 <span data-bind="text: $data.gold"></span>
                                 <button class="pDeltaButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
@@ -141,7 +141,7 @@
                         <div class="shopOptions" data-bind="foreach: players">
                             <div class="sPlayerOption">
                                 <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
-                                <button class="shopButton" data-bind="text: 'Heal', click: function() {$data.heal(); }"></button>
+                                <button class="shopButton" data-bind="text: 'Heal', click: $data.fullHeal"></button>
                             </div>
                         </div>
                     </div>
@@ -237,6 +237,18 @@
                     <div class="dungeonPlayed" data-bind="foreach: $data.discard">
                         <div class="dungeonPlayedCard">
                             <span data-bind="text: $data.name"></span>
+                            <div class="dungeonPlayedStatInfo">
+                                <div class="monsterHP">CurHP: <span data-bind="text: $data.activeCurHp"></span>
+                                <button class="monsterHPButton" data-bind="text: '+', click: function() { heal(1); }"></button>
+                                <button class="monsterHPButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
+                                </div>
+                                <div class="monsterHP">MaxHP: <span data-bind="text: $data.activeMaxHp"></span></div>
+                                <div class="monsterAtk">Attack: <span data-bind="text: $data.activeAttack"></span></div>
+                                <div class="monsterDef">Defense: <span data-bind="text: $data.activeDefense"></span></div>
+                                <ul class="monsterSkills" data-bind="foreach: $data.skills">
+                                    <li class="monsterSkillsLine" data-bind="text: $data"></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -262,7 +274,11 @@
                             <div class="statsContainer">
                                 <div class="statsImage"></div>
                                 <div class="statsStats">
-                                    <div>HP: <span data-bind="text: curHP"></span>/<span data-bind="text: stats.hp"></span></div>
+                                    <div>CurHP: <span data-bind="text: curHP"></span>
+                                        <button class="wdmButton" data-bind="text: '+', click: function() { heal(1); }"></button>
+                                        <button class="wdmButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
+                                    </div>
+                                    <div>MaxHP: <span data-bind="text: stats.hp"></span></div>
                                     <div>ATK: <span class="sStatValue" data-bind="text: stats.attack"></span></div>
                                     <div>DEF: <span class="sStatValue" data-bind="text: stats.defense"></span></div>
                                     <div>AP: <span class="sStatValue" data-bind="text: stats.ap"></span></div>
@@ -273,8 +289,8 @@
 
                         <div class="playerPlayContainer">
                             <div class="playTopContainer">
-                                <button class="playTopButton">Clean up</button>
-                                <button class="playTopButton">Draw hand</button>
+                                <button class="playTopButton" data-bind="click: $data.cleanUp">Clean up</button>
+                                <button class="playTopButton" data-bind="click: $data.drawHand">Draw hand</button>
                             </div>
                             <div class="playLeftContainer">
                                 <div class="playerDiscard playerSection">
@@ -295,8 +311,7 @@
                                         </div>
                                         <div class="playerDeckButtons">
                                             <button data-bind="click: $data.drawCard">Draw</button>
-                                            <button>Shuffle</button>
-                                            <button>Search</button>
+                                            <button data-bind="click: $data.shuffleActiveDeck">Shuffle</button>
                                         </div>
                                     </div>
                                 </div>
@@ -307,7 +322,7 @@
                                     <div id="playSection" class="playerSectionContent">
                                         <div class="playSectionTitle">PLAY</div>
                                         <div data-bind="foreach: $data.activePlay">
-                                            <div class="playerCardContainer">
+                                            <div class="playerCardContainer" data-bind="attr: {title: $data.description}">
                                                 <div class="playerCard" data-bind="click: function(ethis, ev) { $parents[2].sendCardStart(ethis, ev, 'play') }">
                                                     <div class="cardName" data-bind="text: $data.name"></div>
                                                 </div>
@@ -320,7 +335,7 @@
                                     <div id="handSection" class="playerSectionContent">
                                         <div class="playSectionTitle">HAND</div>
                                         <div data-bind="foreach: $data.activeHand">
-                                            <div class="playerCardContainer">
+                                            <div class="playerCardContainer" data-bind="attr: {title: $data.description}">
                                                 <div class="playerCard" data-bind="click: function(ethis, ev) { $parents[2].sendCardStart(ethis, ev, 'hand') }">
                                                     <div class="cardName" data-bind="text: $data.name"></div>
                                                 </div>
@@ -387,7 +402,7 @@
 
     <script id="deckModal" type="text/html">
         <div class="modalDiv deckModalDiv" data-bind="foreach: deck">
-            <div class="deckCard" data-bind="css: $data.myClass.toLowerCase()">
+            <div class="deckCard" data-bind="css: $data.myClass.toLowerCase(), click: $parent.cardClick">
                 <div class="cardTitle">
                     <div class="cardName" data-bind="text: $data.name"></div>
                     <div class="cardCostContainer">

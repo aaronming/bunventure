@@ -38,10 +38,6 @@
   background-color: #465183;
 }
 
-body {
-  background-color: #464646;
-}
-
 #loaderDiv {
   position: absolute;
   top: 50%;
@@ -463,6 +459,12 @@ body {
   margin-right: 0;
 }
 
+#playDiv .playerDiv .playerRight .player .playerTitle {
+  margin-bottom: 5px;
+  font-weight: bold;
+  font-size: 15pt;
+}
+
 #playDiv .playerDiv .playerRight .player .playerButtons {
   margin-top: 5px;
 }
@@ -627,6 +629,7 @@ body {
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard {
   display: inline-block;
+  vertical-align: top;
   width: 100px;
   height: 125px;
   border: solid 1px black;
@@ -635,12 +638,20 @@ body {
   padding: 5px;
 }
 
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard .dungeonPlayedStatInfo {
+  display: none;
+}
+
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:last-child {
   margin-left: -50px;
-  width: 200px;
+  width: 400px;
   height: 250px;
   -webkit-box-shadow: -5px 5px #b3c5cc;
           box-shadow: -5px 5px #b3c5cc;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:last-child .dungeonPlayedStatInfo {
+  display: block;
 }
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:first-child {

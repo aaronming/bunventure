@@ -12,7 +12,7 @@
 .paladin { background-color: rgb(70, 81, 131); }
 
 body {
-    background-color: rgb(70, 70, 70);
+    //background-color: rgb(70, 70, 70);
 }
 
 #loaderDiv {
@@ -394,6 +394,12 @@ body {
                 padding: 5px;
                 margin-left: auto;
                 margin-right: 0;
+
+                .playerTitle {
+                    margin-bottom: 5px;
+                    font-weight: bold;
+                    font-size: 15pt;
+                }
         
                 .playerButtons {
                     margin-top: 5px;
@@ -557,19 +563,28 @@ body {
 
                 .dungeonPlayedCard {
                     display: inline-block;
+                    vertical-align: top;
                     width: 100px;
                     height: 125px;
                     border: solid 1px black;
                     background-color: white;
                     margin-left: -100px;
                     padding: 5px;
+
+                    .dungeonPlayedStatInfo {
+                        display: none;
+                    }
                 }
 
                 .dungeonPlayedCard:last-child {
                     margin-left: -50px;
-                    width: 200px;
+                    width: 400px;
                     height: 250px;
                     box-shadow: -5px 5px rgb(179, 197, 204);
+
+                    .dungeonPlayedStatInfo {
+                        display: block;
+                    }
                 }
 
                 .dungeonPlayedCard:first-child {

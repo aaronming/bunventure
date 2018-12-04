@@ -195,7 +195,7 @@ window.onload = function() {
             // Setup dungeon
             var monsterData = MonstersData.map(function(mon) { return new MonsterCard(mon);});
             // var activitiesData
-            self.overworld(new Overworld(monsterData, ActivitiesData));
+            self.overworld(new Overworld(monsterData, ActivitiesData, self.WDM));
 
             self.phase(Phases.world);
         }
@@ -238,7 +238,10 @@ window.onload = function() {
 
         self.showDeckModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
-            showModal({name: "deckModal", data: player});
+            var dataObject = {
+                deck: player.deck
+            }
+            showModal({name: "deckModal", data: dataObject});
         }
 
         self.showItemModal = function(clickIndex) {
@@ -261,6 +264,30 @@ window.onload = function() {
             var player = self.players()[clickIndex()];
             self.oracle().setup(player);
             showModal({name: "oracleRandomModal", data: self.oracle()});
+        }
+
+        self.showSearchCardModal = function(ethis, ev) {
+            var selectedDeck;
+            var player = self.currentActivePlayer();
+            var targetClass = ev.target.className;
+            if (!targetClass) targetClass = ev.target.parentElement.className; // in case clicked on span number
+
+            if (targetClass == "playerDeckBlock") selectedDeck = player.activeDeck;
+            else if (targetClass == "playerDiscardBlock") selectedDeck = player.activeDiscard;
+
+            if (selectedDeck) {
+                var dataObject = {
+                    deck: selectedDeck,
+                    cardClick: function(card, ev) {
+                        var targetDeck;
+                        if (targetClass == "playerDeckBlock") targetDeck = "deck";
+                        else if (targetClass == "playerDiscardBlock") targetDeck = "discard";
+                        self.sendCardStart(card, null, targetDeck);
+                        hideModal();
+                    }
+                }
+                showModal({name: "deckModal", data: dataObject});
+            }
         }
 
         /**
@@ -346,10 +373,6 @@ window.onload = function() {
             }
             self.selectedCardFrom = null;
             self.selectedActiveCard(null);
-        }
-
-        self.searchDeck = function() {
-
         }
 
 

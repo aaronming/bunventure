@@ -1,9 +1,10 @@
 import { Deckable } from './Deckable.js';
 
-export function Overworld(monstersData, activitiesData) {
+export function Overworld(monstersData, activitiesData, wdm) {
     var self = this;
 
     self.dungeons = ko.observableArray([]);
+    self.wdm = wdm;
 
     function initialize() {
         // initialize monsters
@@ -19,7 +20,7 @@ export function Overworld(monstersData, activitiesData) {
         for (var i = 0; i < 5; i++) {
             var boss = bossDeck.deck()[i];
             var monsters = monsterDeck.deck.slice(i, i + 5);
-            var dungeon = new Dungeon(boss, monsters);
+            var dungeon = new Dungeon(boss, monsters, self.wdm);
 
             self.dungeons.push(dungeon);
         }
@@ -29,7 +30,7 @@ export function Overworld(monstersData, activitiesData) {
     initialize();
 }
 
-function Dungeon(boss, deck) {
+function Dungeon(boss, deck, wdm) {
     Deckable.call(this);
     var self = this;
 
@@ -37,6 +38,7 @@ function Dungeon(boss, deck) {
     deck.unshift(boss);
     self.deck = ko.observableArray(deck);
     self.discard = ko.observableArray([]);
+    self.wdm = wdm;
 
     self.playerTurn = ko.observable(1);
     self.players = ko.observableArray([]);
@@ -47,7 +49,9 @@ function Dungeon(boss, deck) {
 
     self.drawDungeon = function() {
         if (self.deck().length > 0 ) {
-            self.discard.push(self.deck.pop());
+            var monster = self.deck.pop();
+            monster.prepareForBattle(self.wdm);
+            self.discard.push(monster);
         }
     }
 

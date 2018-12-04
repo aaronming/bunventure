@@ -88,13 +88,18 @@ export function Player(index, playerClass, stats, skills) {
         
     }
 
-    self.heal = function(amount) {
+    self.fullHeal = function() {
         var maxHP = self.stats.hp;
-        amount = amount == undefined ? maxHP : amount;
+        self.curHP(maxHP);
+    }
 
-        var newHP = self.curHP() + amount;
-        if (newHP > maxHP) newHP = maxHP;
-        self.curHP(newHP);
+    self.heal = function(amount) {
+        if (amount == undefined) { 
+            self.fullHeal();
+        } else {
+            var newHP = self.curHP() + amount;
+            self.curHP(newHP);
+        }
     }
 
     function levelChange(amount) {
@@ -172,6 +177,22 @@ export function Player(index, playerClass, stats, skills) {
             self.moveCard(card, fromDeck, toDeck);
         }
     }
+
+    self.drawHand = function() {
+        var hand = self.stats.hand;
+        for (var i = 0; i < hand; i++) {
+            self.drawCard();
+        }
+    }
+
+    self.cleanUp = function() {
+        self.moveAllCards(self.activePlay, self.activeDiscard);
+        self.moveAllCards(self.activeHand, self.activeDiscard);
+    }
+
+    self.shuffleActiveDeck = function() {
+        self.shuffleDeck(self.activeDeck);
+    }
     
     // deck to hand
     self.drawCard = function() {
@@ -179,7 +200,7 @@ export function Player(index, playerClass, stats, skills) {
         if (self.activeDeck().length < 1) {
             if (self.activeDiscard().length > 0) {
                 self.replenishDeck();
-                self.shuffleDeck(self.activeDeck);
+                self.shuffleActiveDeck();
             }
         }
         self.moveCard(null, self.activeDeck, self.activeHand);

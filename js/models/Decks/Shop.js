@@ -24,7 +24,7 @@ export function Shop(shopData, cardCount) {
 
     function initializeShop() {
         // get only initial actions for now
-        var shopCards = shopData.slice(1, 7);
+        var shopCards = shopData.slice(1, 12);
         var deck = [];
         for (var i = 0; i < shopCards.length; i++) {
             var shopCard = shopCards[i];

@@ -17,7 +17,6 @@ window.onload = function() {
     var StatsDataIndex = function(index) { return index * 5; }
     var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 19) + 8; }
 
-    var useHardData = 0;
     var debug = 0;
 
     function MyApp() {
@@ -96,7 +95,7 @@ window.onload = function() {
                 self.p1Class("Barbarian");
                 self.p2Class("Ranger");
                 self.p3Class("Cleric");
-                self.p4Class("Wizard");
+                self.p4Class("Rogue");
                 self.onSetupPhase();
                 self.players().forEach(function(ply) {
                     ply.learnTech(ply.techDeck()[0]);
@@ -153,7 +152,7 @@ window.onload = function() {
                 self.isLoading(true);
     
                 // Setup basic cards
-                self.generalCards = SkillsData.slice(1, 3);
+                self.generalCards = ShopData.slice(1, 3);
                 var genSkillCards = self.generalCards.map(function(skill, index) {
                     return new SkillCard(skill, -1);
                 });
@@ -178,6 +177,14 @@ window.onload = function() {
                     myPlayers.push(player);
                 }
                 self.players(myPlayers);
+
+                // Setup town
+                self.shop(new Shop(ShopData, self.cardCount));
+                self.oracle(new Oracle());
+
+                // Setup world
+                var monsterData = MonstersData.map(function(mon) { return new MonsterCard(mon);});
+                self.overworld(new Overworld(monsterData, ActivitiesData, self.WDM));
     
                 self.phase(Phases.setup);
                 self.isLoading(false);
@@ -185,17 +192,12 @@ window.onload = function() {
         }
 
         self.onTownPhase = function() {
-            self.shop(new Shop(ShopData, self.cardCount));
-            self.oracle(new Oracle());
 
             self.phase(Phases.town);
         }
 
         self.onWorldPhase = function() {
             // Setup dungeon
-            var monsterData = MonstersData.map(function(mon) { return new MonsterCard(mon);});
-            // var activitiesData
-            self.overworld(new Overworld(monsterData, ActivitiesData, self.WDM));
 
             self.phase(Phases.world);
         }
@@ -246,6 +248,14 @@ window.onload = function() {
 
         self.showItemModal = function(clickIndex) {
 
+        }
+
+        self.showBookModal = function(clickIndex) {
+            var player = self.players()[clickIndex()];
+            var dataObject = {
+                deck: player.skillBook
+            }
+            showModal({name: "deckModal", data: dataObject});
         }
 
         self.showMarketModal = function(clickIndex) {
@@ -415,7 +425,7 @@ window.onload = function() {
         }
 
         // App Initialization
-        if (useHardData) loadStaticData();
+        if (debug) loadStaticData();
         else Tabletop.init({ key: sheetPublicUrl, callback: onSheetLoad });
     }
     

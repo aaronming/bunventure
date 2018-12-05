@@ -340,7 +340,7 @@ body {
     .playerDiv {
         position: fixed;
         top: 10px;
-        background-color: rgb(167, 220, 241);
+        background-color: rgba(167, 220, 241, 0.60);
         z-index: 1;
         border: solid 1px black;
         border-right: none;
@@ -368,7 +368,7 @@ body {
         .playerRight {
             display: inline-block;
             padding-left: 5px;
-            background-color: rgb(154, 217, 241);
+            background-color: rgba(154, 216, 241, 0.60);
 
             .wdmDiv {
                 height: 30px;
@@ -405,7 +405,7 @@ body {
                     margin-top: 5px;
                     
                     .pButton {
-                        width: 70px;
+                        width: 50px;
                         padding: 5px;
                         margin-right: 2px;
                     }
@@ -461,15 +461,15 @@ body {
         }
 
         .innShop {
-            background-color: rgb(162, 211, 199);
+            background-color: rgba(162, 211, 199, 0.60);
         }
 
         .marketShop {
-            background-color: rgb(173, 71, 71);
+            background-color: rgba(173, 71, 71, 0.60);
         }
 
         .oracleShop {
-            background-color: rgb(153, 107, 167);
+            background-color: rgba(153, 107, 167, 0.60);
         }
     }
 
@@ -570,6 +570,7 @@ body {
                     background-color: white;
                     margin-left: -100px;
                     padding: 5px;
+                    overflow-y: scroll;
 
                     .dungeonPlayedStatInfo {
                         display: none;

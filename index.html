@@ -124,6 +124,7 @@
                                 <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
                                 <button class="pButton" data-bind="text: 'Deck', click: function() { $parent.showDeckModal($index) }">
                                 <button class="pButton" data-bind="text: 'Items', click: function() { $parent.showItemModal($index) }">
+                                <button class="pButton" data-bind="text: 'Book', click: function() { $parent.showBookModal($index) }">
                             </div>
                         </div>
                     </div>
@@ -166,7 +167,7 @@
                         Greetings, I've been expecting you. <br/><br/>
                         Learn a new Skill - 3 Gold<br/>
                         Forget a skill - 3 Gold<br/>
-                        Random skill - 2 Gold
+                        Reroll skill - 2 Gold
                     </div>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
@@ -238,9 +239,10 @@
                         <div class="dungeonPlayedCard">
                             <span data-bind="text: $data.name"></span>
                             <div class="dungeonPlayedStatInfo">
+                                <div class="monsterHP">Level: <span data-bind="text: $data.level"></span></div>
                                 <div class="monsterHP">CurHP: <span data-bind="text: $data.activeCurHp"></span>
-                                <button class="monsterHPButton" data-bind="text: '+', click: function() { heal(1); }"></button>
-                                <button class="monsterHPButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
+                                    <button class="monsterHPButton" data-bind="text: '+', click: function() { heal(1); }"></button>
+                                    <button class="monsterHPButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
                                 </div>
                                 <div class="monsterHP">MaxHP: <span data-bind="text: $data.activeMaxHp"></span></div>
                                 <div class="monsterAtk">Attack: <span data-bind="text: $data.activeAttack"></span></div>
@@ -263,9 +265,6 @@
                                     <li data-bind="text: $data.name"></li>
                                 </ul> -->
                             </div>
-                        </div>
-                        <div class="playerContainer">
-                            <div class="playerTitle" data-bind="click: $data.nextPlayer"><span data-bind="text: 'NEXT'"></span></div>
                         </div>
                     </div><!--
                     --><div class="activePlayerContainer" data-bind="with: $data.activePlayer">
@@ -291,6 +290,7 @@
                             <div class="playTopContainer">
                                 <button class="playTopButton" data-bind="click: $data.cleanUp">Clean up</button>
                                 <button class="playTopButton" data-bind="click: $data.drawHand">Draw hand</button>
+                                <button class="playTopButton" data-bind="click: $parent.nextPlayer">End turn</button>
                             </div>
                             <div class="playLeftContainer">
                                 <div class="playerDiscard playerSection">
@@ -312,6 +312,7 @@
                                         <div class="playerDeckButtons">
                                             <button data-bind="click: $data.drawCard">Draw</button>
                                             <button data-bind="click: $data.shuffleActiveDeck">Shuffle</button>
+                                            <button data-bind="click: $data.replenishDeck">Replenish</button>
                                         </div>
                                     </div>
                                 </div>
@@ -321,26 +322,22 @@
                                     <div id="playOverlay" class="playSectionOverlay" data-bind="click: $parents[1].sendCardEnd, visible: $parents[1].sendingCard"></div>
                                     <div id="playSection" class="playerSectionContent">
                                         <div class="playSectionTitle">PLAY</div>
-                                        <div data-bind="foreach: $data.activePlay">
-                                            <div class="playerCardContainer" data-bind="attr: {title: $data.description}">
-                                                <div class="playerCard" data-bind="click: function(ethis, ev) { $parents[2].sendCardStart(ethis, ev, 'play') }">
-                                                    <div class="cardName" data-bind="text: $data.name"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div data-bind="template: { name: 'tinyCardTemplate', data: { 
+                                            deck: $data.activePlay,
+                                            section: 'play',
+                                            cardClick: $parents[1].sendCardStart
+                                        } }"></div>
                                     </div>
                                 </div>
                                 <div class="playerHand playerSection">
                                     <div id="handOverlay" class="playSectionOverlay" data-bind="click: $parents[1].sendCardEnd, visible: $parents[1].sendingCard"></div>
                                     <div id="handSection" class="playerSectionContent">
                                         <div class="playSectionTitle">HAND</div>
-                                        <div data-bind="foreach: $data.activeHand">
-                                            <div class="playerCardContainer" data-bind="attr: {title: $data.description}">
-                                                <div class="playerCard" data-bind="click: function(ethis, ev) { $parents[2].sendCardStart(ethis, ev, 'hand') }">
-                                                    <div class="cardName" data-bind="text: $data.name"></div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        <div data-bind="template: { name: 'tinyCardTemplate', data: { 
+                                            deck: $data.activeHand,
+                                            section: 'hand',
+                                            cardClick: $parents[1].sendCardStart
+                                        } }"></div>
                                     </div>
                                 </div>
                             </div>
@@ -427,7 +424,7 @@
             <div class="transDiv setupDeck">
                 <h4>Shop</h4>
                 <ul class="shopDeck" data-bind="foreach: availShopCards">
-                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name + ' ' + $data.price + 'g', 
                     click: $parent.buySkill"></li>
                 </ul>
             </div>
@@ -538,6 +535,17 @@
             </div>
             <button class="phaseButton confirmTransaction" data-bind="text: 'Learn random skill', 
                 click: $parent.confirmOracleRandomTransaction"></button>
+        </div>
+    </script>
+
+    <script id="tinyCardTemplate" type="text/html">
+        <div data-bind="foreach: deck">
+            <div class="playerCardContainer" data-bind="attr: {title: $data.description}">
+                <div class="playerCard" data-bind="click: function(ethis, ev) { $parent.cardClick(ethis, ev, $parent.section) }">
+                    <div class="cardName" data-bind="text: $data.name"></div>
+                    <div class="cardName" data-bind="text: $data.cost + ' AP'"></div>
+                </div>
+            </div>
         </div>
     </script>
 </html>

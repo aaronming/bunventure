@@ -23,6 +23,8 @@ window.onload = function() {
     function MyApp() {
         var self = this;
 
+        self.version = "0.1.2"
+
         self.isLoading = ko.observable(true);
         var emptyTemplate = {name: "emptyTemplate"};
         self.modalTemplate = ko.observable(emptyTemplate);
@@ -123,7 +125,15 @@ window.onload = function() {
                     var dIndex = StatsDataIndex(i + 1);
                     var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
     
-                    var cObject = new Classes(self.availableClasses[i], sData);
+                    // TODO: Refactor this and inSetupPhase
+                    var skillsDataIndex = SkillsDataIndex(i + 1);
+                    var skillsData = SkillsData.slice(skillsDataIndex, skillsDataIndex + SkillsCount);
+    
+                    var skillCards = skillsData.map(function(skill) {
+                       return new SkillCard(skill); 
+                    });
+
+                    var cObject = new Classes(self.availableClasses[i], sData, skillCards);
     
                     cObjects.push(cObject);
                 }
@@ -178,6 +188,7 @@ window.onload = function() {
                     var skillCards = skillsData.map(function(skill) {
                        return new SkillCard(skill); 
                     });
+                    console.log(skillCards);
                     var player = new Player((i+1), selectedClass, statsData, skillCards);
                     myPlayers.push(player);
                 }
@@ -244,6 +255,14 @@ window.onload = function() {
             if (event.target.className == "modal") {
                 hideModal();
             }
+        }
+
+        self.showClassSkillsModal = function(clickIndex) {
+            var player = self.classObjects()[clickIndex()];
+            var dataObject = {
+                deck: player.skillBook
+            }
+            showModal({name: "deckModal", data: dataObject});
         }
 
         self.showStatsModal = function(clickIndex) {

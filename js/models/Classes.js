@@ -1,4 +1,4 @@
-export function Classes(name, sData) {
+export function Classes(name, sData, book) {
     var self = this;
 
     self.className = name;
@@ -7,6 +7,7 @@ export function Classes(name, sData) {
     self.hp = sData[2]["0"];
     self.ap = sData[3]["0"];
     self.hand = sData[4]["0"];
+    self.skillBook = book;
 }
 
 export function Stats(stats) {

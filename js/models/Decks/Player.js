@@ -117,7 +117,7 @@ export function Player(index, playerClass, stats, skills) {
         else if (newLevel < 1) newLevel = 1;
 
         if (amount > 0) {
-            while (self.skillBook.length != 0 && self.skillBook[0].level == newLevel) {
+            while (self.skillBook.length != 0 && self.skillBook[0].level <= newLevel) {
                 var skill = self.skillBook.shift();
                 self.techDeck.push(skill);
             }

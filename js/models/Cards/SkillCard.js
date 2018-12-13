@@ -7,7 +7,7 @@ export function SkillCard(sObj, id) {
     self.cost = parseInt(sObj.Cost || sObj.AP) || 0;
     self.type = sObj.Type;
     self.name = sObj.Name;
-    self.level = parseInt(sObj.Level) || 1;
+    self.level = isNaN(parseInt(sObj.Level)) ? 1 : parseInt(sObj.Level);
     self.effect = sObj.Effect;
     self.price = parseInt(sObj.Price) || 0;
 

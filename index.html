@@ -21,6 +21,7 @@
 
         <div id="startDiv" class="pageDiv" data-bind="visible: isStartPhase">
             <h1>START PHASE</h1>
+            Version - <span data-bind="text: version"></span>
             <div>
                 Enter in the number of players, and select your class. One unique class per player. <br>
                 The available classes listed below show class stat ratings, not the actual stat.
@@ -30,7 +31,7 @@
                 How many players? <input data-bind="value: playersValue" />
 
                 <div class="classesDiv" data-bind="foreach: classObjects">
-                    <div class="classDiv">
+                    <div class="classDiv" data-bind="click: function() { $parent.showClassSkillsModal($index); }">
                         <div class="className" data-bind="text: $data.className"></div>
                         <div><span class="cTitle">Attack:</span><span data-bind="text: $data.attack, css: $parent.cValueCSS($data.attack)"></span></div>
                         <div><span class="cTitle">Defense:</span><span data-bind="text: $data.defense, css: $parent.cValueCSS($data.defense)"></span></div>

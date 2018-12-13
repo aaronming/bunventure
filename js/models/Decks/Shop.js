@@ -5,7 +5,8 @@ export function Shop(shopData, cardCount) {
     Deckable.call(this);
     var self = this;
 
-    var shopCardCount = 12;
+    var shopCardCount = 6;
+    var sellCost = 3;
     self.cardCount = cardCount;
     self.shopCards = ko.observableArray([]);
     self.deck = ko.observableArray([]);
@@ -70,12 +71,14 @@ export function Shop(shopData, cardCount) {
 
     self.sellSkill = function(tech, ev) {
         var card = self.moveCard(tech, self.playerDeck, self.sellDeck);
-        if (card) self.sellDeckCost(self.sellDeckCost() + Math.floor(parseInt(card.price)/2));
+        // if (card) self.sellDeckCost(self.sellDeckCost() + Math.floor(parseInt(card.price)/2));
+        if (card) self.sellDeckCost(self.sellDeckCost() - sellCost);
     }
 
     self.unsellSkill = function(tech, ev) {
         var card = self.moveCard(tech, self.sellDeck, self.playerDeck);
-        if (card) self.sellDeckCost(self.sellDeckCost() - Math.floor(parseInt(card.price)/2));
+        // if (card) self.sellDeckCost(self.sellDeckCost() - Math.floor(parseInt(card.price)/2));
+        if (card) self.sellDeckCost(self.sellDeckCost() + sellCost);
     }
 
     self.confirmTransaction = function() {

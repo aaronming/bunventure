@@ -8,3 +8,10 @@
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
 }
+
+@mixin absoluteCenter() {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}

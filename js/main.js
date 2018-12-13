@@ -6,6 +6,7 @@ import { SheetData } from './data/SheetData.js';
 import { Oracle } from './models/Decks/Oracle.js';
 import { Overworld } from './models/Decks/Dungeon.js';
 import { MonsterCard } from './models/Cards/MonsterCard.js';
+import { ActivityCard } from './models/Cards/ActivityCard.js';
 
 window.onload = function() {
     var sheetPublicUrl = "https://docs.google.com/spreadsheets/d/1fg0glSTrSxdri91skmmGsKAysuo5522pTH66HAOfYoU/edit?usp=sharing";
@@ -15,7 +16,7 @@ window.onload = function() {
     var MaxLevel = 5;
     var SkillsCount = 18;
     var StatsDataIndex = function(index) { return index * 5; }
-    var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 19) + 8; }
+    var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 20) + 8; }
 
     var debug = 0;
 
@@ -38,6 +39,7 @@ window.onload = function() {
         self.cardCount = 0;
         self.generalCards;
         self.initialShopCards = ko.observable();
+        self.innCost = self.WDM() + 1;
         self.shop = ko.observable();
         self.oracle = ko.observable();
         self.overworld = ko.observable();
@@ -73,6 +75,7 @@ window.onload = function() {
             SkillsData = sheetData.SkillsData;
             StatsData = sheetData.StatsData;
             initialize();
+
         }
 
         function onSheetLoad(data, tabletop) {
@@ -82,6 +85,8 @@ window.onload = function() {
             SkillsData = tabletop.sheets("Skills").elements;
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
+
+            //console.log(ko.toJSON(ActivitiesData));
         }
 
         /**
@@ -184,7 +189,15 @@ window.onload = function() {
 
                 // Setup world
                 var monsterData = MonstersData.map(function(mon) { return new MonsterCard(mon);});
-                self.overworld(new Overworld(monsterData, ActivitiesData, self.WDM));
+                var activityData = [];
+                for (var i = 0; i < ActivitiesData.length; i++) {
+                    var activity = ActivitiesData[i];
+                    var count = activity.Count;
+                    for (var j = 0; j < count; j++) {
+                        activityData.push(new ActivityCard(activity));
+                    }
+                }
+                self.overworld(new Overworld(monsterData, activityData, self.WDM));
     
                 self.phase(Phases.setup);
                 self.isLoading(false);
@@ -253,7 +266,7 @@ window.onload = function() {
         self.showBookModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
             var dataObject = {
-                deck: player.skillBook
+                deck: player.techDeck().concat(player.skillBook)
             }
             showModal({name: "deckModal", data: dataObject});
         }

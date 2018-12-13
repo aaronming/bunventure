@@ -67,24 +67,24 @@
                 <div class="setupContainer">
                     <h3>Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></h3>
                     <div>Deck size: <span data-bind="text: $data.minDeckSize"></span></div>
-                    <div class="setupDeck">
+                    <div class="playerSetupDeck setupDeck">
                         <h4>Deck</h4>
                         <ul class="playerDeck" data-bind="foreach: $data.allSkills">
                             <li class="playerCard" data-bind="attr: {title: $data.description}, text: $data.name, 
                             click: function(tech, ev) { $parent.removeSkill(tech, ev, $index) }"></li>
                         </ul>
                     </div>
-                    <div class="setupDeck">
+                    <div class="techSetupDeck setupDeck">
                         <h4>Tech Deck</h4>
                         <ul class="techDeck" data-bind="foreach: $data.techDeck">
-                            <li class="techCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                            <li class="techCard" data-bind="text: $data.description, 
                             click: $parent.learnTech"></li>
                         </ul>
                     </div>
-                    <div class="setupDeck">
+                    <div class="shopSetupDeck setupDeck">
                         <h4>Basic cards</h4>
                         <ul class="shopDeck" data-bind="foreach: $parent.initialShopCards">
-                            <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name, 
+                            <li class="shopCard" data-bind="text: $data.description, 
                                 click: function(tech, ev) { $parents[1].setupAddSkill(tech, ev, $index, $parent.index) }"></li>
                         </ul>
                     </div>
@@ -136,7 +136,7 @@
                 <div class="innShop townShop">
                     <div class="shopTitle" data-bind="text: 'Inn'"></div>
                     <div class="shopSubtitle" data-bind="text: 'Hello traveler, would you like to rest up?'"></div>
-                    <span><br/>Cost: </span><span data-bind="text: WDM"></span>
+                    <span><br/>Cost: </span><span data-bind="text: innCost"></span>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
                         <div class="shopOptions" data-bind="foreach: players">
@@ -149,13 +149,16 @@
                 </div>
                 <div class="marketShop townShop">
                     <div class="shopTitle" data-bind="text: 'Market'"></div>
-                    <div class="shopSubtitle" data-bind="text: 'Welcome! See anything you like?'"></div>
+                    <div class="shopSubtitle">
+                        Welcome! See anything you like? <br/><br/>
+                        Remove a skill - 3 Gold
+                    </div>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
                         <div class="shopOptions" data-bind="foreach: players">
                             <div class="sPlayerOption">
                                 <div class="shopPlayer">Player <span data-bind="text: $data.index"></span></div>
-                                <button class="shopButton" data-bind="text: 'Buy/Sell', 
+                                <button class="shopButton" data-bind="text: 'Buy/Remove', 
                                     click: function() { $parent.showMarketModal($index); }"></button>
                             </div>
                         </div>
@@ -234,9 +237,22 @@
                             <span class="dungeonDeckRemaining" data-bind="text: $data.deck().length"></span>
                         </div>
                         <button data-bind="text: 'undo', click: $data.undrawDungeon"></button>
+                        <div class="dungeonDice" data-bind="click: $data.rollDice">
+                            <div class="dungeonDiceTitle">ROLL DICE</div>
+                            <span class="dungeonDiceValue" data-bind="text: $data.diceValue"></span>
+                        </div>
                     </div>
                     <div class="dungeonPlayed" data-bind="foreach: $data.discard">
-                        <div class="dungeonPlayedCard">
+                        <!--ko if: $data.isActivityCard-->
+                        <div class="dungeonPlayedCard dungeonActivity">
+                            <span data-bind="text: $data.name"></span>
+                            <div class="dungeonPlayedStatInfo">
+                                <div data-bind="text: $data.effect"></div>
+                            </div>
+                        </div>
+                        <!-- /ko -->
+                        <!--ko if: $data.isMonsterCard-->
+                        <div class="dungeonPlayedCard dungeonMonster">
                             <span data-bind="text: $data.name"></span>
                             <div class="dungeonPlayedStatInfo">
                                 <div class="monsterHP">Level: <span data-bind="text: $data.level"></span></div>
@@ -252,6 +268,7 @@
                                 </ul>
                             </div>
                         </div>
+                        <!-- /ko -->
                     </div>
                 </div>
                 <div class="playersSection">
@@ -409,7 +426,8 @@
                 <div class="cardImage"></div>
                 <div class="cardSubtitle">
                     <span class="cardClass" data-bind="text: $data.myClass"></span>
-                    <span class="cardLevel" data-bind="text: 'Level ' + $data.level"></span>
+                    <span class="cardLevel" data-bind="text: 'Lv ' + $data.level"></span> - 
+                    <span class="cardType" data-bind="text: $data.type"></span>
                 </div>
                 <div class="cardEffect" data-bind="text: $data.effect"></div>
             </div>
@@ -542,8 +560,9 @@
         <div data-bind="foreach: deck">
             <div class="playerCardContainer" data-bind="attr: {title: $data.description}">
                 <div class="playerCard" data-bind="click: function(ethis, ev) { $parent.cardClick(ethis, ev, $parent.section) }">
-                    <div class="cardName" data-bind="text: $data.name"></div>
-                    <div class="cardName" data-bind="text: $data.cost + ' AP'"></div>
+                    <span class="cardName" data-bind="text: $data.name"></span>
+                    <span class="cardCost" data-bind="text: $data.cost + ' AP'"></span>
+                    <div class="cardEffect" data-bind="text: $data.effect"></div>
                 </div>
             </div>
         </div>

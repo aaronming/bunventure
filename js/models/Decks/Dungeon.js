@@ -13,14 +13,16 @@ export function Overworld(monstersData, activitiesData, wdm) {
         var bossIndex = monstersData.length - 11;
 
         var regulars = monstersData.slice(regIndex + 1, bossIndex);
-        var monsterDeck = new Monsters(regulars);
+        var dungeonActivities = new DungeonActivities(regulars, activitiesData);
         var bosses = monstersData.slice(bossIndex + 1);
         var bossDeck = new Bosses(bosses);
 
         for (var i = 0; i < 5; i++) {
             var boss = bossDeck.deck()[i];
-            var monsters = monsterDeck.deck.slice(i, i + 5);
-            var dungeon = new Dungeon(boss, monsters, self.wdm);
+            var startIndex = i * 10;
+            var endIndex = startIndex + 10;
+            var dungeonCards = dungeonActivities.deck.slice(startIndex, endIndex);
+            var dungeon = new Dungeon(boss, dungeonCards, self.wdm);
 
             self.dungeons.push(dungeon);
         }
@@ -39,6 +41,7 @@ function Dungeon(boss, deck, wdm) {
     self.deck = ko.observableArray(deck);
     self.discard = ko.observableArray([]);
     self.wdm = wdm;
+    self.diceValue = ko.observable(20);
 
     self.playerTurn = ko.observable(1);
     self.players = ko.observableArray([]);
@@ -49,9 +52,9 @@ function Dungeon(boss, deck, wdm) {
 
     self.drawDungeon = function() {
         if (self.deck().length > 0 ) {
-            var monster = self.deck.pop();
-            monster.prepareForBattle(self.wdm);
-            self.discard.push(monster);
+            var card = self.deck.pop();
+            if (card.isMonsterCard) card.prepareForBattle(self.wdm);
+            self.discard.push(card);
         }
     }
 
@@ -59,6 +62,11 @@ function Dungeon(boss, deck, wdm) {
         if (self.discard().length > 0 ) {
             self.deck.push(self.discard.pop());
         }
+    }
+
+    self.rollDice = function() {
+        var roll = Math.floor(Math.random() * 20) + 1;
+        self.diceValue(roll);
     }
 
     self.selectedPlayerCss = function(index) {
@@ -80,10 +88,11 @@ function Bosses(bosses) {
     self.deck = ko.observableArray(self.shuffleDeck(bosses));
 }
 
-function Monsters(monsters) {
+function DungeonActivities(monsters, activities) {
     Deckable.call(this);
     var self = this;
 
-    self.deck = ko.observableArray(self.shuffleDeck(monsters));
+    self.cards = monsters.concat(activities);
+    self.deck = ko.observableArray(self.shuffleDeck(self.cards));
 
 }

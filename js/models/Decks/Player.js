@@ -31,6 +31,15 @@ export function Player(index, playerClass, stats, skills) {
 
     var updateStats = function() {
         self.stats = new Stats(self.classStats[self.level() - 1]);
+
+        // only increase hp for now
+        // check if self.stats is empty
+        // if (Object.keys(self.stats).length === 0 && self.stats.constructor === Object) {
+        //     self.stats = new Stats(self.classStats[self.level() - 1]);
+        // } else {
+        //     var newStats = new Stats(self.classStats[self.level() - 1]);
+        //     self.stats.hp = newStats.hp;
+        // }
     }
 
     self.allSkills = ko.pureComputed(function() {

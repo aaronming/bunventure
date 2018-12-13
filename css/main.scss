@@ -13,14 +13,11 @@
 
 body {
     //background-color: rgb(70, 70, 70);
+    font-family: Calibri;
 }
 
 #loaderDiv {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    margin-left: -60px;
-    margin-top: -60px;
+    @include absoluteCenter();
 
     .loader {
         border: 16px solid #f3f3f3; /* Light grey */
@@ -51,20 +48,20 @@ body {
 
         .modalDiv {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 0px;
+            left: 0px;
+            bottom: 0px;
+            right: 0px;
+            margin: auto;
             border: solid 1px black;
             padding: 25px;
             background-color: white;
-            max-height: 800px;
             overflow-y: scroll;
         }
 
         .statsModalDiv {
-            top: 35%;
-            height: 315px;
-            margin-top: -155px;
-            margin-left: -250px;
+            height: 320px;
+            width: 550px;
             overflow-y: auto;
 
             .statsLeftContainer {
@@ -161,8 +158,6 @@ body {
         .deckModalDiv {
             width: 710px;
             height: 660px;
-            margin-top: -330px;
-            margin-left: -355px;
             overflow-y: auto;
 
             .deckCard {
@@ -228,10 +223,8 @@ body {
 
         .transModalDiv {
             width: 815px;
+            height: 600px;
             min-height: 600px;
-            margin-left: -400px;
-            margin-top: -300px;
-            top: 40%;
 
             .transDescription {
                 margin-bottom: 15px;
@@ -315,6 +308,7 @@ body {
         list-style-type: none;
 
         li {
+            white-space: pre-wrap;
             padding: 5px;
         }
 
@@ -326,6 +320,10 @@ body {
             background-color: rgb(255, 232, 157);
         }
     }
+}
+
+.techSetupDeck, .shopSetupDeck {
+    width: 400px;
 }
 
 #setupDiv {
@@ -357,7 +355,7 @@ body {
             width: 40px;
             height: auto;
 
-            .playerMenu{
+            .playerMenu {
                 position: absolute;
                 top: 50%;
                 left: 5px;
@@ -549,10 +547,26 @@ body {
 
                     .dungeonDeckRemaining {
                         font-size: 36pt;
-                        position: absolute;
-                        top: 50%;
-                        left: 50%;
-                        transform: translate(-50%, -50%);
+                        @include absoluteCenter();
+                    }
+                }
+
+                .dungeonDice {
+                    width: 100px;
+                    height: 100px;
+                    border: solid 1px black;
+                    position: relative;
+                    margin-top: 5px;
+
+                    .dungeonDiceTitle {
+                        text-align: center;
+                        margin-top: 10px;
+                    }
+
+                    .dungeonDiceValue {
+                        font-size: 24pt;
+                        
+                        @include absoluteCenter();
                     }
                 }
             }
@@ -691,6 +705,7 @@ body {
                             .playerDiscardBlock, .playerDeckBlock {
                                 width: 75px;
                                 height: 100px;
+                                padding: 2px;
                                 border: 1px black solid;
                                 display: inline-block;
                             }
@@ -740,9 +755,15 @@ body {
                             vertical-align: top;
 
                             .playerCard {
-                                width: 75px;
+                                width: 100px;
                                 height: 100px;
+                                font-size: 10pt;
                                 border: solid 1px black;
+                                padding: 2px;
+
+                                .cardName {
+                                    font-weight: bold;
+                                }
                             }
 
                         }

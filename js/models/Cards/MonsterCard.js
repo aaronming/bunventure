@@ -1,6 +1,7 @@
 export function MonsterCard(obj) {
     var self = this;
     
+    self.isMonsterCard = true;
     self.name = obj.Name;
     self.level = obj.Level;
     self.attack = obj.Atk;

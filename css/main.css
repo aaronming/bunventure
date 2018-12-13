@@ -38,12 +38,16 @@
   background-color: #465183;
 }
 
+body {
+  font-family: Calibri;
+}
+
 #loaderDiv {
   position: absolute;
   top: 50%;
   left: 50%;
-  margin-left: -60px;
-  margin-top: -60px;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
 }
 
 #loaderDiv .loader {
@@ -93,20 +97,20 @@
 
 .modal .modalContainer .modalDiv {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+  margin: auto;
   border: solid 1px black;
   padding: 25px;
   background-color: white;
-  max-height: 800px;
   overflow-y: scroll;
 }
 
 .modal .modalContainer .statsModalDiv {
-  top: 35%;
-  height: 315px;
-  margin-top: -155px;
-  margin-left: -250px;
+  height: 320px;
+  width: 550px;
   overflow-y: auto;
 }
 
@@ -197,8 +201,6 @@
 .modal .modalContainer .deckModalDiv {
   width: 710px;
   height: 660px;
-  margin-top: -330px;
-  margin-left: -355px;
   overflow-y: auto;
 }
 
@@ -261,10 +263,8 @@
 
 .modal .modalContainer .transModalDiv {
   width: 815px;
+  height: 600px;
   min-height: 600px;
-  margin-left: -400px;
-  margin-top: -300px;
-  top: 40%;
 }
 
 .modal .modalContainer .transModalDiv .transDescription {
@@ -378,6 +378,7 @@
 }
 
 .setupDeck ul li {
+  white-space: pre-wrap;
   padding: 5px;
 }
 
@@ -387,6 +388,10 @@
 
 .setupDeck ul li:nth-child(even) {
   background-color: #ffe89d;
+}
+
+.techSetupDeck, .shopSetupDeck {
+  width: 400px;
 }
 
 #setupDiv .setupContainer {
@@ -622,6 +627,28 @@
           transform: translate(-50%, -50%);
 }
 
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck .dungeonDice {
+  width: 100px;
+  height: 100px;
+  border: solid 1px black;
+  position: relative;
+  margin-top: 5px;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck .dungeonDice .dungeonDiceTitle {
+  text-align: center;
+  margin-top: 10px;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonDeck .dungeonDice .dungeonDiceValue {
+  font-size: 24pt;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed {
   display: inline-block;
   vertical-align: top;
@@ -760,6 +787,7 @@
 #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playerDiscardBlock, #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playerSection .playerSectionContent .playerDeckBlock {
   width: 75px;
   height: 100px;
+  padding: 2px;
   border: 1px black solid;
   display: inline-block;
 }
@@ -812,8 +840,14 @@
 }
 
 #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerCardContainer .playerCard {
-  width: 75px;
+  width: 100px;
   height: 100px;
+  font-size: 10pt;
   border: solid 1px black;
+  padding: 2px;
+}
+
+#playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerCardContainer .playerCard .cardName {
+  font-weight: bold;
 }
 /*# sourceMappingURL=main.css.map */

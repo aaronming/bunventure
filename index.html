@@ -129,6 +129,9 @@
                             </div>
                         </div>
                     </div>
+                    <div class="adminContainer">
+                        Admin
+                    </div>
                 </div>
             </div>
             <div id="townDiv" data-bind="visible: isTownPhase">
@@ -246,7 +249,7 @@
                     <div class="dungeonPlayed" data-bind="foreach: $data.discard">
                         <!--ko if: $data.isActivityCard-->
                         <div class="dungeonPlayedCard dungeonActivity">
-                            <span data-bind="text: $data.name"></span>
+                            <div data-bind="text: $data.name"></div>
                             <div class="dungeonPlayedStatInfo">
                                 <div data-bind="text: $data.effect"></div>
                             </div>
@@ -254,7 +257,7 @@
                         <!-- /ko -->
                         <!--ko if: $data.isMonsterCard-->
                         <div class="dungeonPlayedCard dungeonMonster">
-                            <span data-bind="text: $data.name"></span>
+                            <div data-bind="text: $data.name"></div>
                             <div class="dungeonPlayedStatInfo">
                                 <div class="monsterHP">Level: <span data-bind="text: $data.level"></span></div>
                                 <div class="monsterHP">CurHP: <span data-bind="text: $data.activeCurHp"></span>
@@ -289,7 +292,7 @@
                         <div class="activePlayer">
                             <div class="activePlayerTitle">Player: <span data-bind="text: $data.index"></span></div>
                             <div class="statsContainer">
-                                <div class="statsImage"></div>
+                                <div class="statsImage" data-bind="style: { backgroundImage: 'url(' + classImage + ')'}"></div>
                                 <div class="statsStats">
                                     <div>CurHP: <span data-bind="text: curHP"></span>
                                         <button class="wdmButton" data-bind="text: '+', click: function() { heal(1); }"></button>
@@ -379,33 +382,33 @@
                     <div class="sLevel">Lvl. <span data-bind="text: level"></span></div>
                 </div>
                 <div class="statsHPBar">
-                    <progress class="sHPBar" data-bind="attr: {value: curHP, max: stats.hp}"></progress>
+                    <progress class="sHPBar" data-bind="attr: {value: curHP, max: stats().hp}"></progress>
                     <div class="sHPText">
-                        <span data-bind="text: curHP"></span>/<span data-bind="text: stats.hp"> HP</span>
+                        <span data-bind="text: curHP"></span>/<span data-bind="text: stats().hp"> HP</span>
                     </div>
                 </div>
-                <div class="statsImage"></div>
-                <div class="statsStats">
+                <div class="statsImage" data-bind="style: { backgroundImage: 'url(' + classImage + ')'}"></div>
+                <div class="statsStats" data-bind="with: stats">
                     <div class="sStat">
                         <span class="sStatLabel">Attack:</span>
-                        <span class="sStatValue" data-bind="text: stats.attack"></span></div>
+                        <span class="sStatValue" data-bind="text: attack"></span></div>
                     <div class="sStat">
                         <span class="sStatLabel">Defense:</span>
-                        <span class="sStatValue" data-bind="text: stats.defense"></span></div>
+                        <span class="sStatValue" data-bind="text: defense"></span></div>
                     <div class="sStat">
                         <span class="sStatLabel">HP:</span>
-                        <span class="sStatValue" data-bind="text: stats.hp"></span></div>
+                        <span class="sStatValue" data-bind="text: hp"></span></div>
                     <div class="sStat">
                         <span class="sStatLabel">AP:</span>
-                        <span class="sStatValue" data-bind="text: stats.ap"></span></div>
+                        <span class="sStatValue" data-bind="text: ap"></span></div>
                     <div class="sStat">
                         <span class="sStatLabel">Hand:</span>
-                        <span class="sStatValue" data-bind="text: stats.hand"></span></div>
+                        <span class="sStatValue" data-bind="text: hand"></span></div>
                 </div>
             </div>
             <div class="statsRightContainer">
                 <div class="statsPassives">
-                    <div class="statsPassiveTitle" data-bind="text: 'Passives'"></div>
+                    <div class="statsPassiveTitle">Passives</div>
                     <div class="statsPassive" data-bind="foreach: passives">
                         <div class="passiveName" data-bind="text: $data.name"></div>
                         <div class="passiveDescript" data-bind="text: $data.effect"></div>

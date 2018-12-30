@@ -9,8 +9,9 @@ export function Player(index, playerClass, stats, skills) {
     self.myClass = playerClass;
     self.classStats = stats
     self.classSkills = skills;
+    self.classImage = "img/class-" + playerClass.toLowerCase() + ".png";
     self.level = ko.observable(0);
-    self.stats = {};
+    self.stats = ko.observable({});
     self.gold = ko.observable(10);
     self.curHP = ko.observable(0);
     self.inventory = ko.observableArray([]);
@@ -27,10 +28,11 @@ export function Player(index, playerClass, stats, skills) {
     self.activeHand = ko.observableArray([]); // Player hand
     self.activePlay = ko.observableArray([]); // Player played cards
     self.activeDiscard = ko.observableArray([]); // Player discard
+    self.activeActives = ko.observableArray([]); // Player active slots (like equipment)
     self.activeExile = ko.observableArray([]); // Player exile
 
     var updateStats = function() {
-        self.stats = new Stats(self.classStats[self.level() - 1]);
+        self.stats(new Stats(self.classStats[self.level() - 1]));
 
         // only increase hp for now
         // check if self.stats is empty
@@ -55,7 +57,7 @@ export function Player(index, playerClass, stats, skills) {
     });
 
     self.minDeckSize = ko.pureComputed(function() {
-        return parseInt(self.stats.hand) * 3;
+        return parseInt(self.stats().hand) * 3;
     }, this);
 
     self.buySkill = function(tech, ev) {
@@ -68,8 +70,12 @@ export function Player(index, playerClass, stats, skills) {
 
     self.removeSkill = function(tech, ev, index) {
         if (tech.myClass == "General") {
-            var genIndex = index() - (self.passives().length + self.learnedTech().length);
-            self.shopSkills.splice(genIndex, 1);
+            if (index) {
+                var genIndex = index() - (self.passives().length + self.learnedTech().length);
+                self.shopSkills.splice(genIndex, 1);
+            } else {
+                self.removeCard(tech, self.shopSkills);
+            }
         } else {
             self.addCard(tech, self.techDeck);
             if (tech.type == "Passive") {
@@ -98,7 +104,7 @@ export function Player(index, playerClass, stats, skills) {
     }
 
     self.fullHeal = function() {
-        var maxHP = self.stats.hp;
+        var maxHP = self.stats().hp;
         self.curHP(maxHP);
     }
 
@@ -164,6 +170,7 @@ export function Player(index, playerClass, stats, skills) {
         self.activePlay([]);
         self.activeHand([]);
         self.activeDiscard([]);
+        self.activeActives([]);
         self.activeExile([]);
     }
 
@@ -174,6 +181,7 @@ export function Player(index, playerClass, stats, skills) {
         else if (deckString == "play") deck = self.activePlay;
         else if (deckString == "deck") deck = self.activeDeck;
         else if (deckString == "discard") deck = self.activeDiscard;
+        else if (deckString == "active") deck = self.activeActives;
 
         return deck;
     }
@@ -188,7 +196,7 @@ export function Player(index, playerClass, stats, skills) {
     }
 
     self.drawHand = function() {
-        var hand = self.stats.hand;
+        var hand = self.stats().hand;
         for (var i = 0; i < hand; i++) {
             self.drawCard();
         }

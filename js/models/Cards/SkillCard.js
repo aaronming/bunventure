@@ -17,7 +17,7 @@ export function SkillCard(sObj, id) {
     }
 
     self.description = ko.pureComputed(function() {
-        var description = self.level + " " + self.name + 
+        var description = "Lv." + self.level + " " + self.name + 
             "\n" + self.type + " - " + self.cost + " AP" + 
             "\n----------------------" +
             "\n" + effectSplit();

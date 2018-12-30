@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+    <!-- <script data-main="scripts/main" src="js/require.js"></script> -->
+    <script type="text/javascript" src="js/libs/knockout.js"></script>
+    <script type="text/javascript" src="js/libs/tabletop.js"></script>
+    <script type="module" src="js/guest.js"></script>
+    <link rel="stylesheet" href="css/guest.css">
+    <body data-bind="css: bodyCss">
+        <div id="loaderDiv" class="pageDiv" data-bind="visible: isLoading">
+            <div class="loader"></div>
+        </div>
+
+        <div class="modal" data-bind="visible: showModal, click: hideModal">
+            <div class="modalContainer">
+                <div data-bind="template: modalTemplate"></div>
+            </div>
+        </div>
+
+        <div class="setupDiv pageDiv" data-bind="visible: isStartPhase">
+            <div>Select class</div>
+            <select data-bind="options: availableClasses, value: playerClass"></select>
+            <button class="phaseButton" data-bind="text: 'Confirm Classes', click: onPlayPhase"></button>
+        </div>
+
+        <div class="playDiv pageDiv" data-bind="visible: isPlayPhase">
+            <div class="adminContainer">
+                <button class="adminButton" data-bind="click: resetBattle">Reset Battle</button>
+                <button class="adminButton" data-bind="click: showDeckModal">View Deck</button>
+                <button class="adminButton" data-bind="click: showTechDeckModal">Tech Deck</button>
+                <button class="adminButton" data-bind="click: showShopDeckModal">Shop Deck</button>
+                <button class="adminButton" data-bind="click: toggleDarkMode">Dark mode</button>
+            </div>
+            <div class="mainContainer" data-bind="with: player">
+                <div class="playLeft">
+                    <div class="playLeftContainer">
+                        <div class="discardContainer">
+                            <div id="discardOverlay" class="playingOverlays" data-bind="click: $parent.sendCardEnd, visible: $parent.sendingCard"></div>
+                            <div class="playingContent">
+                                <div class="playingTitle">Discard</div>
+                                <div class="playerDiscardBlock discardDeck card" data-bind="click: $parent.showSearchCardModal">
+                                    <div class="cardCount" data-bind="text: $data.activeDiscard().length"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="playButtons">
+                            <button class="playButton" data-bind="click: shuffleActiveDeck">Shuffle Deck</button>
+                            <button class="playButton" data-bind="click: replenishDeck">Replenish Deck</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="playRight">
+                    <div class="centerContainer">
+                        <div class="playerCard">
+                            <div class="statsLeftContainer">
+                                <div class="statsTitle">
+                                    <div class="sClass" data-bind="text: myClass"></div>
+                                    <div class="sLevel">Lvl. <span data-bind="text: level"></span></div>
+                                    <button class="statLevelButton" data-bind="click: levelUp">+</button>
+                                    <button class="statLevelButton" data-bind="click: levelDown">-</button>
+                                </div>
+                                <div class="statsHPBar">
+                                    <progress class="sHPBar" data-bind="attr: {value: curHP, max: stats().hp}"></progress>
+                                    <div class="sHPText">
+                                        <span data-bind="text: curHP"></span>/<span data-bind="text: stats().hp"> HP</span>
+                                    </div>
+                                </div>
+                                <div class="statsImage" data-bind="style: { backgroundImage: 'url(' + classImage + ')'}"></div>
+                            </div>
+                            <div class="statsCenterContainer">
+                                <div class="statsStatTitle">Stats</div>
+                                <div class="statsStats" data-bind="with: stats">
+                                    <div class="sStat">
+                                        <span class="sStatLabel">Attack:</span>
+                                        <span class="sStatValue" data-bind="text: attack"></span></div>
+                                    <div class="sStat">
+                                        <span class="sStatLabel">Defense:</span>
+                                        <span class="sStatValue" data-bind="text: defense"></span></div>
+                                    <div class="sStat">
+                                        <span class="sStatLabel">HP:</span>
+                                        <span class="sStatValue" data-bind="text: hp"></span></div>
+                                    <div class="sStat">
+                                        <span class="sStatLabel">AP:</span>
+                                        <span class="sStatValue" data-bind="text: ap"></span></div>
+                                    <div class="sStat">
+                                        <span class="sStatLabel">Hand:</span>
+                                        <span class="sStatValue" data-bind="text: hand"></span></div>
+                                </div>
+                                <div class="statsCurrentTitle">Current</div>
+                                <div class="sStat">
+                                    <span class="sStatLabel">HP:</span>
+                                    <input class="sStatInput" data-bind="value: curHP">
+                                </div>
+                                <div class="sStat">
+                                    <span class="sStatLabel">Gold:</span>
+                                    <input class="sStatInput" data-bind="value: gold">
+                                </div>
+                            </div>
+                            <div class="statsRightContainer">
+                                <div class="statsPassives">
+                                    <div class="statsPassiveTitle">Passives</div>
+                                    <div class="statsPassive" data-bind="foreach: passives">
+                                        <div class="passiveName" data-bind="text: $data.name"></div>
+                                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
+                                        <div class="passiveName" data-bind="text: $data.name"></div>
+                                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
+                                        <div class="passiveName" data-bind="text: $data.name"></div>
+                                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
+                                        <div class="passiveName" data-bind="text: $data.name"></div>
+                                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="activeContainer">
+                            <div id="activeOverlay" class="playingOverlays" data-bind="click: $parent.sendCardEnd, visible: $parent.sendingCard"></div>
+                            <div class="playingContent">
+                                <div class="playingTitle">Active</div>
+                                <div class="emptyCard" data-bind="visible: !activeActives().length"></div>
+                                <div class="activeCards" data-bind="foreach: activeActives">
+                                    <div class="card" data-bind="click: function(c, v) { $parents[1].sendCardStart(c, v, 'active') },
+                                        attr: { title: $data.description }">
+                                        <div data-bind="text: $data.name"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="playContainer">
+                        <div class="deckContainer">
+                            <div id="deckOverlay" class="playingOverlays" data-bind="click: $parent.sendCardEnd, visible: $parent.sendingCard"></div>
+                            <div class="playingContent">
+                                <div class="playingTitle">Deck</div>
+                                <div class="playerDeckBlock card" data-bind="click: $parent.showSearchCardModal">
+                                    <div class="cardCount" data-bind="text: $data.activeDeck().length"></div>
+                                </div>
+                            </div>
+                        </div><!----><div class="playContainer">
+                            <div id="playOverlay" class="playingOverlays" data-bind="click: $parent.sendCardEnd, visible: $parent.sendingCard"></div>
+                            <div class="playingContent">
+                                <div class="playingTitle">Play</div>
+                                <div class="emptyCard" data-bind="visible: !activePlay().length"></div>
+                                <div class="playCards" data-bind="visible: activePlay().length, foreach: activePlay">
+                                    <div class="card" data-bind="click: function(c, v) { $parents[1].sendCardStart(c, v, 'play') }, 
+                                        attr: { title: $data.description }">
+                                        <div class="cardTitle" data-bind="text: $data.name"></div>
+                                        <div class="cardCost" data-bind="text: $data.cost + ' AP'"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="handContainer" data-bind="with: player">
+                <div class="handButtons">
+                    <button class="handButton" data-bind="click: cleanUp">Clean Up</button>
+                    <button class="handButton" data-bind="click: drawHand">Draw hand</button>
+                    <button class="handButton" data-bind="click: drawCard">Draw card</button>
+                </div>
+                <div class="handPlayContainer">
+                    <div id="handOverlay" class="playingOverlays" data-bind="click: $parent.sendCardEnd, visible: $parent.sendingCard"></div>
+                    <div class="playingContent">
+                        <div class="playingTitle">Hand</div>
+                        <!-- ko if: activeHand().length > 0 -->
+                        <div data-bind="template: { name: 'cardViewTemplate', data: { 
+                            deck: activeHand,
+                            section: 'hand',
+                            cardClick: $parent.sendCardStart
+                        } }"></div>
+                        <!-- /ko -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+    <script id="emptyTemplate" type="text/html"></script>
+
+    <script id="deckModal" type="text/html">
+        <div class="modalDiv deckModalDiv" data-bind="foreach: deck">
+            <div class="deckModalCard" data-bind="click: $parent.cardClick, 
+            template: { name: 'cardTemplate', data: $data }"></div>
+        </div>
+    </script>
+
+    <script id="cardTemplate" type="text/html">
+        <div class="deckCard" data-bind="css: $data.myClass.toLowerCase(), click: $parent.cardClick">
+            <div class="cardTitle">
+                <div class="cardName" data-bind="text: $data.name"></div>
+                <div class="cardCostContainer">
+                    <div class="cardCost" data-bind="text: $data.cost"></div>
+                </div>
+            </div>
+            <div class="cardImage"></div>
+            <div class="cardSubtitle">
+                <span class="cardClass" data-bind="text: $data.myClass"></span>
+                <span class="cardLevel" data-bind="text: 'Lv ' + $data.level"></span> - 
+                <span class="cardType" data-bind="text: $data.type"></span>
+            </div>
+            <div class="cardEffect" data-bind="text: $data.effect"></div>
+        </div>
+    </script>
+
+    <script id="cardViewTemplate" type="text/html">
+        <div data-bind="foreach: deck">
+            <div class="playerCardContainer">
+                <div data-bind="click: function(ethis, ev) { $parent.cardClick(ethis, ev, $parent.section) }, 
+                template: { name: 'cardTemplate',data: $data }"></div>
+            </div>
+        </div>
+    </script>
+</html>

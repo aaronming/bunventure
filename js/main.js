@@ -23,7 +23,7 @@ window.onload = function() {
     function MyApp() {
         var self = this;
 
-        self.version = "0.1.2"
+        self.version = "0.2.0"
 
         self.isLoading = ko.observable(true);
         var emptyTemplate = {name: "emptyTemplate"};
@@ -188,7 +188,6 @@ window.onload = function() {
                     var skillCards = skillsData.map(function(skill) {
                        return new SkillCard(skill); 
                     });
-                    console.log(skillCards);
                     var player = new Player((i+1), selectedClass, statsData, skillCards);
                     myPlayers.push(player);
                 }

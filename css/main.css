@@ -161,6 +161,7 @@ body {
   height: 150px;
   background-color: white;
   border: solid 1px black;
+  background-size: contain;
 }
 
 .modal .modalContainer .statsModalDiv .statsLeftContainer .statsStats .sStat {
@@ -750,6 +751,7 @@ body {
   height: 100px;
   margin-bottom: 10px;
   border: solid 1px black;
+  background-size: contain;
 }
 
 #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer {

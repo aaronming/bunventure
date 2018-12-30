@@ -6,6 +6,8 @@ export function Overworld(monstersData, activitiesData, wdm) {
     self.dungeons = ko.observableArray([]);
     self.wdm = wdm;
 
+    var dungeonCardCount = 5;
+
     function initialize() {
         // initialize monsters
         var baseIndex = 0;
@@ -17,10 +19,23 @@ export function Overworld(monstersData, activitiesData, wdm) {
         var bosses = monstersData.slice(bossIndex + 1);
         var bossDeck = new Bosses(bosses);
 
-        for (var i = 0; i < 5; i++) {
+        // default dungeon
+        var useDefault = 1;
+        var defaultMonsters = [
+            regulars[0],
+            regulars[1],
+            regulars[2],
+            regulars[10],
+            regulars[11],
+        ];
+        var defaultBoss = monstersData[bossIndex + 1];
+        var defaultDungeon = new Dungeon(defaultBoss, defaultMonsters, self.wdm);
+        self.dungeons.push(defaultDungeon);
+
+        for (var i = useDefault; i < 5; i++) {
             var boss = bossDeck.deck()[i];
-            var startIndex = i * 10;
-            var endIndex = startIndex + 10;
+            var startIndex = i * dungeonCardCount;
+            var endIndex = startIndex + dungeonCardCount;
             var dungeonCards = dungeonActivities.deck.slice(startIndex, endIndex);
             var dungeon = new Dungeon(boss, dungeonCards, self.wdm);
 
@@ -36,9 +51,9 @@ function Dungeon(boss, deck, wdm) {
     Deckable.call(this);
     var self = this;
 
+    self.deck = ko.observableArray(self.shuffleDeck(deck));
     self.boss = boss;
     deck.unshift(boss);
-    self.deck = ko.observableArray(deck);
     self.discard = ko.observableArray([]);
     self.wdm = wdm;
     self.diceValue = ko.observable(20);

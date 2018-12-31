@@ -189,6 +189,45 @@ window.onload = function() {
                        return new SkillCard(skill); 
                     });
                     var player = new Player((i+1), selectedClass, statsData, skillCards);
+                    player.learnTech(player.techDeck()[0]);
+
+                    // Add basic skills
+                    var strikes = 3;
+                    var guards = 3;
+
+                    switch(selectedClass) {
+                        case "Barbarian":
+                            strikes = 5;
+                            guards = 1;
+                            break;
+                        case "Monk":
+                            strikes = 4;
+                            guards = 2;
+                            break;
+                        case "Wizard":
+                        case "Rogue":
+                        case "Druid":
+                        case "Ranger":
+                            strikes = 3;
+                            guards = 3;
+                            break;
+                        case "Paladin":
+                        case "Bard":
+                        case "Cleric":
+                            strikes = 2;
+                            guards = 4;
+                            break;
+                    }
+
+                    var ret0 = function() { return 0; };
+                    var ret1 = function() { return 1; };
+                    for (var j = 0; j < strikes; j++) {
+                        self.setupAddSkill(null, null, ret0, player);
+                    }
+                    for (var j = 0; j < guards; j++) {
+                        self.setupAddSkill(null, null, ret1, player);
+                    }
+
                     myPlayers.push(player);
                 }
                 self.players(myPlayers);
@@ -334,8 +373,10 @@ window.onload = function() {
         /**
          * PHASE FUNCTIONS
          */
-        self.setupAddSkill = function(tech, ev, index, playerIndex) {
-            var player = self.players()[playerIndex - 1];
+        self.setupAddSkill = function(tech, ev, index, playerOrIndex) {
+            var player;
+            if (Number.isInteger(playerOrIndex)) player = self.players()[playerOrIndex - 1];
+            else player = playerOrIndex;
             var cardObject = self.generalCards[index()];
             var card = new SkillCard(cardObject, self.cardCount);
             self.cardCount += 1;

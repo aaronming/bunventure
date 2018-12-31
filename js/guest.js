@@ -1,12 +1,6 @@
 import { Player } from './models/Decks/Player.js';
-import { Shop } from './models/Decks/Shop.js';
 import { SkillCard } from './models/Cards/SkillCard.js';
-import { Classes } from './models/Classes.js';
 import { SheetData } from './data/SheetData.js';
-import { Oracle } from './models/Decks/Oracle.js';
-import { Overworld } from './models/Decks/Dungeon.js';
-import { MonsterCard } from './models/Cards/MonsterCard.js';
-import { ActivityCard } from './models/Cards/ActivityCard.js';
 
 window.onload = function() {
     var sheetPublicUrl = "https://docs.google.com/spreadsheets/d/1fg0glSTrSxdri91skmmGsKAysuo5522pTH66HAOfYoU/edit?usp=sharing";
@@ -29,22 +23,14 @@ window.onload = function() {
         self.hideModalCallback = null;
         self.playerClass = ko.observable("");
         self.player = ko.observable();
-        // self.WDM = ko.observable(1);
-        // self.playersValue = ko.observable(1);
-        // self.p1Class = ko.observable(""); self.p2Class = ko.observable(""); self.p3Class = ko.observable(""); self.p4Class = ko.observable("");
-        // self.players = ko.observableArray();
 
         self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue"]; //, "Wizard", "Bard", "Druid", "Monk", "Paladin"];
-        //self.classObjects = ko.observableArray();
 
         self.cardCount = 0;
         self.generalCards;
         self.guestShopCards = ko.observable();
-        // self.innCost = self.WDM() + 1;
         self.shop = ko.observable();
         self.oracle = ko.observable();
-        //self.overworld = ko.observable();
-        //self.dungeon = ko.observable();
 
         self.phase = ko.observable(0);
         self.isStartPhase = ko.observable(true);
@@ -52,10 +38,6 @@ window.onload = function() {
         self.phase.subscribe(function(newPhase) {
             document.body.scrollTop = document.documentElement.scrollTop = 0;
             self.isStartPhase(newPhase == Phases.start);
-            // self.isSetupPhase(newPhase == Phases.setup);
-            // self.isTownPhase(newPhase == Phases.town);
-            // self.isWorldPhase(newPhase == Phases.world);
-            // self.isDungeonPhase(newPhase == Phases.dungeon);
             self.isPlayPhase(newPhase == Phases.play);
         });
         
@@ -81,8 +63,6 @@ window.onload = function() {
             SkillsData = tabletop.sheets("Skills").elements;
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
-
-            console.log(ko.toJSON(ShopData));
         }
 
         /**
@@ -101,25 +81,6 @@ window.onload = function() {
                 self.playerClass("Barbarian");
                 self.onPlayPhase();
             }
-
-            // var cObjects = [];
-            // for (var i = 0; i < self.availableClasses.length; i++) {
-            //     var dIndex = StatsDataIndex(i + 1);
-            //     var sData = StatsData.slice(dIndex, dIndex + MaxLevel);
-
-            //     // TODO: Refactor this and inSetupPhase
-            //     var skillsDataIndex = SkillsDataIndex(i + 1);
-            //     var skillsData = SkillsData.slice(skillsDataIndex, skillsDataIndex + SkillsCount);
-
-            //     var skillCards = skillsData.map(function(skill) {
-            //        return new SkillCard(skill); 
-            //     });
-
-            //     var cObject = new Classes(self.availableClasses[i], sData, skillCards);
-
-            //     cObjects.push(cObject);
-            // }
-            // self.classObjects(cObjects);
             self.isLoading(false);
         }
 
@@ -141,13 +102,43 @@ window.onload = function() {
 
             var ply = self.player();
             ply.learnTech(ply.techDeck()[0]);
-            var ret0 = function() {return 0;};
-            self.setupAddSkill(null, null, ret0);
-            self.setupAddSkill(null, null, ret0);
-            self.setupAddSkill(null, null, ret0);
-            self.setupAddSkill(null, null, ret0);
-            self.setupAddSkill(null, null, ret0);
-            self.setupAddSkill(null, null, ret0);
+
+            // Add basic skills
+            var strikes = 3;
+            var guards = 3;
+
+            switch(selectedClass) {
+                case "Barbarian":
+                    strikes = 5;
+                    guards = 1;
+                    break;
+                case "Monk":
+                    strikes = 4;
+                    guards = 2;
+                    break;
+                case "Wizard":
+                case "Rogue":
+                case "Druid":
+                case "Ranger":
+                    strikes = 3;
+                    guards = 3;
+                    break;
+                case "Paladin":
+                case "Bard":
+                case "Cleric":
+                    strikes = 2;
+                    guards = 4;
+                    break;
+            }
+
+            var ret0 = function() { return 0; };
+            var ret1 = function() { return 1; };
+            for (var i = 0; i < strikes; i++) {
+                self.setupAddSkill(null, null, ret0);
+            }
+            for (var i = 0; i < guards; i++) {
+                self.setupAddSkill(null, null, ret1);
+            }
 
             self.resetBattle();
             self.phase(Phases.play);

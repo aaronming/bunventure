@@ -223,6 +223,7 @@ body.darkMode {
 
                         .statsImage {
                             height: 150px;
+                            width: 200px;
                             background-color: white;
                             border: solid 1px black;
                             background-size: contain;
@@ -426,7 +427,8 @@ body.darkMode {
 
     .cardImage {
         width: 150px;
-        height: 75px;
+        height: 112.5px;
+        background-size: cover;
         background-color: white;
     }
 

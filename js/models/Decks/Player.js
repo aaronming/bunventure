@@ -9,7 +9,7 @@ export function Player(index, playerClass, stats, skills) {
     self.myClass = playerClass;
     self.classStats = stats
     self.classSkills = skills;
-    self.classImage = "img/class-" + playerClass.toLowerCase() + ".png";
+    self.classImage = "img/class/" + playerClass.toLowerCase() + ".png";
     self.level = ko.observable(0);
     self.stats = ko.observable({});
     self.gold = ko.observable(10);

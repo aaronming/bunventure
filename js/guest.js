@@ -170,9 +170,8 @@ window.onload = function() {
 
         self.showDeckModal = function() {
             var dataObject = {
-                deck: self.player().deck,
+                deck: self.player().allSkills,
                 cardClick: function(card, ev) {
-                    console.log(card);
                     self.player().removeSkill(card);
                 }
             }

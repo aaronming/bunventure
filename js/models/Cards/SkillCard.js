@@ -16,6 +16,13 @@ export function SkillCard(sObj, id) {
         return split.join("\n");
     }
 
+    self.skillImage = function() {
+        var root = "img/skills/" + self.myClass.toLowerCase();
+        var skillName = self.name.replace(/\s/g, "-");
+
+        return root + "/" + skillName + ".png";
+    }
+
     self.description = ko.pureComputed(function() {
         var description = "Lv." + self.level + " " + self.name + 
             "\n" + self.type + " - " + self.cost + " AP" + 

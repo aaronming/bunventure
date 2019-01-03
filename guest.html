@@ -104,12 +104,6 @@
                                     <div class="statsPassive" data-bind="foreach: passives">
                                         <div class="passiveName" data-bind="text: $data.name"></div>
                                         <div class="passiveDescript" data-bind="text: $data.effect"></div>
-                                        <div class="passiveName" data-bind="text: $data.name"></div>
-                                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
-                                        <div class="passiveName" data-bind="text: $data.name"></div>
-                                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
-                                        <div class="passiveName" data-bind="text: $data.name"></div>
-                                        <div class="passiveDescript" data-bind="text: $data.effect"></div>
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +188,7 @@
                     <div class="cardCost" data-bind="text: $data.cost"></div>
                 </div>
             </div>
-            <div class="cardImage"></div>
+            <div class="cardImage" data-bind="style: { backgroundImage: 'url(' + $data.skillImage() + ')'}"></div>
             <div class="cardSubtitle">
                 <span class="cardClass" data-bind="text: $data.myClass"></span>
                 <span class="cardLevel" data-bind="text: 'Lv ' + $data.level"></span> - 

@@ -80,6 +80,7 @@ window.onload = function() {
             if (debug) {
                 self.playerClass("Barbarian");
                 self.onPlayPhase();
+                self.showShopDeckModal();
             }
             self.isLoading(false);
         }

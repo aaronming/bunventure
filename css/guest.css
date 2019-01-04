@@ -3,7 +3,7 @@
 }
 
 .barbarian {
-  background-color: #c23737;
+  background-color: #e28c8c;
 }
 
 .ranger {
@@ -15,11 +15,11 @@
 }
 
 .rogue {
-  background-color: #69539b;
+  background-color: #ae9bda;
 }
 
 .wizard {
-  background-color: #1457d4;
+  background-color: #85a4dd;
 }
 
 .bard {
@@ -27,7 +27,7 @@
 }
 
 .druid {
-  background-color: #775830;
+  background-color: #be9478;
 }
 
 .monk {
@@ -35,7 +35,7 @@
 }
 
 .paladin {
-  background-color: #465183;
+  background-color: #7c84a8;
 }
 
 #discardOverlay {
@@ -163,7 +163,7 @@ body.darkMode {
 .playDiv .playButton,
 .playDiv .handButton {
   height: 50px;
-  width: 100px;
+  width: 125px;
 }
 
 .darkMode .playDiv .adminButton, .darkMode
@@ -175,7 +175,7 @@ body.darkMode {
 .playDiv .playingOverlays {
   position: absolute;
   min-height: 125px;
-  min-width: 100px;
+  min-width: 125px;
   width: 100%;
   height: 100%;
 }
@@ -392,7 +392,7 @@ body.darkMode {
 }
 
 .card {
-  width: 100px;
+  width: 125px;
   height: 125px;
   border: solid 1px black;
   background-color: white;
@@ -405,7 +405,7 @@ body.darkMode {
 
 .card .cardCount, .card .cardTitle {
   pointer-events: none;
-  width: 100px;
+  width: 125px;
   color: black;
 }
 
@@ -417,12 +417,12 @@ body.darkMode {
   font-size: 14pt;
 }
 
-.card .cardCost {
+.card .cardCost, .card .cardEffect {
   font-size: 10pt;
 }
 
 .emptyCard {
-  width: 100px;
+  width: 125px;
   height: 125px;
   border: solid 1px black;
   background-color: white;

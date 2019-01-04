@@ -1,19 +1,19 @@
 @import 'mixins';
 
-$cardWidth: 100px;
+$cardWidth: 125px;
 $cardHeight: 125px;
 $playerCardHeight: 200px;
 
-.general { background-color: rgb(207, 207, 207); }
-.barbarian { background-color: rgb(194, 55, 55); }
-.ranger { background-color: rgb(91, 164, 233); }
-.cleric { background-color: rgb(240, 233, 170); }
-.rogue { background-color: rgb(105, 83, 155); }
-.wizard { background-color: rgb(20, 87, 212); }
-.bard { background-color: rgb(236, 158, 68); }
-.druid { background-color: rgb(119, 88, 48); }
-.monk { background-color: rgb(131, 192, 216); }
-.paladin { background-color: rgb(70, 81, 131); }
+.general { background-color: $generalBG; }
+.barbarian { background-color: $barbarianBG; }
+.ranger { background-color: $rangerBG; }
+.cleric { background-color: $clericBG; }
+.rogue { background-color: $rogueBG; }
+.wizard { background-color: $wizardBG; }
+.bard { background-color: $bardBG; }
+.druid { background-color: $druidBG; }
+.monk { background-color: $monkBG; }
+.paladin { background-color: $paladinBG; }
 
 #discardOverlay { background-color: rgba(129, 244, 225, 0.5); }
 #deckOverlay { background-color: rgba(86, 203, 249, 0.5); }
@@ -372,7 +372,7 @@ body.darkMode {
         font-size: 14pt;
     }
 
-    .cardCost {
+    .cardCost, .cardEffect {
         font-size: 10pt;
     }
 }

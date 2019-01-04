@@ -116,7 +116,9 @@
                                 <div class="activeCards" data-bind="foreach: activeActives">
                                     <div class="card" data-bind="click: function(c, v) { $parents[1].sendCardStart(c, v, 'active') },
                                         attr: { title: $data.description }">
-                                        <div data-bind="text: $data.name"></div>
+                                        <div class="cardTitle" data-bind="text: $data.name"></div>
+                                        <div class="cardCost" data-bind="text: $data.cost + ' AP'"></div>
+                                        <div class="cardEffect" data-bind="text: $data.effect"></div>
                                     </div>
                                 </div>
                             </div>
@@ -141,6 +143,7 @@
                                         attr: { title: $data.description }">
                                         <div class="cardTitle" data-bind="text: $data.name"></div>
                                         <div class="cardCost" data-bind="text: $data.cost + ' AP'"></div>
+                                        <div class="cardEffect" data-bind="text: $data.effect"></div>
                                     </div>
                                 </div>
                             </div>

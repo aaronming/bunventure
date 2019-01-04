@@ -21,18 +21,28 @@ export function Overworld(monstersData, activitiesData, wdm) {
 
         // default dungeon
         var useDefault = 1;
-        var defaultMonsters = [
+        var defaultMonsters1 = [
             regulars[0],
-            regulars[1],
-            regulars[2],
-            regulars[10],
-            regulars[11],
         ];
-        var defaultBoss = monstersData[bossIndex + 1];
-        var defaultDungeon = new Dungeon(defaultBoss, defaultMonsters, self.wdm);
+        var defaultMonsters2 = [
+            regulars[1],
+            regulars[10],
+        ];
+        var defaultMonsters3 = [
+            regulars[2],
+            regulars[11],
+            regulars[17],
+        ];
+        var defaultDungeon = new Dungeon(monstersData[bossIndex + 1], defaultMonsters1, self.wdm);
+        self.dungeons.push(defaultDungeon);
+        
+        var defaultDungeon = new Dungeon(monstersData[bossIndex + 2], defaultMonsters2, self.wdm);
+        self.dungeons.push(defaultDungeon);
+        
+        var defaultDungeon = new Dungeon(monstersData[bossIndex + 3], defaultMonsters2, self.wdm);
         self.dungeons.push(defaultDungeon);
 
-        for (var i = useDefault; i < 5; i++) {
+        for (var i = useDefault ? 3 : 0; i < 5; i++) {
             var boss = bossDeck.deck()[i];
             var startIndex = i * dungeonCardCount;
             var endIndex = startIndex + dungeonCardCount;
@@ -93,6 +103,8 @@ function Dungeon(boss, deck, wdm) {
         if (nextPlayer > self.players().length) nextPlayer = 1;
 
         self.playerTurn(nextPlayer);
+
+        self.rollDice();
     }
 }
 

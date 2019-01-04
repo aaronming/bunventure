@@ -12,7 +12,7 @@ window.onload = function() {
     var StatsDataIndex = function(index) { return index * 5; }
     var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 20) + 8; }
 
-    var debug = 0;
+    var debug = 1;
 
     function MyApp() {
         var self = this;
@@ -80,6 +80,7 @@ window.onload = function() {
             if (debug) {
                 self.playerClass("Barbarian");
                 self.onPlayPhase();
+                self.showShopDeckModal();
             }
             self.isLoading(false);
         }

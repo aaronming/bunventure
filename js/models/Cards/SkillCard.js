@@ -17,10 +17,11 @@ export function SkillCard(sObj, id) {
     }
 
     self.skillImage = function() {
-        var root = "img/skills/" + self.myClass.toLowerCase();
+        var root = "img/skills/" + self.myClass;
         var skillName = self.name.replace(/\s/g, "-");
+        var output = root + "/" + skillName + ".png";
 
-        return root + "/" + skillName + ".png";
+        return output.toLowerCase();
     }
 
     self.description = ko.pureComputed(function() {

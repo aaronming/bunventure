@@ -298,11 +298,13 @@
                                         <button class="wdmButton" data-bind="text: '+', click: function() { heal(1); }"></button>
                                         <button class="wdmButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
                                     </div>
-                                    <div>MaxHP: <span data-bind="text: stats.hp"></span></div>
-                                    <div>ATK: <span class="sStatValue" data-bind="text: stats.attack"></span></div>
-                                    <div>DEF: <span class="sStatValue" data-bind="text: stats.defense"></span></div>
-                                    <div>AP: <span class="sStatValue" data-bind="text: stats.ap"></span></div>
-                                    <div>HAND: <span class="sStatValue" data-bind="text: stats.hand"></span></div>
+                                    <div data-bind="with: stats">
+                                        <div>MaxHP: <span data-bind="text: hp"></span></div>
+                                        <div>ATK: <span class="sStatValue" data-bind="text: attack"></span></div>
+                                        <div>DEF: <span class="sStatValue" data-bind="text: defense"></span></div>
+                                        <div>AP: <span class="sStatValue" data-bind="text: ap"></span></div>
+                                        <div>HAND: <span class="sStatValue" data-bind="text: hand"></span></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -462,7 +464,7 @@
                     </ul>
                 </div>
                 <div class="setupDeck">
-                    <h4>Sell</h4>
+                    <h4>Remove</h4>
                     <div>
                         Cost: <span data-bind="text: sellDeckCost"></span>
                     </div>

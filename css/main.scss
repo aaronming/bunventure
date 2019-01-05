@@ -1,15 +1,15 @@
 @import 'mixins';
 
-.general { background-color: rgb(207, 207, 207); }
-.barbarian { background-color: rgba(221, 159, 159, 0.5); }
-.ranger { background-color: rgb(91, 164, 233); }
-.cleric { background-color: rgb(240, 233, 170); }
-.rogue { background-color: rgba(150, 140, 172, 0.5); }
-.wizard { background-color: rgb(20, 87, 212); }
-.bard { background-color: rgb(236, 158, 68); }
-.druid { background-color: rgb(119, 88, 48); }
-.monk { background-color: rgb(131, 192, 216); }
-.paladin { background-color: rgb(70, 81, 131); }
+.general { background-color: $generalBG; }
+.barbarian { background-color: $barbarianBG; }
+.ranger { background-color: $rangerBG; }
+.cleric { background-color: $clericBG; }
+.rogue { background-color: $rogueBG; }
+.wizard { background-color: $wizardBG; }
+.bard { background-color: $bardBG; }
+.druid { background-color: $druidBG; }
+.monk { background-color: $monkBG; }
+.paladin { background-color: $paladinBG; }
 
 body {
     //background-color: rgb(70, 70, 70);

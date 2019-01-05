@@ -23,7 +23,7 @@ window.onload = function() {
     function MyApp() {
         var self = this;
 
-        self.version = "0.2.0"
+        self.version = "0.2.3"
 
         self.isLoading = ko.observable(true);
         var emptyTemplate = {name: "emptyTemplate"};
@@ -254,7 +254,7 @@ window.onload = function() {
         }
 
         self.onTownPhase = function() {
-
+            self.shop().replenishShop();
             self.phase(Phases.town);
         }
 

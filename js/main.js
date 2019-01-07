@@ -23,7 +23,7 @@ window.onload = function() {
     function MyApp() {
         var self = this;
 
-        self.version = "0.2.3"
+        self.version = "0.2.5"
 
         self.isLoading = ko.observable(true);
         var emptyTemplate = {name: "emptyTemplate"};
@@ -31,11 +31,12 @@ window.onload = function() {
         self.showModal = ko.observable(false);
         self.hideModalCallback = null;
         self.WDM = ko.observable(1);
+        self.guestMode = ko.observable(false);
         self.playersValue = ko.observable(1);
         self.p1Class = ko.observable(""); self.p2Class = ko.observable(""); self.p3Class = ko.observable(""); self.p4Class = ko.observable("");
         self.players = ko.observableArray();
 
-        self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue"]; //, "Wizard", "Bard", "Druid", "Monk", "Paladin"];
+        self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue", "Wizard"]; //, "Bard", "Druid", "Monk", "Paladin"];
         self.classObjects = ko.observableArray();
 
         self.cardCount = 0;
@@ -88,7 +89,7 @@ window.onload = function() {
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
 
-            //console.log(ko.toJSON(ActivitiesData));
+            //console.log(ko.toJSON(SkillsData));
         }
 
         /**
@@ -205,6 +206,9 @@ window.onload = function() {
                             guards = 2;
                             break;
                         case "Wizard":
+                            strikes = 4;
+                            guards = 4;
+                            break;
                         case "Rogue":
                         case "Druid":
                         case "Ranger":
@@ -328,6 +332,21 @@ window.onload = function() {
             showModal({name: "deckModal", data: dataObject});
         }
 
+        self.showRandomLearnModal = function(clickIndex) {
+            var player = self.players()[clickIndex()];
+            var randomCard = player.getRandomTechSkill();
+            if (randomCard) {
+                var dataObject = {
+                    deck: [randomCard],
+                    cardClick: function(card, ev, index) {
+                        player.learnTech(card);
+                        hideModal();
+                    }
+                }
+                showModal({name: "deckModal", data: dataObject});
+            }
+        }
+
         self.showMarketModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
             self.shop().setup(player);
@@ -401,8 +420,7 @@ window.onload = function() {
 
             var sellDeck = oracle.sellDeck();
             if (sellDeck.length > 0) {
-                var randomDraw = Math.floor(Math.random() * player.techDeck().length);
-                var newSkill = player.techDeck()[randomDraw];
+                var newSkill = player.getRandomTechSkill();
 
                 for (var i = 0; i < sellDeck.length; i++) {
                     var skill = sellDeck[i];
@@ -462,6 +480,10 @@ window.onload = function() {
          * OTHER FUNCTIONS
          */
 
+        self.onGuestMode = function() {
+            window.location.href = "guest.html"
+        }
+
         self.playerDivMenuShow = ko.observable(true);
         self.playerDivMenu = ko.pureComputed(function() {
             var style = {};
@@ -484,6 +506,10 @@ window.onload = function() {
         self.addWDM = function(val) {
             var wdm = self.WDM();
             self.WDM(val + wdm);
+        }
+
+        self.toggleGuestMode = function() {
+            self.guestMode(!self.guestMode());
         }
 
         // color value css for class stat rating

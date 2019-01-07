@@ -39,7 +39,7 @@ export function Overworld(monstersData, activitiesData, wdm) {
         var defaultDungeon = new Dungeon(monstersData[bossIndex + 2], defaultMonsters2, self.wdm);
         self.dungeons.push(defaultDungeon);
         
-        var defaultDungeon = new Dungeon(monstersData[bossIndex + 3], defaultMonsters2, self.wdm);
+        var defaultDungeon = new Dungeon(monstersData[bossIndex + 3], defaultMonsters3, self.wdm);
         self.dungeons.push(defaultDungeon);
 
         for (var i = useDefault ? 3 : 0; i < 5; i++) {

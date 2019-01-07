@@ -274,18 +274,25 @@ body {
                     font-weight: bold;
                 }
 
+                .classImage {
+                    width: 200px;
+                    height: 150px;
+                    background-size: cover;
+                    margin-bottom: 2px;
+                }
+
                 .cTitle {
                     width: 60px;
                     display: inline-block;
                 }
 
-                $cValWidth: 20px;
+                $cValWidth: 28px;
                 .cVal0 { display:inline-block; width: $cValWidth * 0; background-color: none; padding: 5px;}
-                .cVal1 { display:inline-block; width: $cValWidth * 1; background-color: rgb(226, 40, 15); padding: 5px; }
-                .cVal2 { display:inline-block; width: $cValWidth * 2; background-color: rgb(230, 160, 10); padding: 5px; }
-                .cVal3 { display:inline-block; width: $cValWidth * 3; background-color: rgb(223, 226, 17); padding: 5px; }
-                .cVal4 { display:inline-block; width: $cValWidth * 4; background-color: rgb(152, 226, 14); padding: 5px; }
-                .cVal5 { display:inline-block; width: $cValWidth * 5; background-color: rgb(44, 221, 21) ; padding: 5px;}
+                .cVal1 { display:inline-block; width: $cValWidth * 1 - 10; background-color: rgb(226, 40, 15); padding: 5px; }
+                .cVal2 { display:inline-block; width: $cValWidth * 2 - 10; background-color: rgb(230, 160, 10); padding: 5px; }
+                .cVal3 { display:inline-block; width: $cValWidth * 3 - 10; background-color: rgb(223, 226, 17); padding: 5px; }
+                .cVal4 { display:inline-block; width: $cValWidth * 4 - 10; background-color: rgb(152, 226, 14); padding: 5px; }
+                .cVal5 { display:inline-block; width: $cValWidth * 5 - 10; background-color: rgb(44, 221, 21) ; padding: 5px;}
             }
         }
 
@@ -387,24 +394,36 @@ body {
                     vertical-align: top;
                 }
             }
-        
-            .player {
-                width: 250px;
-                padding: 5px;
-                margin-left: auto;
-                margin-right: 0;
 
-                .playerTitle {
+            .menuTitle {
                     margin-bottom: 5px;
                     font-weight: bold;
                     font-size: 15pt;
+            }
+
+            .adminContainer, .playerContainer {
+                padding: 5px;
+                width: 250px;
+            }
+
+            .aButton{
+                width: 75px;
+                padding: 5px;
+                margin-right: 2px;
+            }
+        
+            .player {
+                
+                .playerValue {
+                    width: 20px;
+                    display: inline-block;
                 }
         
                 .playerButtons {
                     margin-top: 5px;
                     
                     .pButton {
-                        width: 50px;
+                        width: 75px;
                         padding: 5px;
                         margin-right: 2px;
                     }
@@ -586,6 +605,16 @@ body {
                     margin-left: -100px;
                     padding: 5px;
                     overflow-y: scroll;
+
+                    .dungeonPlayLeft {
+                        width: 150px;
+                        display: inline-block;
+                    }
+
+                    .dungeonPlayLeft {
+                        width: 200px;
+                        display: inline-block
+                    }
 
                     .dungeonPlayedStatInfo {
                         display: none;

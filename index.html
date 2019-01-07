@@ -33,6 +33,7 @@
                 <div class="classesDiv" data-bind="foreach: classObjects">
                     <div class="classDiv" data-bind="click: function() { $parent.showClassSkillsModal($index); }">
                         <div class="className" data-bind="text: $data.className"></div>
+                        <div class="classImage" data-bind="style: { backgroundImage: 'url(' + $data.classImage + ')'}"></div>
                         <div><span class="cTitle">Attack:</span><span data-bind="text: $data.attack, css: $parent.cValueCSS($data.attack)"></span></div>
                         <div><span class="cTitle">Defense:</span><span data-bind="text: $data.defense, css: $parent.cValueCSS($data.defense)"></span></div>
                         <div><span class="cTitle">HP:</span><span data-bind="text: $data.hp, css: $parent.cValueCSS($data.hp)"></span></div>
@@ -54,7 +55,8 @@
                     Player 4: <select data-bind="options: availableClasses, value: p4Class"></select>
                 </div>
             </div>
-            <button class="phaseButton" data-bind="text: 'Confirm Classes', click: onSetupPhase"></button>
+            <button class="phaseButton" data-bind="click: onGuestMode">Guest Mode</button>
+            <button class="phaseButton" data-bind="click: onSetupPhase">Confirm Classes</button>
         </div>
 
         <div id="setupDiv" class="pageDiv" data-bind="visible: isSetupPhase">
@@ -106,31 +108,34 @@
                         <button class="wdmButton" data-bind="text: '+', click: function() { addWDM(1); }"></button>
                         <button class="wdmButton" data-bind="text: '-', click: function() { addWDM(-1); }"></button>
                     </div>
-                    <div class="plyerContainer" data-bind="foreach: players">
+                    <!-- <div class="adminContainer">
+                        <div class="menuTitle">Admin</div>
+                        <button class="aButton" data-bind="text: guestMode() ? 'HOST': 'GUEST',
+                            click: toggleGuestMode">GUEST</button>
+                    </div> -->
+                    <div class="playerContainer" data-bind="foreach: players">
                         <div class="player">
-                            <div class="playerTitle">Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></div>
+                            <div class="menuTitle">Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></div>
                             <div class="playerLevel">Level:
-                                <span data-bind="text: $data.level"></span>
+                                <span class="playerValue" data-bind="text: $data.level"></span>
                                 <button class="pDeltaButton" data-bind="text: '+', click: $data.levelUp"></button>
                                 <button class="pDeltaButton" data-bind="text: '-', click: $data.levelDown"></button>
                             </div>
                             <!-- <div>Cur HP: <span data-bind="text: curHP"></span></span></div>
                             <div>Max HP: <span data-bind="text: $data.stats.hp"></span></div> -->
                             <div class="playerGold">Gold: 
-                                <span data-bind="text: $data.gold"></span>
+                                <span class="playerValue" data-bind="text: $data.gold"></span>
                                 <button class="pDeltaButton" data-bind="text: '+', click: function() {$data.addGold(1); }"></button>
                                 <button class="pDeltaButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
                             </div>
                             <div class="playerButtons">
                                 <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
                                 <button class="pButton" data-bind="text: 'Deck', click: function() { $parent.showDeckModal($index) }">
-                                <button class="pButton" data-bind="text: 'Items', click: function() { $parent.showItemModal($index) }">
-                                <button class="pButton" data-bind="text: 'Book', click: function() { $parent.showBookModal($index) }">
+                                <!-- <button class="pButton" data-bind="text: 'Items', click: function() { $parent.showItemModal($index) }"> -->
+                                <!-- <button class="pButton" data-bind="text: 'Book', click: function() { $parent.showBookModal($index) }"> -->
+                                <button class="pButton" data-bind="text: 'Random', click: function() { $parent.showRandomLearnModal($index) }">
                             </div>
                         </div>
-                    </div>
-                    <div class="adminContainer">
-                        Admin
                     </div>
                 </div>
             </div>
@@ -155,7 +160,7 @@
                     <div class="shopTitle" data-bind="text: 'Market'"></div>
                     <div class="shopSubtitle">
                         Welcome! See anything you like? <br/><br/>
-                        Remove a skill - 3 Gold
+                        Remove a skill - 5 Gold
                     </div>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
@@ -168,7 +173,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="oracleShop townShop">
+                <!-- <div class="oracleShop townShop">
                     <div class="shopTitle" data-bind="text: 'Oracle'"></div>
                     <div class="shopSubtitle">
                         Greetings, I've been expecting you. <br/><br/>
@@ -188,7 +193,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- <div class="blacksmithShop townShop">
                     <div class="shopTitle" data-bind="text: 'Blacksmith'"></div>
                     <div class="shopSubtitle" data-bind="text: 'Welcome traveler! Spend the night here to replenish your health. '"></div>
@@ -257,16 +262,20 @@
                         <!-- /ko -->
                         <!--ko if: $data.isMonsterCard-->
                         <div class="dungeonPlayedCard dungeonMonster">
-                            <div data-bind="text: $data.name"></div>
-                            <div class="dungeonPlayedStatInfo">
-                                <div class="monsterHP">Level: <span data-bind="text: $data.level"></span></div>
-                                <div class="monsterHP">CurHP: <span data-bind="text: $data.activeCurHp"></span>
-                                    <button class="monsterHPButton" data-bind="text: '+', click: function() { heal(1); }"></button>
-                                    <button class="monsterHPButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
+                            <div class="dungeonPlayLeft">
+                                <div data-bind="text: $data.name"></div>
+                                <div class="dungeonPlayedStatInfo">
+                                    <div class="monsterHP">Level: <span data-bind="text: $data.level"></span></div>
+                                    <div class="monsterHP">CurHP: <span data-bind="text: $data.activeCurHp"></span>
+                                        <button class="monsterHPButton" data-bind="text: '+', click: function() { heal(1); }"></button>
+                                        <button class="monsterHPButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
+                                    </div>
+                                    <div class="monsterHP">MaxHP: <span data-bind="text: $data.activeMaxHp"></span></div>
+                                    <div class="monsterAtk">Attack: <span data-bind="text: $data.activeAttack"></span></div>
+                                    <div class="monsterDef">Defense: <span data-bind="text: $data.activeDefense"></span></div>
                                 </div>
-                                <div class="monsterHP">MaxHP: <span data-bind="text: $data.activeMaxHp"></span></div>
-                                <div class="monsterAtk">Attack: <span data-bind="text: $data.activeAttack"></span></div>
-                                <div class="monsterDef">Defense: <span data-bind="text: $data.activeDefense"></span></div>
+                            </div>
+                            <div class="dungeonPlayRight">
                                 <ul class="monsterSkills" data-bind="foreach: $data.skills">
                                     <li class="monsterSkillsLine" data-bind="text: $data"></li>
                                 </ul>
@@ -448,7 +457,7 @@
             <div class="transDiv setupDeck">
                 <h4>Shop</h4>
                 <ul class="shopDeck" data-bind="foreach: availShopCards">
-                    <li class="shopCard" data-bind="attr: {title: $data.description}, text: $data.name + ' ' + $data.price + 'g', 
+                    <li class="shopCard" data-bind="text: $data.shopDescription, 
                     click: $parent.buySkill"></li>
                 </ul>
             </div>

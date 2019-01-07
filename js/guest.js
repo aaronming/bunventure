@@ -23,8 +23,11 @@ window.onload = function() {
         self.hideModalCallback = null;
         self.playerClass = ko.observable("");
         self.player = ko.observable();
+        self.showNotif = ko.observable(false);
+        self.notifText = ko.observable();
+        self.notifTimer;
 
-        self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue"]; //, "Wizard", "Bard", "Druid", "Monk", "Paladin"];
+        self.availableClasses = ["Barbarian", "Ranger", "Cleric", "Rogue", "Wizard"]; //, "Bard", "Druid", "Monk", "Paladin"];
 
         self.cardCount = 0;
         self.generalCards;
@@ -118,6 +121,9 @@ window.onload = function() {
                     guards = 2;
                     break;
                 case "Wizard":
+                    strikes = 4;
+                    guards = 4;
+                    break;
                 case "Rogue":
                 case "Druid":
                 case "Ranger":
@@ -149,6 +155,24 @@ window.onload = function() {
          * MODALS
          */
 
+        function showNotif(text) {
+            if (self.notifTimer) {
+                clearInterval(self.notifTimer);
+            }
+
+            self.notifText(text);
+            self.showNotif(true);
+
+            self.notifTimer = setTimeout(function() {
+                self.showNotif(false);
+                self.notifTimer = null;
+            }, 1500);
+        }
+
+        self.showCardNotification = function(actionString, card) {
+            showNotif(actionString + " " + card.name);
+        }
+
         function showModal(dataObject) {
             self.modalTemplate(dataObject);
             self.showModal(true);
@@ -174,6 +198,7 @@ window.onload = function() {
                 deck: self.player().allSkills,
                 cardClick: function(card, ev) {
                     self.player().removeSkill(card);
+                    self.showCardNotification("Removed", card);
                 }
             }
             showModal({name: "deckModal", data: dataObject});
@@ -184,6 +209,7 @@ window.onload = function() {
                 deck: self.player().techDeck,
                 cardClick: function(card, ev) {
                     self.player().learnTech(card);
+                    self.showCardNotification("Added", card);
                 }
             }
             showModal({name: "deckModal", data: dataObject});
@@ -195,6 +221,7 @@ window.onload = function() {
                 cardClick: function(card, ev, index) {
                     var context = ko.contextFor(event.target);
                     self.setupAddSkill(null, null, context.$index);
+                    self.showCardNotification("Added", card);
                 }
             }
             showModal({name: "deckModal", data: dataObject});

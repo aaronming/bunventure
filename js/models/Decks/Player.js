@@ -95,6 +95,11 @@ export function Player(index, playerClass, stats, skills) {
         }
     }
 
+    self.getRandomTechSkill = function() {
+        var randomDraw = Math.floor(Math.random() * self.techDeck().length);
+        return self.techDeck()[randomDraw];
+    }
+
     self.buyItem = function(item) {
         self.inventory.push(item);
     }
@@ -119,8 +124,7 @@ export function Player(index, playerClass, stats, skills) {
 
     function levelChange(amount) {
         var newLevel = self.level() + amount;
-        if (newLevel > 5) newLevel = 5;
-        else if (newLevel < 1) newLevel = 1;
+        if (newLevel > 5 || newLevel < 1) return;
 
         if (amount > 0) {
             while (self.skillBook.length != 0 && self.skillBook[0].level <= newLevel) {

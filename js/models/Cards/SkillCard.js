@@ -10,6 +10,7 @@ export function SkillCard(sObj, id) {
     self.level = isNaN(parseInt(sObj.Level)) ? 1 : parseInt(sObj.Level);
     self.effect = sObj.Effect;
     self.price = parseInt(sObj.Price) || 0;
+    self.activeTurn = ko.observable(1);
 
     function effectSplit() {
         var split = self.effect.split("; ")
@@ -32,4 +33,22 @@ export function SkillCard(sObj, id) {
 
         return description;
     });
+
+    self.shopDescription = ko.pureComputed(function() {
+        var description = self.name + " " + self.price + "g" +
+            "\n" + self.type + " - " + self.cost + " AP" + 
+            "\n----------------------" +
+            "\n" + effectSplit();
+
+        return description;
+    });
+
+    self.increaseActiveTurn = function() {
+        var turn = self.activeTurn();
+        self.activeTurn(turn++);
+    }
+
+    self.resetActiveTurn = function() {
+        self.activeTurn(1);
+    }
 }

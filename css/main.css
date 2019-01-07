@@ -313,6 +313,13 @@ body {
   font-weight: bold;
 }
 
+#startDiv #startDivContainer .classesDiv .classDiv .classImage {
+  width: 200px;
+  height: 150px;
+  background-size: cover;
+  margin-bottom: 2px;
+}
+
 #startDiv #startDivContainer .classesDiv .classDiv .cTitle {
   width: 60px;
   display: inline-block;
@@ -327,35 +334,35 @@ body {
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal1 {
   display: inline-block;
-  width: 20px;
+  width: 18px;
   background-color: #e2280f;
   padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal2 {
   display: inline-block;
-  width: 40px;
+  width: 46px;
   background-color: #e6a00a;
   padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal3 {
   display: inline-block;
-  width: 60px;
+  width: 74px;
   background-color: #dfe211;
   padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal4 {
   display: inline-block;
-  width: 80px;
+  width: 102px;
   background-color: #98e20e;
   padding: 5px;
 }
 
 #startDiv #startDivContainer .classesDiv .classDiv .cVal5 {
   display: inline-block;
-  width: 100px;
+  width: 130px;
   background-color: #2cdd15;
   padding: 5px;
 }
@@ -458,17 +465,26 @@ body {
   vertical-align: top;
 }
 
-#playDiv .playerDiv .playerRight .player {
-  width: 250px;
-  padding: 5px;
-  margin-left: auto;
-  margin-right: 0;
-}
-
-#playDiv .playerDiv .playerRight .player .playerTitle {
+#playDiv .playerDiv .playerRight .menuTitle {
   margin-bottom: 5px;
   font-weight: bold;
   font-size: 15pt;
+}
+
+#playDiv .playerDiv .playerRight .adminContainer, #playDiv .playerDiv .playerRight .playerContainer {
+  padding: 5px;
+  width: 250px;
+}
+
+#playDiv .playerDiv .playerRight .aButton {
+  width: 75px;
+  padding: 5px;
+  margin-right: 2px;
+}
+
+#playDiv .playerDiv .playerRight .player .playerValue {
+  width: 20px;
+  display: inline-block;
 }
 
 #playDiv .playerDiv .playerRight .player .playerButtons {
@@ -476,7 +492,7 @@ body {
 }
 
 #playDiv .playerDiv .playerRight .player .playerButtons .pButton {
-  width: 50px;
+  width: 75px;
   padding: 5px;
   margin-right: 2px;
 }
@@ -665,6 +681,16 @@ body {
   margin-left: -100px;
   padding: 5px;
   overflow-y: scroll;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard .dungeonPlayLeft {
+  width: 150px;
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard .dungeonPlayLeft {
+  width: 200px;
+  display: inline-block;
 }
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard .dungeonPlayedStatInfo {

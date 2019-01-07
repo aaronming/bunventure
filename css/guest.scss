@@ -49,6 +49,20 @@ body.darkMode {
     }
 }
 
+.notification {
+    transition: opacity 0.5s ease-in-out;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    z-index: 3;
+    opacity: 0;
+    padding: 15px 30px;
+    position: fixed;
+    text-align: center;
+    border-radius: 15px;
+
+    @include absoluteCenter();
+}
+
 .modal {
     z-index: 2;
     position: fixed;
@@ -121,10 +135,10 @@ body.darkMode {
     
     .playingContent {
         padding: 5px;
+    }
 
-        .playingTitle {
-            font-weight: bold;
-        }
+    .playingTitle {
+        font-weight: bold;
     }
 
     .mainContainer {
@@ -329,6 +343,10 @@ body.darkMode {
             display: inline-block;
             vertical-align: top;
             margin-right: 5px;
+
+            .playingTitle {
+                text-align: right;
+            }
 
             .handButton {
                 display: block;

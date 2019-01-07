@@ -8,6 +8,7 @@ export function Classes(name, sData, book) {
     self.ap = sData[3]["0"];
     self.hand = sData[4]["0"];
     self.skillBook = book;
+    self.classImage = "img/class/" + name.toLowerCase() + ".png";
 }
 
 export function Stats(stats) {

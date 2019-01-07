@@ -13,6 +13,10 @@
             <div class="loader"></div>
         </div>
 
+        <div class="notification" data-bind="style: { opacity: showNotif() ? 1 : 0 }">
+            <div class="notifText" data-bind="text: notifText"></div>
+        </div>
+
         <div class="modal" data-bind="visible: showModal, click: hideModal">
             <div class="modalContainer">
                 <div data-bind="template: modalTemplate"></div>
@@ -153,6 +157,7 @@
             </div>
             <div class="handContainer" data-bind="with: player">
                 <div class="handButtons">
+                    <div class="playingTitle">Hand</div>
                     <button class="handButton" data-bind="click: cleanUp">Clean Up</button>
                     <button class="handButton" data-bind="click: drawHand">Draw hand</button>
                     <button class="handButton" data-bind="click: drawCard">Draw card</button>
@@ -160,7 +165,6 @@
                 <div class="handPlayContainer">
                     <div id="handOverlay" class="playingOverlays" data-bind="click: $parent.sendCardEnd, visible: $parent.sendingCard"></div>
                     <div class="playingContent">
-                        <div class="playingTitle">Hand</div>
                         <!-- ko if: activeHand().length > 0 -->
                         <div data-bind="template: { name: 'cardViewTemplate', data: { 
                             deck: activeHand,

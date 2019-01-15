@@ -275,9 +275,12 @@ body.darkMode {
                                 float: right;
                             }
 
+                            .sStatRight {
+                                float: right;
+                            }
+
                             .sStatInput {
                                 width: 30px;
-                                float: right;
                                 text-align: right;
                             }
                         }
@@ -332,6 +335,7 @@ body.darkMode {
                     position: relative;
                     display: inline-block;
                     height: 165px;
+                    min-width: 554px;
                 }
             }
         }

@@ -391,11 +391,11 @@ body {
 }
 
 .setupDeck ul li:nth-child(odd) {
-  background-color: #9dd8ff;
+  background-color: rgba(157, 216, 255, 0.5);
 }
 
 .setupDeck ul li:nth-child(even) {
-  background-color: #ffe89d;
+  background-color: rgba(255, 232, 157, 0.5);
 }
 
 .techSetupDeck, .shopSetupDeck {
@@ -695,6 +695,16 @@ body {
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard .dungeonPlayedStatInfo {
   display: none;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard .dungeonPlayedStatInfo .dungeonTitle {
+  width: 60px;
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard .dungeonPlayedStatInfo .dungeonStat {
+  width: 20px;
+  display: inline-block;
 }
 
 #playDiv #dungeonDiv .dungeonDeckContainer .dungeonPlayed .dungeonPlayedCard:last-child {

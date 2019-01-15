@@ -129,11 +129,11 @@
                                 <button class="pDeltaButton" data-bind="text: '-', click: function() {$data.addGold(-1); }"></button>
                             </div>
                             <div class="playerButtons">
-                                <button class="pButton" data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
-                                <button class="pButton" data-bind="text: 'Deck', click: function() { $parent.showDeckModal($index) }">
+                                <button data-bind="text: 'Stats', click: function() { $parent.showStatsModal($index) }">
+                                <button data-bind="text: 'Deck', click: function() { $parent.showDeckModal($index) }">
                                 <!-- <button class="pButton" data-bind="text: 'Items', click: function() { $parent.showItemModal($index) }"> -->
-                                <!-- <button class="pButton" data-bind="text: 'Book', click: function() { $parent.showBookModal($index) }"> -->
-                                <button class="pButton" data-bind="text: 'Random', click: function() { $parent.showRandomLearnModal($index) }">
+                                <button data-bind="text: 'Book', click: function() { $parent.showBookModal($index) }">
+                                <button data-bind="text: 'Random', click: function() { $parent.showRandomLearnModal($index) }">
                             </div>
                         </div>
                     </div>
@@ -161,6 +161,7 @@
                     <div class="shopSubtitle">
                         Welcome! See anything you like? <br/><br/>
                         Remove a skill - 5 Gold
+                        <div><button class="shopButton" data-bind="click: replenishShop">Replenish Shop</button></div>
                     </div>
                     <div class="shopContainer">
                         <div class="innImage shopImage"></div>
@@ -265,14 +266,20 @@
                             <div class="dungeonPlayLeft">
                                 <div data-bind="text: $data.name"></div>
                                 <div class="dungeonPlayedStatInfo">
-                                    <div class="monsterHP">Level: <span data-bind="text: $data.level"></span></div>
-                                    <div class="monsterHP">CurHP: <span data-bind="text: $data.activeCurHp"></span>
-                                        <button class="monsterHPButton" data-bind="text: '+', click: function() { heal(1); }"></button>
-                                        <button class="monsterHPButton" data-bind="text: '-', click: function() { heal(-1); }"></button>
+                                    <div><span class="dungeonTitle">Level:</span> <span class="dungeonStat" data-bind="text: $data.level"></span></div>
+                                    <div><span class="dungeonTitle">CurHP:</span> <span class="dungeonStat" data-bind="text: $data.activeCurHp"></span>
+                                        <button class="monsterHPButton" data-bind="text: '+', click: function() { statUpdate('curHP', 1); }"></button>
+                                        <button class="monsterHPButton" data-bind="text: '-', click: function() { statUpdate('curHP', -1); }"></button>
                                     </div>
-                                    <div class="monsterHP">MaxHP: <span data-bind="text: $data.activeMaxHp"></span></div>
-                                    <div class="monsterAtk">Attack: <span data-bind="text: $data.activeAttack"></span></div>
-                                    <div class="monsterDef">Defense: <span data-bind="text: $data.activeDefense"></span></div>
+                                    <div><span class="dungeonTitle">MaxHP:</span> <span class="dungeonStat" data-bind="text: $data.activeMaxHp"></span></div>
+                                    <div><span class="dungeonTitle">Attack:</span> <span class="dungeonStat" data-bind="text: $data.activeAttack"></span>
+                                        <button class="monsterHPButton" data-bind="text: '+', click: function() { statUpdate('attack', 1); }"></button>
+                                        <button class="monsterHPButton" data-bind="text: '-', click: function() { statUpdate('attack', -1); }"></button>
+                                    </div>
+                                    <div><span class="dungeonTitle">Defense:</span> <span class="dungeonStat" data-bind="text: $data.activeDefense"></span>
+                                        <button class="monsterHPButton" data-bind="text: '+', click: function() { statUpdate('defense', 1); }"></button>
+                                        <button class="monsterHPButton" data-bind="text: '-', click: function() { statUpdate('defense', -1); }"></button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="dungeonPlayRight">

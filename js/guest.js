@@ -8,9 +8,9 @@ window.onload = function() {
 
     var Phases = { start: 0, setup: 1, town: 2, world: 3, dungeon: 4, play: 5 }
     var MaxLevel = 5;
-    var SkillsCount = 18;
+    var SkillsCount = 21;
     var StatsDataIndex = function(index) { return index * 5; }
-    var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 20) + 8; }
+    var SkillsDataIndex = function(index) { return ((index - 1) * (SkillsCount + 1)) + 1; }
 
     var debug = 0;
 
@@ -242,7 +242,7 @@ window.onload = function() {
                     cardClick: function(card, ev) {
                         var targetDeck;
                         if (targetClass.includes("playerDeckBlock")) targetDeck = "deck";
-                        else if (targetClass/includes("playerDiscardBlock")) targetDeck = "discard";
+                        else if (targetClass.includes("playerDiscardBlock")) targetDeck = "discard";
                         self.sendCardStart(card, null, targetDeck);
                         hideModal();
                     }

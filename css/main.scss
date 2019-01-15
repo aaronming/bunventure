@@ -321,11 +321,11 @@ body {
         }
 
         li:nth-child(odd) {
-            background-color: rgb(157, 216, 255);
+            background-color: rgba(157, 216, 255, 0.5);
         }
 
         li:nth-child(even) {
-            background-color: rgb(255, 232, 157);
+            background-color: rgba(255, 232, 157, 0.5);
         }
     }
 }
@@ -618,6 +618,16 @@ body {
 
                     .dungeonPlayedStatInfo {
                         display: none;
+
+                        .dungeonTitle {
+                            width: 60px;
+                            display: inline-block;
+                        }
+
+                        .dungeonStat {
+                            width: 20px;
+                            display: inline-block;
+                        }
                     }
                 }
 

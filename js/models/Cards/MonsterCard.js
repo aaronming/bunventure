@@ -40,6 +40,22 @@ export function MonsterCard(obj) {
         self.activeCurHp(val);
     }
 
+    self.statUpdate = function(stat, amount) {
+        switch (stat) {
+            case "attack":
+                self.activeAttack(self.activeAttack() + amount);
+                break;
+            case "defense":
+                self.activeDefense(self.activeDefense() + amount);
+                break;
+            case "curHP":
+            default:
+                self.activeCurHp(self.activeCurHp() + amount);
+                break;
+        }
+        
+    }
+
     function evalWDM(input, wdm) {
         if (typeof input != "string") return input;
         if (wdm === undefined) wdm = 1;

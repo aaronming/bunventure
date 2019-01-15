@@ -51,7 +51,7 @@
                         </div>
                         <div class="playButtons">
                             <button class="playButton" data-bind="click: shuffleActiveDeck">Shuffle Deck</button>
-                            <button class="playButton" data-bind="click: replenishDeck">Replenish Deck</button>
+                            <!-- <button class="playButton" data-bind="click: replenishDeck">Replenish Deck</button> -->
                         </div>
                     </div>
                 </div>
@@ -95,11 +95,19 @@
                                 <div class="statsCurrentTitle">Current</div>
                                 <div class="sStat">
                                     <span class="sStatLabel">HP:</span>
-                                    <input class="sStatInput" data-bind="value: curHP">
+                                    <div class="sStatRight">
+                                        <input class="sStatInput" data-bind="value: curHP">
+                                        <button data-bind="text: '+', click: function() { heal(1); }"></button>
+                                        <button data-bind="text: '-', click: function() { heal(-1); }"></button>
+                                    </div>
                                 </div>
                                 <div class="sStat">
                                     <span class="sStatLabel">Gold:</span>
-                                    <input class="sStatInput" data-bind="value: gold">
+                                    <div class="sStatRight">
+                                        <input class="sStatInput" data-bind="value: gold">
+                                        <button data-bind="text: '+', click: function() { addGold(1); }"></button>
+                                        <button data-bind="text: '-', click: function() { addGold(-1); }"></button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="statsRightContainer">

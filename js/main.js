@@ -14,9 +14,9 @@ window.onload = function() {
 
     var Phases = { start: 0, setup: 1, town: 2, world: 3, dungeon: 4 }
     var MaxLevel = 5;
-    var SkillsCount = 18;
+    var SkillsCount = 21;
     var StatsDataIndex = function(index) { return index * 5; }
-    var SkillsDataIndex = function(index) { return index == 0 ? 0 : ((index - 1) * 20) + 8; }
+    var SkillsDataIndex = function(index) { return ((index - 1) * (SkillsCount + 1)) + 1; }
 
     var debug = 0;
 
@@ -89,7 +89,7 @@ window.onload = function() {
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
 
-            //console.log(ko.toJSON(SkillsData));
+            console.log(ko.toJSON(SkillsData));
         }
 
         /**
@@ -105,17 +105,17 @@ window.onload = function() {
                 self.p3Class("Cleric");
                 self.p4Class("Rogue");
                 self.onSetupPhase();
-                self.players().forEach(function(ply) {
-                    ply.learnTech(ply.techDeck()[0]);
-                    var card = self.initialShopCards()[0];
-                    var ret0 = function() {return 0;};
-                    self.setupAddSkill(card, null, ret0, ply.index);
-                    self.setupAddSkill(card, null, ret0, ply.index);
-                    self.setupAddSkill(card, null, ret0, ply.index);
-                    self.setupAddSkill(card, null, ret0, ply.index);
-                    self.setupAddSkill(card, null, ret0, ply.index);
-                    self.setupAddSkill(card, null, ret0, ply.index);
-                });
+                // self.players().forEach(function(ply) {
+                //     ply.learnTech(ply.techDeck()[0]);
+                //     var card = self.initialShopCards()[0];
+                //     var ret0 = function() {return 0;};
+                //     self.setupAddSkill(card, null, ret0, ply.index);
+                //     self.setupAddSkill(card, null, ret0, ply.index);
+                //     self.setupAddSkill(card, null, ret0, ply.index);
+                //     self.setupAddSkill(card, null, ret0, ply.index);
+                //     self.setupAddSkill(card, null, ret0, ply.index);
+                //     self.setupAddSkill(card, null, ret0, ply.index);
+                // });
                 self.onTownPhase();
                 self.onWorldPhase();
                 self.onDungeonClick(function(){return 0;});
@@ -258,7 +258,6 @@ window.onload = function() {
         }
 
         self.onTownPhase = function() {
-            self.shop().replenishShop();
             self.phase(Phases.town);
         }
 
@@ -327,7 +326,11 @@ window.onload = function() {
         self.showBookModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
             var dataObject = {
-                deck: player.techDeck().concat(player.skillBook)
+                deck: player.techDeck().concat(player.skillBook),
+                cardClick: function(card, ev, index) {
+                    player.learnTech(card);
+                    hideModal();
+                }
             }
             showModal({name: "deckModal", data: dataObject});
         }
@@ -401,6 +404,10 @@ window.onload = function() {
             self.cardCount += 1;
 
             player.buySkill(card);
+        }
+
+        self.replenishShop = function() {
+            self.shop().replenishShop();
         }
 
         self.confirmMarketTransaction = function() {

@@ -160,7 +160,7 @@ body.darkMode {
 }
 
 .modal .modalContainer .deckModalDiv {
-  width: 710px;
+  width: 905px;
   height: 660px;
   overflow-y: auto;
 }
@@ -427,6 +427,7 @@ body.darkMode {
   display: inline-block;
   vertical-align: top;
   text-align: center;
+  position: relative;
 }
 
 .card .cardCount, .card .cardTitle {
@@ -445,6 +446,16 @@ body.darkMode {
 
 .card .cardCost, .card .cardEffect {
   font-size: 10pt;
+  white-space: pre-wrap;
+}
+
+.card .activeTurnContainer {
+  position: absolute;
+  bottom: -30px;
+}
+
+.card .activeTurnContainer .activeTurn {
+  display: inline-block;
 }
 
 .emptyCard {
@@ -512,6 +523,7 @@ body.darkMode {
 }
 
 .deckCard .cardEffect {
+  white-space: pre-wrap;
   font-size: 10pt;
   background-color: white;
   padding: 2px;

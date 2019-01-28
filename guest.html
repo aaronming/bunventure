@@ -131,6 +131,17 @@
                                         <div class="cardTitle" data-bind="text: $data.name"></div>
                                         <div class="cardCost" data-bind="text: $data.cost + ' AP'"></div>
                                         <div class="cardEffect" data-bind="text: $data.effect"></div>
+                                        <div class="activeTurnContainer">
+                                            <div class="activeTurn" data-bind="text: 'Active ' + $data.activeTurn()"></div>
+                                            <button data-bind="click: function(c, e) { 
+                                                e.stopPropagation(); 
+                                                $data.activeTurnUpdate(1); 
+                                                }">+</button>
+                                            <button data-bind="click: function(c, e) { 
+                                                e.stopPropagation(); 
+                                                $data.activeTurnUpdate(-1); 
+                                                }">-</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -166,7 +177,7 @@
             <div class="handContainer" data-bind="with: player">
                 <div class="handButtons">
                     <div class="playingTitle">Hand</div>
-                    <button class="handButton" data-bind="click: cleanUp">Clean Up</button>
+                    <button class="handButton" data-bind="click: endTurn">End Turn</button>
                     <button class="handButton" data-bind="click: drawHand">Draw hand</button>
                     <button class="handButton" data-bind="click: drawCard">Draw card</button>
                 </div>
@@ -189,9 +200,12 @@
     <script id="emptyTemplate" type="text/html"></script>
 
     <script id="deckModal" type="text/html">
-        <div class="modalDiv deckModalDiv" data-bind="foreach: deck">
-            <div class="deckModalCard" data-bind="click: $parent.cardClick, 
-            template: { name: 'cardTemplate', data: $data }"></div>
+        <div class="modalDiv deckModalDiv">
+            Search: <input class="deckSearch" data-bind="value: $parent.deckSearchValue">
+            <div data-bind="foreach: deck">
+                <div class="deckModalCard" data-bind="click: $parent.cardClick, 
+                template: { name: 'cardTemplate', data: $data }"></div>
+            </div>
         </div>
     </script>
 

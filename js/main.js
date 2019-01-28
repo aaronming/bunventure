@@ -23,7 +23,7 @@ window.onload = function() {
     function MyApp() {
         var self = this;
 
-        self.version = "0.2.5"
+        self.version = "0.2.7"
 
         self.isLoading = ko.observable(true);
         var emptyTemplate = {name: "emptyTemplate"};
@@ -42,11 +42,15 @@ window.onload = function() {
         self.cardCount = 0;
         self.generalCards;
         self.initialShopCards = ko.observable();
+        self.gameCards = [];
         self.innCost = self.WDM() + 1;
         self.shop = ko.observable();
         self.oracle = ko.observable();
         self.overworld = ko.observable();
         self.dungeon = ko.observable();
+        self.deckSearchSubscriber = null;
+        self.deckSearchValue = ko.observable();
+        self.dungeonPlayerSectionVisible = ko.observable(true);
 
         self.phase = ko.observable(0);
         self.isStartPhase = ko.observable(true);
@@ -89,7 +93,7 @@ window.onload = function() {
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
 
-            console.log(ko.toJSON(SkillsData));
+            // console.log(ko.toJSON(SkillsData));
         }
 
         /**
@@ -119,6 +123,7 @@ window.onload = function() {
                 self.onTownPhase();
                 self.onWorldPhase();
                 self.onDungeonClick(function(){return 0;});
+                self.toggleGuestMode();
 
             } else {
                 var cObjects = [];
@@ -189,8 +194,10 @@ window.onload = function() {
                     var skillCards = skillsData.map(function(skill) {
                        return new SkillCard(skill); 
                     });
+                    self.gameCards = self.gameCards.concat(skillCards);
                     var player = new Player((i+1), selectedClass, statsData, skillCards);
-                    player.learnTech(player.techDeck()[0]);
+                    //player.learnTech(player.techDeck()[0]);
+                    player.learnRandomPassive();
 
                     // Add basic skills
                     var strikes = 3;
@@ -288,6 +295,13 @@ window.onload = function() {
                 self.hideModalCallback();
                 self.hideModalCallback = null;
             }
+
+            if (self.deckSearchSubscriber != null) {
+                self.deckSearchSubscriber.dispose();
+                self.deckSearchValue("");
+                self.deckSearchSubscriber = null;
+            }
+
             self.modalTemplate(emptyTemplate);
             self.showModal(false);
         }
@@ -311,12 +325,28 @@ window.onload = function() {
             showModal({name: "statsModal", data: player});
         }
 
+        self.showDeckSearchModal = function(dataObject) {
+            self.deckSearchSubscriber = self.deckSearchValue.subscribe(function(search) {
+                var original = ko.isObservable(dataObject.originalDeck) ? dataObject.originalDeck() : dataObject.originalDeck;
+                if (search && 0 !== search.length) {
+                    var filtered = original.slice().filter(card => card.name.toLowerCase().includes(search));
+                    dataObject.deck(filtered);
+                } else {
+                    dataObject.deck(original);
+                }
+            });
+
+            showModal({name: "deckModal", data: dataObject});
+        }
+
         self.showDeckModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
             var dataObject = {
-                deck: player.deck
+                originalDeck: player.deck(),
+                deck: ko.observable(player.deck())
             }
-            showModal({name: "deckModal", data: dataObject});
+            
+            self.showDeckSearchModal(dataObject);
         }
 
         self.showItemModal = function(clickIndex) {
@@ -325,14 +355,17 @@ window.onload = function() {
 
         self.showBookModal = function(clickIndex) {
             var player = self.players()[clickIndex()];
+            var playDeck = player.techDeck().concat(player.skillBook);
             var dataObject = {
-                deck: player.techDeck().concat(player.skillBook),
+                originalDeck: playDeck,
+                deck: ko.observable(playDeck),
                 cardClick: function(card, ev, index) {
                     player.learnTech(card);
                     hideModal();
                 }
             }
-            showModal({name: "deckModal", data: dataObject});
+
+            self.showDeckSearchModal(dataObject);
         }
 
         self.showRandomLearnModal = function(clickIndex) {
@@ -482,6 +515,17 @@ window.onload = function() {
             self.selectedActiveCard(null);
         }
 
+        self.dungeonActives = ko.observableArray([]);
+        self.dungeonActivesCount = 0;
+        self.dungeonSearch = ko.observable("");
+        self.dungeonSearchResults = ko.observableArray([]);
+
+        self.dungeonSearch.subscribe(function(search) {
+            var genCards = self.shop().shopLibrary.filter(card => card.name.toLowerCase().includes(search));
+            var classCards = self.gameCards.filter(card => card.name.toLowerCase().includes(search));
+            var cards = genCards.concat(classCards);
+            self.dungeonSearchResults(cards);
+        });
 
         /**
          * OTHER FUNCTIONS
@@ -517,6 +561,7 @@ window.onload = function() {
 
         self.toggleGuestMode = function() {
             self.guestMode(!self.guestMode());
+            self.dungeonPlayerSectionVisible(!self.dungeonPlayerSectionVisible());
         }
 
         // color value css for class stat rating

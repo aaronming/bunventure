@@ -79,7 +79,7 @@
                     </div>
                     <div class="techSetupDeck setupDeck">
                         <h4>Tech Deck</h4>
-                        <ul class="techDeck" data-bind="foreach: $data.techDeck">
+                        <ul class="techDeck" data-bind="foreach: $data.currentLevelTech">
                             <li class="techCard" data-bind="text: $data.description, 
                             click: $parent.learnTech"></li>
                         </ul>
@@ -108,11 +108,11 @@
                         <button class="wdmButton" data-bind="text: '+', click: function() { addWDM(1); }"></button>
                         <button class="wdmButton" data-bind="text: '-', click: function() { addWDM(-1); }"></button>
                     </div>
-                    <!-- <div class="adminContainer">
+                    <div class="adminContainer">
                         <div class="menuTitle">Admin</div>
                         <button class="aButton" data-bind="text: guestMode() ? 'HOST': 'GUEST',
                             click: toggleGuestMode">GUEST</button>
-                    </div> -->
+                    </div>
                     <div class="playerContainer" data-bind="foreach: players">
                         <div class="player">
                             <div class="menuTitle">Player <span data-bind="text: $data.index"></span> - <span data-bind="text: $data.myClass"></span></div>
@@ -291,7 +291,7 @@
                         <!-- /ko -->
                     </div>
                 </div>
-                <div class="playersSection">
+                <div class="playersSection" data-bind="visible: $parent.dungeonPlayerSectionVisible()">
                     <div class="playersContainer">
                         <div data-bind="foreach: $data.players">
                             <div class="playerContainer">
@@ -383,6 +383,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="dungeonPlayContainer" data-bind="visible: !$parent.dungeonPlayerSectionVisible()">
+                    <div class="dungeonPlaySearch setupDeck">
+                        Search: <input data-bind="value: $parent.dungeonSearch">
+                        <ul data-bind="foreach: $parent.dungeonSearchResults">
+                            <li data-bind="text: $data.name, click: $parent.addDungeonActives"></li>
+                        </ul>
+                    </div>
+                    <div class="dungeonPlayActives" data-bind="foreach: dungeonActives">
+                        <div class="dungeonActiveCard">
+                            <div data-bind="template: { name: 'cardTemplate', data: $data }"></div>
+                            <div class="activeTurn" data-bind="text: 'Active ' + $data.activeTurn()"></div>
+                            <button data-bind="click: function(c, e) { 
+                                e.stopPropagation(); 
+                                $data.activeTurnUpdate(1); 
+                                }">+</button>
+                            <button data-bind="click: function(c, e) { 
+                                e.stopPropagation(); 
+                                $data.activeTurnUpdate(-1); 
+                                }">-</button>
+                        </div>
+                    </div>
+                </div>
                 
                 <button class="phaseButton" data-bind="text: 'Return to Town', click: $parent.onTownPhase"></button>
             </div>
@@ -436,22 +458,30 @@
         </div>
     </script>
 
+    <script id="cardTemplate" type="text/html">
+        <div class="deckCard" data-bind="css: $data.myClass.toLowerCase(), click: $parent.cardClick">
+            <div class="cardTitle">
+                <div class="cardName" data-bind="text: $data.name"></div>
+                <div class="cardCostContainer">
+                    <div class="cardCost" data-bind="text: $data.cost"></div>
+                </div>
+            </div>
+            <div class="cardImage" data-bind="style: { backgroundImage: 'url(' + $data.skillImage() + ')'}"></div>
+            <div class="cardSubtitle">
+                <span class="cardClass" data-bind="text: $data.myClass"></span>
+                <span class="cardLevel" data-bind="text: 'Lv ' + $data.level"></span> - 
+                <span class="cardType" data-bind="text: $data.type"></span>
+            </div>
+            <div class="cardEffect" data-bind="text: $data.effect"></div>
+        </div>
+    </script>
+
     <script id="deckModal" type="text/html">
-        <div class="modalDiv deckModalDiv" data-bind="foreach: deck">
-            <div class="deckCard" data-bind="css: $data.myClass.toLowerCase(), click: $parent.cardClick">
-                <div class="cardTitle">
-                    <div class="cardName" data-bind="text: $data.name"></div>
-                    <div class="cardCostContainer">
-                        <div class="cardCost" data-bind="text: $data.cost"></div>
-                    </div>
-                </div>
-                <div class="cardImage"></div>
-                <div class="cardSubtitle">
-                    <span class="cardClass" data-bind="text: $data.myClass"></span>
-                    <span class="cardLevel" data-bind="text: 'Lv ' + $data.level"></span> - 
-                    <span class="cardType" data-bind="text: $data.type"></span>
-                </div>
-                <div class="cardEffect" data-bind="text: $data.effect"></div>
+        <div class="modalDiv deckModalDiv">
+            Search: <input class="deckSearch" data-bind="value: $parent.deckSearchValue">
+            <div data-bind="foreach: deck">
+                <div class="deckModalCard" data-bind="click: $parent.cardClick, 
+                template: { name: 'cardTemplate', data: $data }"></div>
             </div>
         </div>
     </script>
@@ -461,12 +491,16 @@
             <div class="transDescription">
                 Total: <span data-bind="text: transactionTotal"></span>
             </div>
-            <div class="transDiv setupDeck">
+            <div class="transDiv">
                 <h4>Shop</h4>
-                <ul class="shopDeck" data-bind="foreach: availShopCards">
+                <div data-bind="foreach: availShopCards">
+                    <div class="deckModalCard" data-bind="click: $parent.buySkill, 
+                    template: { name: 'cardTemplate', data: $data }"></div>
+                </div>
+                <!-- <ul class="shopDeck" data-bind="foreach: availShopCards">
                     <li class="shopCard" data-bind="text: $data.shopDescription, 
                     click: $parent.buySkill"></li>
-                </ul>
+                </ul> -->
             </div>
             <div class="tradeDiv">
                 <div class="setupDeck">

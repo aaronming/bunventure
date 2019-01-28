@@ -1,4 +1,5 @@
 import { Deckable } from './Deckable.js';
+import { SkillCard } from '../Cards/SkillCard.js';
 
 export function Overworld(monstersData, activitiesData, wdm) {
     var self = this;
@@ -70,6 +71,8 @@ function Dungeon(boss, deck, wdm) {
 
     self.playerTurn = ko.observable(1);
     self.players = ko.observableArray([]);
+    self.dungeonActives = ko.observableArray([]);
+    self.dungeonActivesCount = 0;
 
     self.activePlayer = ko.pureComputed(function() {
         return self.players()[self.playerTurn() - 1];
@@ -80,6 +83,8 @@ function Dungeon(boss, deck, wdm) {
             var card = self.deck.pop();
             if (card.isMonsterCard) card.prepareForBattle(self.wdm);
             self.discard.push(card);
+            self.dungeonActives([]);
+            self.dungeonActiveCount = 0;
         }
     }
 
@@ -105,6 +110,17 @@ function Dungeon(boss, deck, wdm) {
         self.playerTurn(nextPlayer);
 
         self.rollDice();
+    }
+
+    self.addDungeonActives = function(c, ev) {
+        var card = new SkillCard(null, self.dungeonActivesCount++);
+        card.mapping(c);
+        card.cardClick = self.removeDungeonCard;
+        self.dungeonActives.push(card);
+    }
+
+    self.removeDungeonCard = function(card, ev) {
+        self.removeCard(card, self.dungeonActives);
     }
 }
 

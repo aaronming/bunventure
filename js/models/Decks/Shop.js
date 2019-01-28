@@ -12,6 +12,7 @@ export function Shop(shopData, cardCount) {
     self.deck = ko.observableArray([]);
     self.discard = ko.observableArray([]);
     self.playerRef;
+    self.shopLibrary = [];
     self.availShopCards = null;
     self.playerDeck = null
     self.buyDeck = ko.observableArray([]);
@@ -31,9 +32,11 @@ export function Shop(shopData, cardCount) {
             var shopCard = shopCards[i];
             var count = shopCard.Count;
             for (var j = 0; j < count; j++) {
-                deck.push(new SkillCard(shopCard, self.cardCount));
+                var card = new SkillCard(shopCard, self.cardCount);
+                deck.push(card);
                 self.cardCount += 1;
             }
+            self.shopLibrary.push(card);
         }
         deck = self.shuffleDeck(deck);
         self.addCards(deck, self.deck);

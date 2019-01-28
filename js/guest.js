@@ -34,6 +34,8 @@ window.onload = function() {
         self.guestShopCards = ko.observable();
         self.shop = ko.observable();
         self.oracle = ko.observable();
+        self.deckSearchSubscriber = null;
+        self.deckSearchValue = ko.observable();
 
         self.phase = ko.observable(0);
         self.isStartPhase = ko.observable(true);
@@ -66,6 +68,8 @@ window.onload = function() {
             SkillsData = tabletop.sheets("Skills").elements;
             StatsData = tabletop.sheets("Stats").elements;
             initialize();
+
+            //console.log(ko.toJSON(SkillsData));
         }
 
         /**
@@ -83,7 +87,7 @@ window.onload = function() {
             if (debug) {
                 self.playerClass("Barbarian");
                 self.onPlayPhase();
-                self.showShopDeckModal();
+                //self.showShopDeckModal();
             }
             self.isLoading(false);
         }
@@ -105,7 +109,7 @@ window.onload = function() {
             self.player(player);
 
             var ply = self.player();
-            ply.learnTech(ply.techDeck()[0]);
+            //ply.learnTech(ply.techDeck()[0]);
 
             // Add basic skills
             var strikes = 3;
@@ -121,8 +125,8 @@ window.onload = function() {
                     guards = 2;
                     break;
                 case "Wizard":
-                    strikes = 4;
-                    guards = 4;
+                    strikes = 3;
+                    guards = 3;
                     break;
                 case "Rogue":
                 case "Druid":
@@ -183,6 +187,13 @@ window.onload = function() {
                 self.hideModalCallback();
                 self.hideModalCallback = null;
             }
+
+            if (self.deckSearchSubscriber != null) {
+                self.deckSearchSubscriber.dispose();
+                self.deckSearchValue("");
+                self.deckSearchSubscriber = null;
+            }
+            
             self.modalTemplate(emptyTemplate);
             self.showModal(false);
         }
@@ -193,38 +204,64 @@ window.onload = function() {
             }
         }
 
-        self.showDeckModal = function() {
-            var dataObject = {
-                deck: self.player().allSkills,
-                cardClick: function(card, ev) {
-                    self.player().removeSkill(card);
-                    self.showCardNotification("Removed", card);
+        self.showDeckSearchModal = function(dataObject) {
+            self.deckSearchSubscriber = self.deckSearchValue.subscribe(function(search) {
+                var original = ko.isObservable(dataObject.originalDeck) ? dataObject.originalDeck() : dataObject.originalDeck;
+                if (search && 0 !== search.length) {
+                    var filtered = original.slice().filter(card => card.name.toLowerCase().includes(search));
+                    dataObject.deck(filtered);
+                } else {
+                    dataObject.deck(original);
                 }
-            }
+            });
+
             showModal({name: "deckModal", data: dataObject});
         }
 
-        self.showTechDeckModal = function() {
+        self.showDeckModal = function() {
+            var allSkills = self.player().allSkills();
+            var deckObs = ko.observable(allSkills);
             var dataObject = {
-                deck: self.player().techDeck,
+                originalDeck: allSkills,
+                deck: deckObs,
+                cardClick: function(card, ev) {
+                    self.player().removeSkill(card);
+                    self.showCardNotification("Removed", card);
+                    deckObs(self.player().allSkills());
+                }
+            }
+            
+            self.showDeckSearchModal(dataObject);
+        }
+
+        self.showTechDeckModal = function() {
+            var techDeck = self.player().techDeck;
+            var deckObs = ko.observable(techDeck());
+            var dataObject = {
+                originalDeck: techDeck,
+                deck: deckObs,
                 cardClick: function(card, ev) {
                     self.player().learnTech(card);
                     self.showCardNotification("Added", card);
+                    deckObs(techDeck());
                 }
             }
-            showModal({name: "deckModal", data: dataObject});
+            
+            self.showDeckSearchModal(dataObject);
         }
 
         self.showShopDeckModal = function() {
             var dataObject = {
-                deck: self.guestShopCards(),
+                originalDeck: self.guestShopCards(),
+                deck: ko.observable(self.guestShopCards()),
                 cardClick: function(card, ev, index) {
                     var context = ko.contextFor(event.target);
                     self.setupAddSkill(null, null, context.$index);
                     self.showCardNotification("Added", card);
                 }
             }
-            showModal({name: "deckModal", data: dataObject});
+            
+            self.showDeckSearchModal(dataObject);
         }
 
         self.showSearchCardModal = function(ethis, ev) {

@@ -18,7 +18,7 @@ export function Player(index, playerClass, stats, skills) {
 
     // Deck
     self.skillBook = Array.from(skills); // Entire skills
-    self.techDeck = ko.observableArray([]); // Available techniques to learn
+    self.techDeck = ko.observableArray(skills); // Available techniques to learn
     self.passives = ko.observableArray([]); // Learned Passives
     self.learnedTech = ko.observableArray([]); // Learn techniques
     self.shopSkills = ko.observableArray([]); // Bought skills from the shop (ie general)
@@ -56,8 +56,14 @@ export function Player(index, playerClass, stats, skills) {
         return self.learnedTech().concat(self.shopSkills());
     });
 
+    self.currentLevelTech = ko.pureComputed(function() {
+        return self.techDeck().filter(function(tech) {
+            return tech.level == self.level();
+        });
+    });
+
     self.minDeckSize = ko.pureComputed(function() {
-        return parseInt(self.stats().hand) * 3;
+        return parseInt(self.stats().hand) * 2;
     }, this);
 
     self.buySkill = function(tech, ev) {
@@ -95,6 +101,11 @@ export function Player(index, playerClass, stats, skills) {
         }
     }
 
+    self.learnRandomPassive = function() {
+        var randomDraw = Math.floor(Math.random() * 6);
+        self.learnTech(self.techDeck()[randomDraw]);
+    }
+
     self.getRandomTechSkill = function() {
         var randomDraw = Math.floor(Math.random() * self.techDeck().length);
         return self.techDeck()[randomDraw];
@@ -124,20 +135,20 @@ export function Player(index, playerClass, stats, skills) {
 
     function levelChange(amount) {
         var newLevel = self.level() + amount;
-        if (newLevel > 5 || newLevel < 1) return;
+        // if (newLevel > 5 || newLevel < 1) return;
 
-        if (amount > 0) {
-            while (self.skillBook.length != 0 && self.skillBook[0].level <= newLevel) {
-                var skill = self.skillBook.shift();
-                self.techDeck.push(skill);
-            }
-        } else {
-            while (self.techDeck().length != 0 && self.techDeck()[self.techDeck().length - 1].level == self.level()) {
-                var skill = self.techDeck.pop();
-                self.skillBook.unshift(skill);
-            }
+        // if (amount > 0) {
+        //     while (self.skillBook.length != 0 && self.skillBook[0].level <= newLevel) {
+        //         var skill = self.skillBook.shift();
+        //         self.techDeck.push(skill);
+        //     }
+        // } else {
+        //     while (self.techDeck().length != 0 && self.techDeck()[self.techDeck().length - 1].level == self.level()) {
+        //         var skill = self.techDeck.pop();
+        //         self.skillBook.unshift(skill);
+        //     }
 
-        }
+        // }
 
         self.level(newLevel);
         updateStats();
@@ -178,6 +189,10 @@ export function Player(index, playerClass, stats, skills) {
         self.activeExile([]);
     }
 
+    self.endTurn = function() {
+        self.cleanUp();
+    }
+
     // generic send function
     var parseDeckType = function(deckString) {
         var deck = null;
@@ -209,6 +224,18 @@ export function Player(index, playerClass, stats, skills) {
     self.cleanUp = function() {
         self.moveAllCards(self.activePlay, self.activeDiscard);
         self.moveAllCards(self.activeHand, self.activeDiscard);
+
+        var actives = self.activeActives();
+        if (actives.length > 0) {
+            for (var i = 0; i < actives.length; i++) {
+                var active = actives[i];
+                if (active.activeTurn() == 0) {
+                    self.moveCard(active, self.activeActives, self.activeDiscard);
+                } else {
+                    active.activeTurnUpdate(-1);
+                }
+            }
+        }
     }
 
     self.shuffleActiveDeck = function() {

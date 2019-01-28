@@ -11,6 +11,8 @@
 .monk { background-color: $monkBG; }
 .paladin { background-color: $paladinBG; }
 
+$deckCardWidth: 150px;
+
 body {
     //background-color: rgb(70, 70, 70);
     font-family: Calibri;
@@ -57,6 +59,10 @@ body {
             padding: 25px;
             background-color: white;
             overflow-y: scroll;
+        }
+
+        .deckModalCard {
+            display: inline-block;
         }
 
         .statsModalDiv {
@@ -160,85 +166,32 @@ body {
             width: 710px;
             height: 660px;
             overflow-y: auto;
-
-            .deckCard {
-                width: 150px;
-                // height: 200px;
-                display: inline-block;
-                padding: 5px;
-                vertical-align: top;
-                margin: 5px;
-
-                .cardTitle {
-                    .cardLevel, .cardName, .cardCost {
-                        display: inline-block;
-                    }
-
-                    .cardLevel {
-                        border-radius: 25px;
-                        background-color: rgb(47, 152, 194);
-                        width: 20px;
-                        height: 20px;
-                        text-align: center;
-                    }
-
-                    .cardName {
-                        width: 120px;
-                        font-size: 11pt;
-                    }
-                    
-                    .cardCostContainer {
-                        background-color: rgb(237, 146, 255);
-                        border-radius: 25px;
-                        width: 25px;
-                        height: 25px;
-                        float: right;
-
-                        .cardCost {
-                            text-align: center;
-                            line-height: 25px;
-                            width: inherit;
-                        }
-                    }
-                }
-
-                .cardImage {
-                    width: 150px;
-                    height: 75px;
-                    background-color: white;
-                }
-
-                .cardSubtitle {
-                    font-size: 8pt;
-                    padding: 2px 0;
-                }
-
-                .cardEffect {
-                    font-size: 10pt;
-                    background-color: white;
-                    padding: 2px;
-                    height: 85px;
-                }
-            }
         }
 
         .transModalDiv {
-            width: 815px;
-            height: 600px;
-            min-height: 600px;
+            width: (($deckCardWidth + 20) * 6) + 50;
+            height: 700px;
 
             .transDescription {
                 margin-bottom: 15px;
             }
 
-            .transDiv,
             .tradeDiv {
                 display: inline-block;
                 vertical-align: top;
 
                 .setupDeck {
                     margin-bottom: 10px;
-                    display: block;
+                }
+            }
+
+            .marketDiv {
+                width: 500px;
+
+                .playerDeck {
+                    columns: 2;
+                    -webkit-columns: 2;
+                    -moz-columns: 2;
                 }
             }
 
@@ -812,5 +765,88 @@ body {
                 }
             }
         }
+
+        .dungeonPlayContainer {
+            min-height: 325px;
+
+            .dungeonPlaySearch {
+                float: left;
+            }
+
+            .dungeonPlayActives {
+                margin-left: 260px;
+            }
+
+            .dungeonActiveCard {
+                display: inline-block;
+            }
+
+            .activeTurn {
+                display: inline-block;
+            }
+        }
+    }
+}
+
+.deckCard {
+    width: $deckCardWidth;
+    // height: 200px;
+    display: inline-block;
+    padding: 5px;
+    vertical-align: top;
+    margin: 5px;
+    color: black;
+
+    .cardTitle {
+        .cardLevel, .cardName, .cardCost {
+            display: inline-block;
+        }
+
+        .cardLevel {
+            border-radius: 25px;
+            background-color: rgb(47, 152, 194);
+            width: 20px;
+            height: 20px;
+            text-align: center;
+        }
+
+        .cardName {
+            width: 120px;
+            font-size: 11pt;
+        }
+        
+        .cardCostContainer {
+            background-color: rgb(237, 146, 255);
+            border-radius: 25px;
+            width: 25px;
+            height: 25px;
+            float: right;
+
+            .cardCost {
+                text-align: center;
+                line-height: 25px;
+                width: inherit;
+            }
+        }
+    }
+
+    .cardImage {
+        width: $deckCardWidth;
+        height: 112.5px;
+        background-size: cover;
+        background-color: white;
+    }
+
+    .cardSubtitle {
+        font-size: 8pt;
+        padding: 2px 0;
+    }
+
+    .cardEffect {
+        white-space: pre-wrap;
+        font-size: 10pt;
+        background-color: white;
+        padding: 2px;
+        height: 85px;
     }
 }

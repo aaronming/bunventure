@@ -108,6 +108,10 @@ body {
   overflow-y: scroll;
 }
 
+.modal .modalContainer .deckModalCard {
+  display: inline-block;
+}
+
 .modal .modalContainer .statsModalDiv {
   height: 320px;
   width: 550px;
@@ -205,83 +209,32 @@ body {
   overflow-y: auto;
 }
 
-.modal .modalContainer .deckModalDiv .deckCard {
-  width: 150px;
-  display: inline-block;
-  padding: 5px;
-  vertical-align: top;
-  margin: 5px;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel, .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName, .modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCost {
-  display: inline-block;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardLevel {
-  border-radius: 25px;
-  background-color: #2f98c2;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardName {
-  width: 120px;
-  font-size: 11pt;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer {
-  background-color: #ed92ff;
-  border-radius: 25px;
-  width: 25px;
-  height: 25px;
-  float: right;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardTitle .cardCostContainer .cardCost {
-  text-align: center;
-  line-height: 25px;
-  width: inherit;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardImage {
-  width: 150px;
-  height: 75px;
-  background-color: white;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardSubtitle {
-  font-size: 8pt;
-  padding: 2px 0;
-}
-
-.modal .modalContainer .deckModalDiv .deckCard .cardEffect {
-  font-size: 10pt;
-  background-color: white;
-  padding: 2px;
-  height: 85px;
-}
-
 .modal .modalContainer .transModalDiv {
-  width: 815px;
-  height: 600px;
-  min-height: 600px;
+  width: 1070px;
+  height: 700px;
 }
 
 .modal .modalContainer .transModalDiv .transDescription {
   margin-bottom: 15px;
 }
 
-.modal .modalContainer .transModalDiv .transDiv,
 .modal .modalContainer .transModalDiv .tradeDiv {
   display: inline-block;
   vertical-align: top;
 }
 
-.modal .modalContainer .transModalDiv .transDiv .setupDeck,
 .modal .modalContainer .transModalDiv .tradeDiv .setupDeck {
   margin-bottom: 10px;
-  display: block;
+}
+
+.modal .modalContainer .transModalDiv .marketDiv {
+  width: 500px;
+}
+
+.modal .modalContainer .transModalDiv .marketDiv .playerDeck {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
 }
 
 .phaseButton {
@@ -887,5 +840,85 @@ body {
 
 #playDiv #dungeonDiv .playersSection .activePlayerContainer .playerPlayContainer .playRightContainer .playerCardContainer .playerCard .cardName {
   font-weight: bold;
+}
+
+#playDiv #dungeonDiv .dungeonPlayContainer {
+  min-height: 325px;
+}
+
+#playDiv #dungeonDiv .dungeonPlayContainer .dungeonPlaySearch {
+  float: left;
+}
+
+#playDiv #dungeonDiv .dungeonPlayContainer .dungeonPlayActives {
+  margin-left: 260px;
+}
+
+#playDiv #dungeonDiv .dungeonPlayContainer .dungeonActiveCard {
+  display: inline-block;
+}
+
+#playDiv #dungeonDiv .dungeonPlayContainer .activeTurn {
+  display: inline-block;
+}
+
+.deckCard {
+  width: 150px;
+  display: inline-block;
+  padding: 5px;
+  vertical-align: top;
+  margin: 5px;
+  color: black;
+}
+
+.deckCard .cardTitle .cardLevel, .deckCard .cardTitle .cardName, .deckCard .cardTitle .cardCost {
+  display: inline-block;
+}
+
+.deckCard .cardTitle .cardLevel {
+  border-radius: 25px;
+  background-color: #2f98c2;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.deckCard .cardTitle .cardName {
+  width: 120px;
+  font-size: 11pt;
+}
+
+.deckCard .cardTitle .cardCostContainer {
+  background-color: #ed92ff;
+  border-radius: 25px;
+  width: 25px;
+  height: 25px;
+  float: right;
+}
+
+.deckCard .cardTitle .cardCostContainer .cardCost {
+  text-align: center;
+  line-height: 25px;
+  width: inherit;
+}
+
+.deckCard .cardImage {
+  width: 150px;
+  height: 112.5px;
+  background-size: cover;
+  background-color: white;
+}
+
+.deckCard .cardSubtitle {
+  font-size: 8pt;
+  padding: 2px 0;
+}
+
+.deckCard .cardEffect {
+  white-space: pre-wrap;
+  font-size: 10pt;
+  background-color: white;
+  padding: 2px;
+  height: 85px;
 }
 /*# sourceMappingURL=main.css.map */

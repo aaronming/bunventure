@@ -2,6 +2,7 @@
 
 $cardWidth: 125px;
 $cardHeight: 125px;
+$deckCardWidth: 150px;
 $playerCardHeight: 200px;
 
 .general { background-color: $generalBG; }
@@ -96,7 +97,7 @@ body.darkMode {
         }
 
         .deckModalDiv {
-            width: 710px;
+            width: (($deckCardWidth + 20) * 5) + 55;
             height: 660px;
             overflow-y: auto;
 
@@ -379,6 +380,7 @@ body.darkMode {
 .card {
     @include card();
     text-align: center;
+    position: relative;
 
     .cardCount, .cardTitle {
         pointer-events: none;
@@ -396,6 +398,16 @@ body.darkMode {
 
     .cardCost, .cardEffect {
         font-size: 10pt;
+        white-space: pre-wrap;
+    }
+
+    .activeTurnContainer {
+        position: absolute;
+        bottom: -30px;
+
+        .activeTurn {
+            display: inline-block;
+        }
     }
 }
 
@@ -406,7 +418,7 @@ body.darkMode {
 }
 
 .deckCard {
-    width: 150px;
+    width: $deckCardWidth;
     // height: 200px;
     display: inline-block;
     padding: 5px;
@@ -460,6 +472,7 @@ body.darkMode {
     }
 
     .cardEffect {
+        white-space: pre-wrap;
         font-size: 10pt;
         background-color: white;
         padding: 2px;
